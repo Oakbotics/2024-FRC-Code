@@ -122,4 +122,8 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
+  public static final class OIConstants {
+    public static final double kDriveDeadband = 0.05;
+  }    
+
 }
