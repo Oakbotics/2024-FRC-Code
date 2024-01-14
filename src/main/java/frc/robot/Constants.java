@@ -58,14 +58,17 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = 13;
     public static final int kFrontRightDrivingCanId = 3;
     public static final int kRearRightDrivingCanId = 2;
-
+    
     public static final int kFrontLeftTurningCanId = 8;
     public static final int kRearLeftTurningCanId = 9;
     public static final int kFrontRightTurningCanId = 7;
     public static final int kRearRightTurningCanId = 6;
 
+    public static final int GyroCanId = 0;
+    
     public static final boolean kGyroReversed = false;
   }
+
 
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
