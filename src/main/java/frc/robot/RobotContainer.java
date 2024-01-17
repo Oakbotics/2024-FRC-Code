@@ -4,14 +4,21 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+<<<<<<< HEAD
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
+=======
+import frc.robot.subsystems.DriveSubsystem;
+>>>>>>> SwerveDrive
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -24,7 +31,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+<<<<<<< HEAD
   private final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
+=======
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+>>>>>>> SwerveDrive
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -57,13 +68,31 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+<<<<<<< HEAD
     
 
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new ShootCommand(m_conveyorSubsystem));
 
 
+=======
+  
+    m_driveSubsystem.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> m_driveSubsystem.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                true, true),
+            m_driveSubsystem));
+>>>>>>> SwerveDrive
   }
+  
+  
+  
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
