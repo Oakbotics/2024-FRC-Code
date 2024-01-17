@@ -30,7 +30,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     
     m_bottomConveyorMotor.setInverted(false);
 
-    intakeSensor = new DigitalInput(1);
+    intakeSensor = new DigitalInput(8);
 
   }
 
@@ -39,7 +39,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_bottomConveyorMotor.set(speed);
   }
   public boolean getSensorTriggered(){
-    return intakeSensor.get();
+    
+    return !intakeSensor.get();
   }
   /**
    * Example command factory method.

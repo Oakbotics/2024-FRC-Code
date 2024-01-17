@@ -8,13 +8,10 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-<<<<<<< HEAD
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
-=======
 import frc.robot.subsystems.DriveSubsystem;
->>>>>>> SwerveDrive
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,11 +28,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-<<<<<<< HEAD
   private final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
-=======
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
->>>>>>> SwerveDrive
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -68,14 +62,11 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-<<<<<<< HEAD
-    
 
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new ShootCommand(m_conveyorSubsystem));
 
 
-=======
   
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -87,7 +78,6 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
->>>>>>> SwerveDrive
   }
   
   

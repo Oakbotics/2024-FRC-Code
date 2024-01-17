@@ -42,8 +42,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return m_conveyorSubsystem.getSensorTriggered();
-    return false;
+    return m_conveyorSubsystem.getSensorTriggered();
 
   }
 }

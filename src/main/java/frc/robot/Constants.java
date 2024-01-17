@@ -26,13 +26,11 @@ public final class Constants {
     public static final int kOperatorControllerPort = 1;
   }
 
-<<<<<<< HEAD
   public static class ConveyorConstants{
     public static final int kTopConveyorMotorCANID = 14;
     public static final int kBottomConveyorMotorCANID = 1;
   }
 
-=======
  public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -138,5 +136,4 @@ public final class Constants {
     public static final double kDriveDeadband = 0.05;
   }    
 
->>>>>>> SwerveDrive
 }
