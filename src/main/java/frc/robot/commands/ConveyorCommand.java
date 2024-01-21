@@ -8,7 +8,7 @@ import frc.robot.subsystems.ConveyorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An intake command that uses an intake subsystem. */
-public class IntakeCommand extends Command {
+public class ConveyorCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ConveyorSubsystem m_conveyorSubsystem;
 
@@ -17,7 +17,7 @@ public class IntakeCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeCommand(ConveyorSubsystem subsystem) {
+  public ConveyorCommand(ConveyorSubsystem subsystem) {
     m_conveyorSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -42,7 +42,8 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_conveyorSubsystem.getSensorTriggered();
+    // return m_conveyorSubsystem.getSensorTriggered();
+    return false;
 
   }
 }

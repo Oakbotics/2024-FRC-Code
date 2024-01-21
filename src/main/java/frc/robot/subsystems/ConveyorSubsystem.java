@@ -17,6 +17,9 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_topConveyorMotor;
   private final CANSparkMax m_bottomConveyorMotor;
+  private final CANSparkMax m_topShooterMotor;
+  private final CANSparkMax m_bottomShooterMotor;
+
   private DigitalInput intakeSensor;
 
 
@@ -25,6 +28,9 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_topConveyorMotor = new CANSparkMax(ConveyorConstants.kTopConveyorMotorCANID, MotorType.kBrushless);
     m_bottomConveyorMotor = new CANSparkMax(ConveyorConstants.kBottomConveyorMotorCANID, MotorType.kBrushless);
 
+
+    m_topShooterMotor = new CANSparkMax(ConveyorConstants.kTopShooterMotorCANID, MotorType.kBrushless);
+    m_bottomShooterMotor = new CANSparkMax(ConveyorConstants.kBottomShooterMotorCANID, MotorType.kBrushless);
     m_topConveyorMotor.restoreFactoryDefaults();
     m_bottomConveyorMotor.restoreFactoryDefaults();
     
@@ -38,9 +44,21 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_topConveyorMotor.set(speed);
     m_bottomConveyorMotor.set(speed);
   }
+
+  public void runShooterSpeed(double speed){
+    m_topShooterMotor.set(speed);
+    m_bottomShooterMotor.set(speed);
+  }
+
+  public double getShooterVelocity(){
+
+    return (m_topShooterMotor.getEncoder().getVelocity() + m_bottomShooterMotor.getEncoder().getVelocity())/2;
+
+  }
+
   public boolean getSensorTriggered(){
     
-    return !intakeSensor.get();
+    return intakeSensor.get();
   }
   /**
    * Example command factory method.
