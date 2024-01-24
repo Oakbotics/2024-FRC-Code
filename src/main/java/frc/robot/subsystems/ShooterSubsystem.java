@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -12,46 +13,44 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
 
-public class ConveyorSubsystem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  private final CANSparkMax m_topConveyorMotor;
-  private final CANSparkMax m_bottomConveyorMotor;
+  private final CANSparkMax m_topShooterMotor;
+  private final CANSparkMax m_bottomShooterMotor;
 
+  public ShooterSubsystem() {
 
-  private DigitalInput intakeSensor;
+    m_topShooterMotor = new CANSparkMax(ConveyorConstants.kTopShooterMotorCANID, MotorType.kBrushless);
+    m_bottomShooterMotor = new CANSparkMax(ConveyorConstants.kBottomShooterMotorCANID, MotorType.kBrushless);
 
+    m_bottomShooterMotor.restoreFactoryDefaults();
+    m_topShooterMotor.restoreFactoryDefaults();    
 
-  public ConveyorSubsystem() {
+    m_bottomShooterMotor.setInverted(true );
+      m_topShooterMotor.setInverted(true  );
 
-    m_topConveyorMotor = new CANSparkMax(ConveyorConstants.kTopConveyorMotorCANID, MotorType.kBrushless);
-    m_bottomConveyorMotor = new CANSparkMax(ConveyorConstants.kBottomConveyorMotorCANID, MotorType.kBrushless);
+    m_bottomShooterMotor.setIdleMode(IdleMode.kCoast);
+    m_topShooterMotor.setIdleMode(IdleMode.kCoast);    
+  }
 
-    m_topConveyorMotor.restoreFactoryDefaults();
-    m_bottomConveyorMotor.restoreFactoryDefaults();
-    
-    m_bottomConveyorMotor.setInverted(false);
+  public void runShooterSpeed(double speed){
+    m_topShooterMotor.set(speed);
+    m_bottomShooterMotor.set(speed);
+  }
 
-    intakeSensor = new DigitalInput(8);
+  public double getShooterVelocity(){
+
+    return (m_topShooterMotor.getEncoder().getVelocity() + m_bottomShooterMotor.getEncoder().getVelocity())/2;
 
   }
 
-  public void runConveyorSpeed(double speed){
-    m_topConveyorMotor.set(speed);
-    m_bottomConveyorMotor.set(speed);
-  }
-
-
-  public boolean getSensorTriggered(){
-    
-    return !intakeSensor.get();
-  }
   /**
    * Example command factory method.
    *
    * @return a command
    */
-  public Command ConveyorMethodCommand() {
+  public Command ShooterMethodCommand() {
 
 
     // Inline construction of command goes here.

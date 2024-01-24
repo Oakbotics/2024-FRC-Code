@@ -14,12 +14,14 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -34,6 +36,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -49,8 +52,9 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
-    
-    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.resetGyro(0)));
+    NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.resetGyro(180)));
+    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(5));
     NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(4));
   }
 
@@ -71,9 +75,9 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.resetGyro(0)));
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
-    m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem));
+    m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
 
 
   
@@ -100,6 +104,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("Two piece");
+    return new PathPlannerAuto("JustCloseMiddle");
   }
 }

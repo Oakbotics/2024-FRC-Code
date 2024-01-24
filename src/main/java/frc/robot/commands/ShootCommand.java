@@ -5,20 +5,21 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An intake command that uses an intake subsystem. */
 public class ShootCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ConveyorSubsystem m_conveyorSubsystem;
+  private final ShooterSubsystem m_shooterSubsystem;
 
   /**
    * Creates a new intakeCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootCommand(ConveyorSubsystem subsystem) {
-    m_conveyorSubsystem = subsystem;
+  public ShootCommand(ShooterSubsystem subsystem) {
+    m_shooterSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -30,13 +31,13 @@ public class ShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyorSubsystem.runShooterSpeed(1);
+    m_shooterSubsystem.runShooterSpeed(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_conveyorSubsystem.runShooterSpeed(0);
+    m_shooterSubsystem.runShooterSpeed(0);
   }
 
   // Returns true when the command should end.
