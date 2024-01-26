@@ -52,8 +52,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
-    NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.resetGyro(0)));
-    NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.resetGyro(180)));
+    NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
+    NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
     NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(5));
     NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(4));
   }
@@ -75,7 +75,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.resetGyro(0)));
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
 
@@ -92,18 +92,14 @@ public class RobotContainer {
                 true, true),
             m_driveSubsystem));
   }
-  
-  
-  
-  
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
+   *    
+   * 
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("JustCloseMiddle");
+    return new PathPlannerAuto("MoveStraight");
   }
 }

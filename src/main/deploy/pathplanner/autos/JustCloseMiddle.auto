@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ResetGyro0"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CloseMiddle"

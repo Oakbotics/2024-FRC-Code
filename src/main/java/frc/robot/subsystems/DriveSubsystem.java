@@ -13,6 +13,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -102,6 +103,7 @@ public ChassisSpeeds getChassisSpeeds(){
     // Update the odometry in the periodic block
     m_odometry.update(
         m_gyro.getRotation2d(),
+        // new Rotation2d(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -110,6 +112,9 @@ public ChassisSpeeds getChassisSpeeds(){
         });
 
     SmartDashboard.putNumber("Gyro Reading", m_gyro.getYaw().getValueAsDouble());
+    SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("Gyro Rotation 2d", m_gyro.getRotation2d().getDegrees());
+
   }
 
   /**
@@ -120,8 +125,15 @@ public ChassisSpeeds getChassisSpeeds(){
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
+  
+  // public Pose2d getPose(){
+  //   return new Pose2d(
+  //     new Translation2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY()),
+  //     new Rotation2d(m_gyro.getYaw().getValueAsDouble())
+  //   );
+  // }
 
-  public void resetGyro(double degrees){
+  public void setGyro(double degrees){
 
     m_gyro.setYaw(degrees);
   }
@@ -242,43 +254,44 @@ public ChassisSpeeds getChassisSpeeds(){
    *
    * @param desiredStates The desired SwerveModule states.
    */
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_rearLeft.setDesiredState(desiredStates[2]);
-    m_rearRight.setDesiredState(desiredStates[3]);
-  }
+  // public void setModuleStates(SwerveModuleState[] desiredStates) {
+  //   SwerveDriveKinematics.desaturateWheelSpeeds(
+  //       desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+  //   m_frontLeft.setDesiredState(desiredStates[0]);
+  //   m_frontRight.setDesiredState(desiredStates[1]);
+  //   m_rearLeft.setDesiredState(desiredStates[2]);
+  //   m_rearRight.setDesiredState(desiredStates[3]);
+  // }
 
   /** Resets the drive encoders to currently read a position of 0. */
-  public void resetEncoders() {
-    m_frontLeft.resetEncoders();
-    m_rearLeft.resetEncoders();
-    m_frontRight.resetEncoders();
-    m_rearRight.resetEncoders();
-  }
+  // public void resetEncoders() {
+  //   m_frontLeft.resetEncoders();
+  //   m_rearLeft.resetEncoders();
+  //   m_frontRight.resetEncoders();
+  //   m_rearRight.resetEncoders();
+  // }
 
   /** Zeroes the heading of the robot. */
-  public void zeroHeading() {
-    m_gyro.reset();
-  }
+  // public void zeroHeading() {
+  //   m_gyro.reset();
+  // }
 
   /**
    * Returns the heading of the robot.
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return m_gyro.getYaw().getValueAsDouble();
-  }
+  // public double getHeading() {
+  //   return -m_gyro.getYaw().getValueAsDouble();
+
+  // }
 
   /**
    * Returns the turn rate of the robot.
    *
    * @return The turn rate of the robot, in degrees per second
    */
-  public double getTurnRate() {
-    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
-  }
+//   public double getTurnRate() {
+//     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+//   }
 }
