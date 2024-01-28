@@ -66,7 +66,8 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      m_gyro.getRotation2d(),
+      getHeading(),
+      //m_gyro.getRotation2d(),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -76,16 +77,19 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    m_gyro.reset();
     AutoBuilder.configureHolonomic(
         this::getPose, // Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
         this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(0.5, 0.0, 1.15), // Translation PID constants
-            new PIDConstants(0.5, 0.0, 0.2), // Rotation PID constants
-            4.5, // Max module speed, in m/s
-            0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+            // new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            // new PIDConstants(5.0, 0.0, 0.0),// Rotation PID constants
+            new PIDConstants(0.5, 0,1.15),
+            new PIDConstants(1.2, 0.0, 0.3),
+            2, // Max module speed, in m/s
+            0.368, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),  
         () -> DriverStation.getAlliance().equals(DriverStation.Alliance.Red),
@@ -94,15 +98,23 @@ public class DriveSubsystem extends SubsystemBase {
 }
 
 public ChassisSpeeds getChassisSpeeds(){
-  SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
-  return DriveConstants.kDriveKinematics.toChassisSpeeds(swerveModuleStates);
+  // SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
+  return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
 }
-
+private SwerveModuleState[] getModuleStates() {
+  return new SwerveModuleState[] {
+          m_frontLeft.getState(),
+          m_frontRight.getState(),
+          m_rearLeft.getState(),
+          m_rearRight.getState()
+  };
+}
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        m_gyro.getRotation2d(),
+        //m_gyro.getRotation2d(),
+        getHeading(),
         // new Rotation2d(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -114,6 +126,7 @@ public ChassisSpeeds getChassisSpeeds(){
     SmartDashboard.putNumber("Gyro Reading", m_gyro.getYaw().getValueAsDouble());
     SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
     SmartDashboard.putNumber("Gyro Rotation 2d", m_gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("getHeading", getHeading().getDegrees());
 
   }
 
@@ -134,8 +147,17 @@ public ChassisSpeeds getChassisSpeeds(){
   // }
 
   public void setGyro(double degrees){
-
     m_gyro.setYaw(degrees);
+    m_odometry.resetPosition(
+      new Rotation2d(degrees), 
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_rearLeft.getPosition(),
+        m_rearRight.getPosition() 
+      },
+      new Pose2d(new Translation2d(0,0), new Rotation2d(degrees))
+    );
   }
 
   /**
@@ -145,7 +167,8 @@ public ChassisSpeeds getChassisSpeeds(){
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_gyro.getRotation2d(),
+        //m_gyro.getRotation2d(),
+        getHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -261,7 +284,7 @@ public ChassisSpeeds getChassisSpeeds(){
   //   m_frontRight.setDesiredState(desiredStates[1]);
   //   m_rearLeft.setDesiredState(desiredStates[2]);
   //   m_rearRight.setDesiredState(desiredStates[3]);
-  // }
+  // 
 
   /** Resets the drive encoders to currently read a position of 0. */
   // public void resetEncoders() {
@@ -281,10 +304,11 @@ public ChassisSpeeds getChassisSpeeds(){
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  // public double getHeading() {
-  //   return -m_gyro.getYaw().getValueAsDouble();
+  public Rotation2d getHeading() {
+   // return m_gyro.getYaw().getValueAsDouble();
+    return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
 
-  // }
+  }
 
   /**
    * Returns the turn rate of the robot.

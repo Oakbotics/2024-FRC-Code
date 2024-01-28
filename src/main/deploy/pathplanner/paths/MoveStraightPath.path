@@ -8,19 +8,19 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.678033988749895,
+        "x": 1.61,
         "y": 5.603615302795142
       },
       "isLocked": false,
-      "linkedName": "Subwoofer"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
+        "x": 5.0,
         "y": 5.6
       },
       "prevControl": {
-        "x": 2.585786437626905,
+        "x": 4.95,
         "y": 5.6
       },
       "nextControl": null,
@@ -32,15 +32,15 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 180.0,
+    "maxAngularAcceleration": 90.0
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 180.0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": null,
