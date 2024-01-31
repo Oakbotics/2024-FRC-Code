@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MoveStraightPath"
+            "pathName": "MoveStraight180Path"
           }
         },
         {
