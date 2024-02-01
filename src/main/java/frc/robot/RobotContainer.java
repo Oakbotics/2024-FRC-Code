@@ -62,7 +62,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(5));
     NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(4));
 
-    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser("JustCloseMiddle");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
