@@ -31,6 +31,13 @@ public final class Constants {
     public static final int kBottomConveyorMotorCANID = 1;
   }
 
+  public static class PnuematicConstants{
+    public static final int kLeftSolenoid = 0;
+    public static final int kRightSolenoid = 1;
+    public static final int kPCMCANID = 22;
+
+  }
+
  public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
