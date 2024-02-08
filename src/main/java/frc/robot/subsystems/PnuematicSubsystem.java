@@ -4,29 +4,32 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.Constants;
 
 public class PnuematicSubsystem extends SubsystemBase {
   /** Creates a new PnuematicSubsystem. */
-  private final Solenoid leftSolenoid;
-  private final Solenoid rightSolenoid;
+  private final DoubleSolenoid m_doubleSolenoid;
 
   public PnuematicSubsystem() {
-    leftSolenoid = new Solenoid(PnuematicsModuleType.REVPH, PnuematicConstants.kLeftSolenoid);
-    rightSolenoid = new Solenoid(PnuematicsModuleType.REVPH, PnuematicConstants.kRightSolenoid);
+    m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+    m_doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
-  public void setState(boolean state){
-    leftSolenoid.set(state);
-    rightSolenoid.set(state);
+  public void setStateForward(){
+    m_doubleSolenoid.set(DoubleSolenoid.Value.kForward);
   }
+
+  public void setStateReverse(){
+    m_doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+
 
   public void toggleState()
   {
-    leftSolenoid.toggle();
-    rightSolenoid.toggle();
+    m_doubleSolenoid.toggle();
   }
 
   /**

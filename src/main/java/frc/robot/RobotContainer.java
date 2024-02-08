@@ -68,7 +68,7 @@ public class RobotContainer {
 
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new ShootCommand(m_conveyorSubsystem));
-    m_operatorController.a().ontrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+    m_operatorController.a().onTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
 
   
     m_driveSubsystem.setDefaultCommand(

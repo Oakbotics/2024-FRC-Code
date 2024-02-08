@@ -26,16 +26,9 @@ public final class Constants {
     public static final int kOperatorControllerPort = 1;
   }
 
-  public static class ConveyorConstants{
+  public static class ConveyorConstants {
     public static final int kTopConveyorMotorCANID = 14;
     public static final int kBottomConveyorMotorCANID = 1;
-  }
-
-  public static class PnuematicConstants{
-    public static final int kLeftSolenoid = 0;
-    public static final int kRightSolenoid = 1;
-    public static final int kPCMCANID = 22;
-
   }
 
  public static final class DriveConstants {

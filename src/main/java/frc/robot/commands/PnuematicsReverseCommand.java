@@ -8,7 +8,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class PnuematicFalseCommand extends Command {
+public class PnuematicsReverseCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final PnuematicSubsystem m_pnuematicSubsystem;
 
@@ -17,7 +17,7 @@ public class PnuematicFalseCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public PnuematicFalseCommand(PnuematicSubsystem pnuematicSubsystem) {
+  public PnuematicsReverseCommand(PnuematicSubsystem pnuematicSubsystem) {
     m_pnuematicSubsystem = pnuematicSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(pnuematicSubsystem);
@@ -30,7 +30,7 @@ public class PnuematicFalseCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pnuematicSubsystem.setState(false);
+    m_pnuematicSubsystem.setStateReverse();
   }
 
   // Called once the command ends or is interrupted.
