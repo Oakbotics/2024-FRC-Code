@@ -41,35 +41,44 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public Pose2d getBotPose(){
 
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     double[] botPoseArray = m_limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]); 
 
     Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
 
     m_field.setRobotPose(botPose);
-    SmartDashboard.putString("Bot pose string thing ", botPose.toString());
+    SmartDashboard.putString("Bot pose string thing", botPose.toString());
    
     return botPose;
   }
 
   public Pose2d getAprilTagDistance(){
 
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     double[] botPoseArray = m_limelightTable.getEntry("targetpose_robotspace").getDoubleArray(new double[10]); 
 
     Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
 
-    m_field.setRobotPose(botPose);
-   
+    // SmartDashboard.putString("Bot pose string thing", botPose.toString());
     return botPose;
   }
+  
+  
+  
+  public int getId(){
+    
+    int tid = (int) m_limelightTable.getEntry("tid").getDouble(-1);
+    return tid;
+    
 
+  }
+
+  
   @Override
   public void periodic() {
 
     getBotPose();
-
   }
+
+  
 
   @Override
   public void simulationPeriodic() {

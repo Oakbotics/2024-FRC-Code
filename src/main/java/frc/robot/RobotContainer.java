@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AprilTagGoToCoordinate;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
@@ -14,6 +15,7 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -37,8 +39,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limelightSubsystem);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -79,7 +81,7 @@ public class RobotContainer {
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
 
-
+    m_driverController.a().whileTrue(new AprilTagGoToCoordinate(m_driveSubsystem, m_limelightSubsystem));
   
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -100,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("JustCloseMiddle");
+    return new PathPlannerAuto("Two piece");
   }
 }

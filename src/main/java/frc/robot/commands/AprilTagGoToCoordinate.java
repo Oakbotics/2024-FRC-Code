@@ -28,12 +28,11 @@ public class AprilTagGoToCoordinate extends Command {
    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem, limelightSubsystem);
-    double xSetPoint = 12.75;
-    double ySetPoint = 1.5;
-    double rotSetPoint = 0;
 
-     xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
-     yController = new PIDController(0.5, 0,1.15);
+    //  xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
+    //  yController = new PIDController(0.5, 0,1.15);
+    xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(0, 0,0);
      rotateController = new PIDController(0.5, 0, 0.2);
     
   }
@@ -54,17 +53,17 @@ public class AprilTagGoToCoordinate extends Command {
         double botPoseY = m_LimelightSubsystem.getBotPose().getY();
         double botPoseRotate = m_LimelightSubsystem.getBotPose().getRotation().getRadians();
         
-        double xSetPoint = 12.75;
-        double ySetPoint = 2;
-        double rotSetPoint = 0;
+        double xSetPoint = 14.8;
+        double ySetPoint = 4;
+        double rotSetPoint = 180;
         double errorMargin = 0.05;
 
         if(Math.abs(botPoseX - xSetPoint) <= errorMargin){
           botPoseX = xSetPoint;
         }
           
-       m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint), rotateController.calculate(botPoseRotate, rotSetPoint), true, true);    
-        // m_driveSubsystem.drive(0, 0, rotateController.calculate(botPoseRotate, rotSetPoint), true);    
+      //  m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint), rotateController.calculate(botPoseRotate, rotSetPoint), true, true);    
+        m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), 0,0, true, true);
 
     }
 
