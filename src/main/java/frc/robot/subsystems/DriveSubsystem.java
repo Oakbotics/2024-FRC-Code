@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -78,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      getHeading(),
+      getWrappedHeading(),
       //m_gyro.getRotation2d(),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
@@ -132,11 +133,11 @@ private SwerveModuleState[] getModuleStates() {
     // Update the odometry in the periodic block
    if (m_limelightSubsystem.getId() > 0){
     resetOdometry(m_limelightSubsystem.getBotPose());
-    setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees());
+    // setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees()); //accuracy of april tag may be worse than gyro drift
    }else{
       m_odometry.update(
         //m_gyro.getRotation2d(),
-        getHeading(),
+        getWrappedHeading(),
         // new Rotation2d(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -147,10 +148,8 @@ private SwerveModuleState[] getModuleStates() {
    }
   
 
-    SmartDashboard.putNumber("Gyro Reading", m_gyro.getYaw().getValueAsDouble());
-    SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
-    SmartDashboard.putNumber("Gyro Rotation 2d", m_gyro.getRotation2d().getDegrees());
-    SmartDashboard.putNumber("getHeading", getHeading().getDegrees());
+    // SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
     SmartDashboard.putNumber("pose X", getPose().getX());
     SmartDashboard.putNumber("pose Y", getPose().getY());
   }
@@ -188,6 +187,14 @@ private SwerveModuleState[] getModuleStates() {
 public void setGyroYaw(double yaw){
   m_gyro.setYaw(yaw);
 }
+
+public void setGyroYawUsingAprilTag(){
+
+  if(m_limelightSubsystem.getId() > 0){
+    m_gyro.setYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees());
+  }
+  
+}
   /**
    * Resets the odometry to the specified pose.
    *
@@ -196,7 +203,7 @@ public void setGyroYaw(double yaw){
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
         //m_gyro.getRotation2d(),
-        getHeading(),
+        getWrappedHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -330,11 +337,16 @@ public void setGyroYaw(double yaw){
   /**
    * Returns the heading of the robot.
    *
-   * @return the robot's heading in degrees, from -180 to 180
    */
   public Rotation2d getHeading() {
    // return m_gyro.getYaw().getValueAsDouble();
     return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
+
+  }
+
+  public Rotation2d getWrappedHeading() {
+   // return m_gyro.getYaw().getValueAsDouble();
+    return Rotation2d.fromDegrees(MathUtil.inputModulus(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0), -180.0, 180.0));
 
   }
 

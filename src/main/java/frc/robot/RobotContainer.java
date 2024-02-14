@@ -11,6 +11,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -96,6 +97,7 @@ public class RobotContainer {
 
     m_driverController.a().whileTrue(new AprilTagGoToCoordinate(m_driveSubsystem, m_limelightSubsystem));
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem, m_limelightSubsystem));
+    m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_limelightSubsystem, m_driveSubsystem));
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.

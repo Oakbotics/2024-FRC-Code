@@ -48,7 +48,11 @@ public class GoToSpeakerCommand extends Command {
     xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
     yController = new PIDController(0.5, 0,1.15);
     // rotateController = new PIDController(0.5, 0, 0.2);
-    rotateController = new PIDController(0, 0, 0);
+    rotateController = new PIDController(0.01, 0, 0);
+
+
+    rotateController.enableContinuousInput(-180, 180);
+    // rotateController = new PIDController(0, 0, 0);
       
      //fieldLayout = new AprilTagFieldLayout("./AprilTagLocation.json");
   }
@@ -68,18 +72,21 @@ public class GoToSpeakerCommand extends Command {
     double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees();    
   
     
-    double botDistance = Math.sqrt(Math.pow(speakerPoseX-botPoseX, 2) + Math.pow(speakerPoseY-botPoseY, 2));
+    double botDistance = Math.sqrt(Math.pow(speakerPoseX-botPoseX, 2) + Math.pow(speakerPoseY-botPoseY, 2));  //Should we use current botpose or desired one?
 
-    double botAngle = Math.toDegrees(Math.atan((speakerPoseY - botPoseY)/ (botPoseX - speakerPoseX))); 
+    rotSetPoint = Math.toDegrees(Math.asin((botPoseY-speakerPoseY)/ botDistance)); 
+
     xSetPoint = speakerPoseX - (radius * (speakerPoseX-botPoseX))/botDistance;
     ySetPoint = speakerPoseY - (radius * (speakerPoseY-botPoseY))/botDistance;
-    rotSetPoint = 180;
     double errorMargin = 0.05;
 
-
-    rotSetPoint = 180-botAngle;
-
-
+  //   if(botAngle > 0 ){
+  //     rotSetPoint = -180+botAngle;
+  //   }
+   
+  //  else{
+  //   rotSetPoint = 180 +  botAngle;
+  // }
     //SmartDashboard.putNumber("SpeakerPose",speakerPose.getX());
   }
 
@@ -91,9 +98,9 @@ public class GoToSpeakerCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees();
 
-    if(botPoseRot < 0){
-      botPoseRot += 360;
-    }
+    // if(botPoseRot < 0){
+    //   botPoseRot = -botPoseRot;
+    // }
 
     SmartDashboard.putNumber("unwrapped rotation", botPoseRot);
           
@@ -119,7 +126,7 @@ public class GoToSpeakerCommand extends Command {
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees();
-    if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin){
+    if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 20*errorMargin){
       return true;
     }
     return false;
