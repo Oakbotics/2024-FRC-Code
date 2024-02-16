@@ -28,7 +28,7 @@ public class GoToSpeakerCommand extends Command {
   double xSetPoint = 0;
   double ySetPoint = 0;
   double rotSetPoint = 0;
-  double errorMargin = 0.05;
+  double errorMargin = 0.1;
 
   /**
    * Creates a new ExampleCommand.
@@ -45,10 +45,10 @@ public class GoToSpeakerCommand extends Command {
 
     //  xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
     //  yController = new PIDController(0.5, 0,1.15);
-    xController = new PIDController(0.5, 0,1.15); //Best values: 0.5, 0, 1.15
-    yController = new PIDController(0.5, 0,1.15);
-    // rotateController = new PIDController(0.5, 0, 0.2);
-    rotateController = new PIDController(0.01, 0, 0);
+    xController = new PIDController(0.55, 0,1.25); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(0.55, 0,1.25);
+    rotateController = new PIDController(0.01, 0.0, 0.0);
+    // rotateController = new PIDController(0.01, 0, 0);
 
 
     rotateController.enableContinuousInput(-180, 180);
@@ -96,7 +96,7 @@ public class GoToSpeakerCommand extends Command {
 
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees();
+    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
 
     // if(botPoseRot < 0){
     //   botPoseRot = -botPoseRot;
@@ -107,6 +107,7 @@ public class GoToSpeakerCommand extends Command {
     SmartDashboard.putNumber("Set Point X", xSetPoint);
     SmartDashboard.putNumber("Set Point Y", ySetPoint);
     SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
+    SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
     //  m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint), rotateController.calculate(botPoseRotate, rotSetPoint), true, true);    
     m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
 
@@ -125,8 +126,9 @@ public class GoToSpeakerCommand extends Command {
   public boolean isFinished() {
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees();
-    if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 20*errorMargin){
+    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees()
+    ;
+    if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 1){
       return true;
     }
     return false;

@@ -3,40 +3,102 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.0,
-        "y": 2.7
+        "x": 1.0,
+        "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": -0.049618751124144156,
-        "y": 2.706162754001276
+        "x": 1.0499999999999998,
+        "y": 5.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 2.0
+        "x": 3.0,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 1.95,
-        "y": 2.0
+        "x": 2.525,
+        "y": 5.5
+      },
+      "nextControl": {
+        "x": 3.475,
+        "y": 5.5
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.0,
+        "y": 5.5
+      },
+      "prevControl": {
+        "x": 0.9500000000000002,
+        "y": 5.5
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
     {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 166.0,
-      "rotateFast": false
+      "name": "Shoot First Ring",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Intake Next Ring",
+      "waypointRelativePos": 1.2,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot Second Ring",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "shoot"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
-  "constraintZones": [],
-  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 1.5,
     "maxAcceleration": 1.0,
@@ -44,12 +106,15 @@
     "maxAngularAcceleration": 90.0
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0,
+    "velocity": 0.0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 180.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

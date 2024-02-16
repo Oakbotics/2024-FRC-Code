@@ -24,6 +24,7 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
@@ -73,6 +74,8 @@ public class DriveSubsystem extends SubsystemBase {
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
   private LimelightSubsystem m_limelightSubsystem;
+
+  private final Field2d field = new Field2d();
  
 
 
@@ -94,6 +97,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_limelightSubsystem = limelightSubsystem;
 
 
+    SmartDashboard.putData(field);
+
     m_gyro.reset();
 
     AutoBuilder.configureHolonomic(
@@ -107,7 +112,8 @@ public class DriveSubsystem extends SubsystemBase {
             new PIDConstants(0.25, 0.0, 0.1),// Rotation PID constants
             // new PIDConstants(2.5, 0.0, 0.005),// Rotation PID constants
             // new PIDConstants(0.0, 0.0, 0.0),
-            2, // Max module speed, in m/s
+            0.5, // Max module speed, in m/s
+            
             0.368, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),  
@@ -132,7 +138,7 @@ private SwerveModuleState[] getModuleStates() {
   public void periodic() {
     // Update the odometry in the periodic block
    if (m_limelightSubsystem.getId() > 0){
-    resetOdometry(m_limelightSubsystem.getBotPose());
+    resetOdometry(getLimelightPose());
     // setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees()); //accuracy of april tag may be worse than gyro drift
    }else{
       m_odometry.update(
@@ -146,12 +152,17 @@ private SwerveModuleState[] getModuleStates() {
             m_rearRight.getPosition()
          });
    }
+
+
   
 
     // SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
     SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
     SmartDashboard.putNumber("pose X", getPose().getX());
     SmartDashboard.putNumber("pose Y", getPose().getY());
+
+    field.setRobotPose(getPose());
+    SmartDashboard.putData(field);
   }
 
 
@@ -211,6 +222,9 @@ public void setGyroYawUsingAprilTag(){
             m_rearRight.getPosition()
         },
         pose);
+  }
+  public Pose2d getLimelightPose(){
+    return new Pose2d(m_limelightSubsystem.getBotPose().getX(), m_limelightSubsystem.getBotPose().getY(), getWrappedHeading() );
   }
 
   /**
