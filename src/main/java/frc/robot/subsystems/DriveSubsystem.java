@@ -10,6 +10,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,13 +24,22 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
+
+
+
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
+
+
+
+  
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
       DriveConstants.kFrontLeftTurningCanId,
@@ -63,10 +73,16 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
+  private LimelightSubsystem m_limelightSubsystem;
+
+  private final Field2d field = new Field2d();
+ 
+
+
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics,
-      getHeading(),
+      getWrappedHeading(),
       //m_gyro.getRotation2d(),
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
@@ -76,18 +92,28 @@ public class DriveSubsystem extends SubsystemBase {
       });
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
+  public DriveSubsystem(LimelightSubsystem limelightSubsystem) {
+
+    m_limelightSubsystem = limelightSubsystem;
+
+
+    SmartDashboard.putData(field);
+
     m_gyro.reset();
+
     AutoBuilder.configureHolonomic(
         this::getPose, // Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
         this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(3.0, 0.0, 0.5),// Translation PID constants
-            // new PIDConstants(0.25, 0.0, 0.1),// Rotation PID constants
-            new PIDConstants(2.5, 0.0, 0.005),// Rotation PID constants
-            2, // Max module speed, in m/s
+            // new PIDConstants(3.0, 0.0, 0.5),// Translation PID constants
+            new PIDConstants(1.0, 0.0, 0.5),// Translation PID constants
+            new PIDConstants(0.25, 0.0, 0.1),// Rotation PID constants
+            // new PIDConstants(2.5, 0.0, 0.005),// Rotation PID constants
+            // new PIDConstants(0.0, 0.0, 0.0),
+            0.5, // Max module speed, in m/s
+            
             0.368, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),  
@@ -111,24 +137,34 @@ private SwerveModuleState[] getModuleStates() {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
+   if (m_limelightSubsystem.getId() > 0){
+    resetOdometry(getLimelightPose());
+    // setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees()); //accuracy of april tag may be worse than gyro drift
+   }else{
+      m_odometry.update(
         //m_gyro.getRotation2d(),
-        getHeading(),
+        getWrappedHeading(),
         // new Rotation2d(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
-        });
+         });
+   }
 
-    SmartDashboard.putNumber("Gyro Reading", m_gyro.getYaw().getValueAsDouble());
-    SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
-    SmartDashboard.putNumber("Gyro Rotation 2d", m_gyro.getRotation2d().getDegrees());
-    SmartDashboard.putNumber("getHeading", getHeading().getDegrees());
+
+  
+
+    // SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
     SmartDashboard.putNumber("pose X", getPose().getX());
     SmartDashboard.putNumber("pose Y", getPose().getY());
+
+    field.setRobotPose(getPose());
+    SmartDashboard.putData(field);
   }
+
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -159,7 +195,17 @@ private SwerveModuleState[] getModuleStates() {
       new Pose2d(new Translation2d(0,0), new Rotation2d(degrees))
     );
   }
+public void setGyroYaw(double yaw){
+  m_gyro.setYaw(yaw);
+}
 
+public void setGyroYawUsingAprilTag(){
+
+  if(m_limelightSubsystem.getId() > 0){
+    m_gyro.setYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees());
+  }
+  
+}
   /**
    * Resets the odometry to the specified pose.
    *
@@ -168,7 +214,7 @@ private SwerveModuleState[] getModuleStates() {
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
         //m_gyro.getRotation2d(),
-        getHeading(),
+        getWrappedHeading(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -176,6 +222,9 @@ private SwerveModuleState[] getModuleStates() {
             m_rearRight.getPosition()
         },
         pose);
+  }
+  public Pose2d getLimelightPose(){
+    return new Pose2d(m_limelightSubsystem.getBotPose().getX(), m_limelightSubsystem.getBotPose().getY(), getWrappedHeading() );
   }
 
   /**
@@ -302,11 +351,16 @@ private SwerveModuleState[] getModuleStates() {
   /**
    * Returns the heading of the robot.
    *
-   * @return the robot's heading in degrees, from -180 to 180
    */
   public Rotation2d getHeading() {
    // return m_gyro.getYaw().getValueAsDouble();
     return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
+
+  }
+
+  public Rotation2d getWrappedHeading() {
+   // return m_gyro.getYaw().getValueAsDouble();
+    return Rotation2d.fromDegrees(MathUtil.inputModulus(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0), -180.0, 180.0));
 
   }
 
