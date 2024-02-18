@@ -27,15 +27,21 @@ public final class Constants {
   }
 
   public static class ConveyorConstants{
-    public static final int kTopConveyorMotorCANID = 14;
-    public static final int kBottomConveyorMotorCANID = 15;
+
     public static final int kTopShooterMotorCANID = 20;
     public static final int kBottomShooterMotorCANID = 21;
-
     public static final double revvedShooterRPM = 800;
+    
 
   }
 
+
+  public static class IntakeConstants{
+
+    public static final int kLeftIntakeMotorCANID = 14;
+    public static final int kRightIntakeMotorCANID = 15;
+    public static final int intakeSensorID = 1;
+  }
  public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds

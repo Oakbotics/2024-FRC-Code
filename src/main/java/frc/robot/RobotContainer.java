@@ -17,6 +17,7 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limelightSubsystem);
 
@@ -92,7 +94,7 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
+    m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_intakeSubsystem));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
 
     m_driverController.a().whileTrue(new AprilTagGoToCoordinate(m_driveSubsystem, m_limelightSubsystem));
