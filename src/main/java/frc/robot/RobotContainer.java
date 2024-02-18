@@ -6,9 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AprilTagGoToCoordinate;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GoToAmpCommand;
+import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
@@ -17,7 +18,8 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.NoteLimelightSubsystem;
+import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import java.io.IOException;
@@ -46,8 +48,9 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ConveyorSubsystem m_conveyorSubsystem = new ConveyorSubsystem();
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limelightSubsystem);
+  private final AprilTagLimelightSubsystem m_aprilTagLimelightSubsystem = new AprilTagLimelightSubsystem();
+  private final NoteLimelightSubsystem m_noteLimelightSubsystem = new NoteLimelightSubsystem();
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_aprilTagLimelightSubsystem);
 
   private final SendableChooser<Command> autoChooser;
 
@@ -95,9 +98,10 @@ public class RobotContainer {
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
 
-    m_driverController.a().whileTrue(new AprilTagGoToCoordinate(m_driveSubsystem, m_limelightSubsystem));
-    m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem, m_limelightSubsystem));
-    m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_limelightSubsystem, m_driveSubsystem));
+    m_driverController.b().whileTrue(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem));
+    m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
+    m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
+    m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
