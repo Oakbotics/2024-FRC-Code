@@ -36,6 +36,11 @@ public final class Constants {
 
   }
 
+  public static class ClimberConstants{
+
+    public static final int kClimberMotorCANID = 22;
+  }
+
  public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
