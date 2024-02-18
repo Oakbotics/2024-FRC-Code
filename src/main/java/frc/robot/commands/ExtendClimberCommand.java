@@ -9,7 +9,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class RetractClimberCommand extends Command {
+public class ExtendClimberCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimberSubsystem m_climberSubsystem;
 
@@ -18,7 +18,7 @@ public class RetractClimberCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RetractClimberCommand(ClimberSubsystem climberSubsystem) {
+  public ExtendClimberCommand(ClimberSubsystem climberSubsystem) {
     m_climberSubsystem = climberSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     // addRequirements(subsystem);
@@ -28,7 +28,7 @@ public class RetractClimberCommand extends Command {
   @Override
   public void initialize() {
 
-    m_climberSubsystem.setClimberSpeed(-0.5);
+    m_climberSubsystem.setClimberSpeed(0.5);
 
   }
 
@@ -45,7 +45,7 @@ public class RetractClimberCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climberSubsystem.getEncoderValue() < 5){
+    if(m_climberSubsystem.getEncoderValue() > 400){
       return true;
     }
      return false;

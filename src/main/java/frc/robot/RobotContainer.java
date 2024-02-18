@@ -9,11 +9,14 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AprilTagGoToCoordinate;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtendClimberCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
+import frc.robot.commands.RetractClimberCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -48,6 +51,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_limelightSubsystem);
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -92,8 +96,12 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
+
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.b().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
+    m_operatorController.y().whileTrue(new RetractClimberCommand(m_climberSubsystem));
+
 
     m_driverController.a().whileTrue(new AprilTagGoToCoordinate(m_driveSubsystem, m_limelightSubsystem));
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem, m_limelightSubsystem));
