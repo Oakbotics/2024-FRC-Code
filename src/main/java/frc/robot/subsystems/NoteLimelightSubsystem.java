@@ -27,7 +27,7 @@ public class NoteLimelightSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public NoteLimelightSubsystem() {
     SmartDashboard.putData("Field", m_field);
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("Note_Limelight");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-note");
   }
 
 
@@ -37,7 +37,7 @@ public class NoteLimelightSubsystem extends SubsystemBase {
     double ty = m_limelightTable.getEntry("ty").getDouble(-1);  
     
 
-    double forwardD = LimelightConstants.limelightHeight * Math.tan(Math.toRadians(ty + 30));
+    double forwardD = LimelightConstants.limelightHeight * Math.abs(Math.tan(Math.toRadians(ty)));// ADD THIRTY ITS TILTED
     double sideD = forwardD * Math.tan(Math.toRadians(tx));
 
     Transform2d relativeNotePose = new Transform2d(forwardD, sideD, Rotation2d.fromDegrees(tx));
