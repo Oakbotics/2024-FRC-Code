@@ -25,7 +25,7 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public AprilTagLimelightSubsystem() {
     SmartDashboard.putData("Field", m_field);
-    m_limelightTable = NetworkTableInstance.getDefault().getTable("April_Tag_limelight");
+    m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-april");
   }
 
   public Pose2d getBotPose(){
@@ -45,6 +45,8 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     getBotPose();
+    SmartDashboard.putNumber("limelight x value", getBotPose().getX());
+    SmartDashboard.putNumber("limelight y value", getBotPose().getY());
   }
 
   @Override

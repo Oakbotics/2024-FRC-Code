@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.proto.Controller;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -27,11 +28,14 @@ public class GoToAmpCommand extends Command {
   private final PIDController rotateController;
 
  
-  double ampPoseX = 1.85;
-  double ampPoseY = 7.85;
+  double ampPoseXBlue = 1.85;
+  double ampPoseY = 7.3;
   double ampPoseRot = 90;
   double errorMargin = 0.05; 
-  Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
+  // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
+  Pose2d ampPose;
+  Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
+  Pose2d ampPoseRed = GeometryUtil.flipFieldPose(ampPoseBlue);
   /**
    * Creates a new ExampleCommand.
    *
@@ -55,8 +59,11 @@ public class GoToAmpCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){
-      ampPose = GeometryUtil.flipFieldPose(ampPose);
+    if(DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)){
+      ampPose = ampPoseRed;
+    }
+    else{
+      ampPose = ampPoseBlue;
     }
   }
 
@@ -64,7 +71,8 @@ public class GoToAmpCommand extends Command {
   @Override
   public void execute() {
     
-
+    // SmartDashboard.putNumber("Set Point X", ampPose.getX());
+    
 
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
