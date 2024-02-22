@@ -37,7 +37,7 @@ public final class Constants {
   }
 
   public static class LimelightConstants{
-    public static final double limelightHeight = 0.25;  //////////////////////// ACTUALLY ASK BUILD OR MEASURE
+    public static final double limelightHeight = 1.035;  //////////////////////// ACTUALLY ASK BUILD OR MEASURE
   }
  public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of

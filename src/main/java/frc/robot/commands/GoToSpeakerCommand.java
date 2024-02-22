@@ -78,6 +78,7 @@ public class GoToSpeakerCommand extends Command {
 
     rotSetPoint = Math.toDegrees(Math.asin( (botPoseY-speakerPose.getY()) / botDistance)); 
     
+    
     // Flips rotation setpoint if on red allience because math
     if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){ 
       rotSetPoint = -rotSetPoint;
@@ -100,7 +101,6 @@ public class GoToSpeakerCommand extends Command {
     SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
 
     m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-
     }
 
   // Called once the command ends or is interrupted.

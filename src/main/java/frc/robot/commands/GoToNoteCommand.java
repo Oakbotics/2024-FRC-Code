@@ -49,7 +49,7 @@ public class GoToNoteCommand extends Command {
 
     xController = new PIDController(0.55, 0,1.25); 
     yController = new PIDController(0.55, 0,1.25);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
+    rotateController = new PIDController(0.02, 0.0, 0.0);
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -82,9 +82,14 @@ public class GoToNoteCommand extends Command {
     SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
     SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
 
-    // m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-    m_driveSubsystem.drive(0, 0,rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-    if(Math.abs(botPoseRot - rotSetPoint) <= 1){
+    rotSetPoint = -5;
+    xSetPoint = 4.312;
+    ySetPoint = -0.377;
+    if(Math.abs(botPoseRot - rotSetPoint) > 1){
+      m_driveSubsystem.drive(xController.calculate(botPoseX, botPoseX), yController.calculate(botPoseY, botPoseX),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    }
+    // m_driveSubsystem.drive(0, 0,rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    else if(Math.abs(botPoseRot - rotSetPoint) <= 1){
        m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
     }
     }
