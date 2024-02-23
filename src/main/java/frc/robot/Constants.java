@@ -30,8 +30,8 @@ public final class Constants {
     public static final int kTopConveyorMotorCANID = 14;
     public static final int kBottomConveyorMotorCANID = 15;
 
-    public static final int kTopShooterMotorCANID = 20;
-    public static final int kBottomShooterMotorCANID = 21;
+    public static final int kRightShooterMotorCANID = 20;
+    public static final int kLeftShooterMotorCANID = 21;
 
     public static final double revvedShooterRPM = 800;
   }

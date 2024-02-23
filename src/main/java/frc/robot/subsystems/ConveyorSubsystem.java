@@ -31,7 +31,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_topConveyorMotor.restoreFactoryDefaults();
     m_bottomConveyorMotor.restoreFactoryDefaults();
     
-    m_bottomConveyorMotor.setInverted(false);
+    m_bottomConveyorMotor.setInverted(true);
+    m_topConveyorMotor.setInverted(true);
 
     intakeSensor = new DigitalInput(8); //ID 8 is top, ID 7 is bottom
 
