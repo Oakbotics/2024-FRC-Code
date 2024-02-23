@@ -100,12 +100,12 @@ public class RobotContainer {
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_limelightSubsystem, m_driveSubsystem));
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
+        // Turning is controlled by the X axis of the right st
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.5 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
   }
