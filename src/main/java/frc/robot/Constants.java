@@ -28,7 +28,7 @@ public final class Constants {
 
   public static class ConveyorConstants {
     public static final int kTopConveyorMotorCANID = 14;
-    public static final int kBottomConveyorMotorCANID = 1;
+    public static final int kBottomConveyorMotorCANID = 13;
   }
 
  public static final class DriveConstants {

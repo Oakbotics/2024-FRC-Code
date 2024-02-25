@@ -14,7 +14,7 @@ public class PnuematicSubsystem extends SubsystemBase {
   private final DoubleSolenoid m_doubleSolenoid;
 
   public PnuematicSubsystem() {
-    m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+    m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 14, 15);
     m_doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
