@@ -32,6 +32,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_bottomConveyorMotor.restoreFactoryDefaults();
     
     m_bottomConveyorMotor.setInverted(false);
+    m_topConveyorMotor.setInverted(true);
+
 
     intakeSensor = new DigitalInput(8); //ID 8 is top, ID 7 is bottom
 
@@ -39,7 +41,7 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   public void runConveyorSpeed(double speed){
     m_topConveyorMotor.set(speed);
-    m_bottomConveyorMotor.set(speed);
+    m_bottomConveyorMotor.set(-speed);
   }
 
 
