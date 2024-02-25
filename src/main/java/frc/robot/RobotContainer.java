@@ -66,8 +66,8 @@ public class RobotContainer {
     
     NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
     NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
-    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(4));
+    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
+    NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(2));
 
     autoChooser = AutoBuilder.buildAutoChooser("JustCloseMiddle");
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -117,7 +117,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("JustCloseMiddle");
+    return new PathPlannerAuto("MoveStraight180");
     // return autoChooser.getSelected();
   }
 }

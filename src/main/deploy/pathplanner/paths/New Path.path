@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0,
+        "x": 3.0,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0499999999999998,
+        "x": 3.05,
         "y": 5.5
       },
       "isLocked": false,
@@ -20,23 +20,7 @@
         "y": 5.5
       },
       "prevControl": {
-        "x": 2.525,
-        "y": 5.5
-      },
-      "nextControl": {
-        "x": 3.475,
-        "y": 5.5
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.0,
-        "y": 5.5
-      },
-      "prevControl": {
-        "x": 0.9500000000000002,
+        "x": 3.05,
         "y": 5.5
       },
       "nextControl": null,
@@ -66,7 +50,7 @@
     },
     {
       "name": "Intake Next Ring",
-      "waypointRelativePos": 1.2,
+      "waypointRelativePos": 0.19999999999999996,
       "command": {
         "type": "sequential",
         "data": {
@@ -108,7 +92,7 @@
   "goalEndState": {
     "velocity": 0.0,
     "rotation": 180.0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": null,
