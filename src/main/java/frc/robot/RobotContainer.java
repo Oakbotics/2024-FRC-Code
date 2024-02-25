@@ -15,8 +15,12 @@ import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+
+import java.time.Instant;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -65,10 +69,10 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
+    m_driverController.povDown().onTrue(new InstantCommand( () -> m_driveSubsystem.zeroHeading()));
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new ShootCommand(m_conveyorSubsystem));
-    m_operatorController.a().onTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+    m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
 
   
     m_driveSubsystem.setDefaultCommand(
