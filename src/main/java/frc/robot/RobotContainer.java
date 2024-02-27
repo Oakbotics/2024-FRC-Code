@@ -30,9 +30,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-
-import java.time.Instant;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,7 +54,7 @@ public class RobotContainer {
   private final NoteLimelightSubsystem m_noteLimelightSubsystem = new NoteLimelightSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_aprilTagLimelightSubsystem);
 
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<String> autoChooser;
   private final PnuematicSubsystem m_pnuematicSubsystem = new PnuematicSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -66,7 +63,6 @@ public class RobotContainer {
 
   private final CommandXboxController m_operatorController =
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -78,7 +74,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
     NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(2));
 
-    autoChooser = AutoBuilder.buildAutoChooser("JustCloseMiddle");
+    autoChooser = new SendableChooser<>();
+    autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
+    autoChooser.addOption("MoveStraight180", "MoveStraight180");
+    autoChooser.addOption("MoveStraight", "MoveStraight");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -99,17 +98,15 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
 
     m_driverController.b().whileTrue(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
-    m_operatorController.rightBumper().whileTrue(new ShootCommand(m_conveyorSubsystem));
-    m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
 
   
     m_driveSubsystem.setDefaultCommand(
@@ -131,7 +128,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("MoveStraight180");
-    // return autoChooser.getSelected();
+    return new PathPlannerAuto(autoChooser.getSelected());
   }
 }
