@@ -26,7 +26,7 @@ public final class Constants {
     public static final int kOperatorControllerPort = 1;
   }
 
-  public static class ConveyorConstants{
+  public static class ConveyorConstants {
     public static final int kTopConveyorMotorCANID = 14;
     public static final int kBottomConveyorMotorCANID = 15;
 
@@ -36,7 +36,7 @@ public final class Constants {
     public static final double revvedShooterRPM = 800;
   }
 
-  public static class LimelightConstants{
+  public static class LimelightConstants {
     public static final double limelightHeight = 1.035;  //////////////////////// ACTUALLY ASK BUILD OR MEASURE
   }
  public static final class DriveConstants {

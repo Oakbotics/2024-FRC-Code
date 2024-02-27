@@ -15,8 +15,10 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TogglePnuematicsCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
@@ -27,6 +29,9 @@ import java.io.IOException;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
+
+import java.time.Instant;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -53,6 +58,7 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_aprilTagLimelightSubsystem);
 
   private final SendableChooser<Command> autoChooser;
+  private final PnuematicSubsystem m_pnuematicSubsystem = new PnuematicSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -102,6 +108,10 @@ public class RobotContainer {
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
+    m_operatorController.rightBumper().whileTrue(new ShootCommand(m_conveyorSubsystem));
+    m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+
+  
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right st
