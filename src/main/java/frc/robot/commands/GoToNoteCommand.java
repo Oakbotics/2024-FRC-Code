@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
 
 import java.io.IOException;
@@ -20,17 +21,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class GoToSpeakerCommand extends Command {
+public class GoToNoteCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
- 
+  private  final NoteLimelightSubsystem m_LimelightSubsystem;
   private final PIDController xController;
   private final PIDController yController;
   private final PIDController rotateController;
   private AprilTagFieldLayout fieldLayout;
-  double speakerPoseX = 0.0; // X postion of Speaker Apriltag on blue side
-  double speakerPoseY = 5.55; // Y postion of Speaker Apriltag on blue side
-  Pose2d speakerPose = new Pose2d(speakerPoseX, speakerPoseY, Rotation2d.fromDegrees(0));
   double xSetPoint;
   double ySetPoint;
   double rotSetPoint;
@@ -42,16 +40,16 @@ public class GoToSpeakerCommand extends Command {
    * @param subsystem The subsystem used by this command.
    * @throws IOException 
    */
-  public GoToSpeakerCommand(DriveSubsystem driveSubsystem) {
+  public GoToNoteCommand(DriveSubsystem driveSubsystem, NoteLimelightSubsystem limelightSubsystem) {
     m_driveSubsystem = driveSubsystem;
-  
+    m_LimelightSubsystem = limelightSubsystem;
    
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveSubsystem);
+    addRequirements(driveSubsystem, limelightSubsystem);
 
     xController = new PIDController(0.55, 0,1.25); 
     yController = new PIDController(0.55, 0,1.25);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
+    rotateController = new PIDController(0.02, 0.0, 0.0);
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -59,30 +57,14 @@ public class GoToSpeakerCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double radius = 2; //setpoint distance from middle of speaker
+
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
-    
-    // Flips Pose of Speaker depending on Alliance
-    if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){ 
-      speakerPose = GeometryUtil.flipFieldPose(speakerPose);
-    }
-  
-    double botDistance = Math.sqrt(
-      Math.pow(speakerPose.getX() - botPoseX, 2) 
-      + Math.pow(speakerPose.getY() - botPoseY, 2)
-    );  
-
-    xSetPoint = speakerPose.getX() - (radius * (speakerPose.getX() - botPoseX)) / botDistance;
-    ySetPoint = speakerPose.getY() - (radius * (speakerPose.getY() - botPoseY)) / botDistance;
-
-    rotSetPoint = Math.toDegrees(Math.asin( (botPoseY-speakerPose.getY()) / botDistance)); 
-    
-    
-    // Flips rotation setpoint if on red allience because math
-    if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){ 
-      rotSetPoint = -rotSetPoint;
-    }
+    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
+    Pose2d botPose = new Pose2d(botPoseX,botPoseY, Rotation2d.fromDegrees(botPoseRot));
+    xSetPoint = m_LimelightSubsystem.getNotePose(botPose).getX();
+    ySetPoint = m_LimelightSubsystem.getNotePose(botPose).getY();
+    rotSetPoint = m_LimelightSubsystem.getNotePose(botPose).getRotation().getDegrees();
 
    }
 
@@ -100,7 +82,16 @@ public class GoToSpeakerCommand extends Command {
     SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
     SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
 
-    m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    rotSetPoint = -5;
+    xSetPoint = 4.312;
+    ySetPoint = -0.377;
+    if(Math.abs(botPoseRot - rotSetPoint) > 1){
+      m_driveSubsystem.drive(xController.calculate(botPoseX, botPoseX), yController.calculate(botPoseY, botPoseX),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    }
+    // m_driveSubsystem.drive(0, 0,rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    else if(Math.abs(botPoseRot - rotSetPoint) <= 1){
+       m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    }
     }
 
   // Called once the command ends or is interrupted.

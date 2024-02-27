@@ -73,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
-  private LimelightSubsystem m_limelightSubsystem;
+  private AprilTagLimelightSubsystem m_limelightSubsystem;
 
   private final Field2d field = new Field2d();
  
@@ -92,7 +92,7 @@ public class DriveSubsystem extends SubsystemBase {
       });
 
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(LimelightSubsystem limelightSubsystem) {
+  public DriveSubsystem(AprilTagLimelightSubsystem limelightSubsystem) {
 
     m_limelightSubsystem = limelightSubsystem;
 

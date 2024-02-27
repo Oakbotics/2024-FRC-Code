@@ -5,21 +5,21 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /** An intake command that uses an intake subsystem. */
 public class ResetGyroUsingAprilTag extends InstantCommand {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final LimelightSubsystem m_limelightSubsystem;
+  private final AprilTagLimelightSubsystem m_limelightSubsystem;
   private final DriveSubsystem m_driveSubsystem;
   /**
    * Creates a new intakeCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ResetGyroUsingAprilTag(LimelightSubsystem limelightsubsystem, DriveSubsystem drivesubsytem) {
+  public ResetGyroUsingAprilTag(AprilTagLimelightSubsystem limelightsubsystem, DriveSubsystem drivesubsytem) {
     m_limelightSubsystem = limelightsubsystem;
     m_driveSubsystem = drivesubsytem;
     // Use addRequirements() here to declare subsystem dependencies.
