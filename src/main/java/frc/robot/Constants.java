@@ -37,9 +37,10 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double limelightHeight = 1.035;  //////////////////////// ACTUALLY ASK BUILD OR MEASURE
+    public static final double limelightHeight = 0.3302;  //////////////////////// ACTUALLY ASK BUILD OR MEASURE
+    public static final double crosshairDistance = 0.58; 
   }
- public static final class DriveConstants {
+  public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.0;

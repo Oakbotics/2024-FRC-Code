@@ -81,10 +81,6 @@ public class GoToNoteCommand extends Command {
     SmartDashboard.putNumber("Set Point Y", ySetPoint);
     SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
     SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
-
-    rotSetPoint = -5;
-    xSetPoint = 4.312;
-    ySetPoint = -0.377;
     if(Math.abs(botPoseRot - rotSetPoint) > 1){
       m_driveSubsystem.drive(xController.calculate(botPoseX, botPoseX), yController.calculate(botPoseY, botPoseX),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
     }

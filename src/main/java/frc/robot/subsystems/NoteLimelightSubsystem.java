@@ -37,14 +37,25 @@ public class NoteLimelightSubsystem extends SubsystemBase {
     double ty = m_limelightTable.getEntry("ty").getDouble(-1);  
     
 
-    double forwardD = LimelightConstants.limelightHeight * Math.tan(Math.toRadians(90 - 3 - Math.abs(ty)));// ADD THIRTY ITS TILTED
+    // double forwardD = LimelightConstants.limelightHeight * Math.tan(Math.toRadians(90 - 30 - Math.abs(ty)));// ADD THIRTY ITS TILTED
+    double forwardD = LimelightConstants.limelightHeight/Math.tan(Math.toRadians(30 - ty));
+    
     double sideD = -forwardD * Math.tan(Math.toRadians(tx));
+    forwardD += 0.35;
+
+    // if(tx>=0){
+    //   forwardD += LimelightConstants.crosshairDistance;
+    // }
+    // else{
+    //   forwardD -= LimelightConstants.crosshairDistance;
+    // }
+
 
     Transform2d relativeNotePose = new Transform2d(forwardD, sideD, Rotation2d.fromDegrees(-tx));
 
     SmartDashboard.putNumber("Note Distance X", forwardD);
     SmartDashboard.putNumber("Note Distance Y", sideD);
-    SmartDashboard.putNumber("90 - Math.abs(ty)", 90 - Math.abs(ty));
+    // SmartDashboard.putNumber("90 - Math.abs(ty)", 90 - 30 - ty);
     
     return robotPose.plus(relativeNotePose);
   }

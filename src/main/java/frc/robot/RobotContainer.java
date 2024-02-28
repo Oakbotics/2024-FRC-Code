@@ -12,6 +12,7 @@ import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.ShootCommand;
@@ -78,6 +79,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
     autoChooser.addOption("MoveStraight180", "MoveStraight180");
     autoChooser.addOption("MoveStraight", "MoveStraight");
+    autoChooser.addOption("Two piece", "Two piece");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
@@ -102,7 +104,7 @@ public class RobotContainer {
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
 
-    m_driverController.b().whileTrue(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem));
+    m_driverController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem).andThen(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem)));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
