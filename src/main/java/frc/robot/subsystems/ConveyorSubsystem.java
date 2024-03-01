@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,7 +21,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   private final CANSparkMax m_bottomConveyorMotor;
 
 
-  private DigitalInput intakeSensor; 
+  // private final LaserCan intakeSensor = new LaserCan(ConveyorConstants.topIntakeSensorCAN); 
 
 
   public ConveyorSubsystem() {
@@ -39,7 +40,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_topConveyorMotor.setInverted(true);
 
 
-    intakeSensor = new DigitalInput(8); //ID 8 is top, ID 7 is bottom
+    // intakeSensor = new LaserCan(8); //ID 8 is top, ID 7 is bottom
 
   }
 
@@ -49,9 +50,10 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
 
-  public boolean getSensorTriggered(){
+  public boolean getTopSensorTriggered(){
     
-    return !intakeSensor.get();
+    return false;
+    // return intakeSensor.getMeasurement().distance_mm < 250;
   }
   /**
    * Example command factory method.
@@ -82,7 +84,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Top intake sensor",!intakeSensor.get()); 
+    // SmartDashboard.putNumber("Top intake sensor", intakeSensor.getMeasurement().distance_mm); 
   }
 
   @Override

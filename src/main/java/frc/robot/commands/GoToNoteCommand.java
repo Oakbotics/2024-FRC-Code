@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteLimelightSubsystem;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
 
 import java.io.IOException;
@@ -25,9 +26,9 @@ public class GoToNoteCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private  final NoteLimelightSubsystem m_LimelightSubsystem;
-  private final PIDController xController;
-  private final PIDController yController;
-  private final PIDController rotateController;
+  private final PIDController xController = DriveConstants.xController;
+  private final PIDController yController = DriveConstants.yController;
+  private final PIDController rotateController = DriveConstants.rotController;
   private AprilTagFieldLayout fieldLayout;
   double xSetPoint;
   double ySetPoint;
@@ -46,10 +47,6 @@ public class GoToNoteCommand extends Command {
    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem, limelightSubsystem);
-
-    xController = new PIDController(0.55, 0,1.25); 
-    yController = new PIDController(0.55, 0,1.25);
-    rotateController = new PIDController(0.02, 0.0, 0.0);
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -81,14 +78,16 @@ public class GoToNoteCommand extends Command {
     SmartDashboard.putNumber("Set Point Y", ySetPoint);
     SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
     SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
-    if(Math.abs(botPoseRot - rotSetPoint) > 1){
-      m_driveSubsystem.drive(xController.calculate(botPoseX, botPoseX), yController.calculate(botPoseY, botPoseX),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-    }
+
+
+    // if(Math.abs(botPoseRot - rotSetPoint) > 2){
+    //   m_driveSubsystem.drive(0, 0, rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    // }
     // m_driveSubsystem.drive(0, 0,rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-    else if(Math.abs(botPoseRot - rotSetPoint) <= 1){
+    // else if(Math.abs(botPoseRot - rotSetPoint) <= 0.5){
        m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-    }
-    }
+    // }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -99,9 +98,10 @@ public class GoToNoteCommand extends Command {
   public boolean isFinished() {
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees()
-    ;
-    if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 1){
+    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
+    // if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 1){
+      
+    if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin){  
       return true;
     }
     return false;

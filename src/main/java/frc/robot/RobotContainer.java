@@ -10,6 +10,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToNoteCommand;
+import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
@@ -73,7 +74,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
     NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
     NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
-    NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem).withTimeout(2));
+    NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem, true).withTimeout(2));
 
     autoChooser = new SendableChooser<>();
     autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
@@ -100,7 +101,7 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem));
+    m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
 
@@ -109,6 +110,7 @@ public class RobotContainer {
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
+    m_driverController.x().whileTrue(new GoToPositionCommand(m_driveSubsystem));
 
   
     m_driveSubsystem.setDefaultCommand(

@@ -11,14 +11,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class IntakeCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ConveyorSubsystem m_conveyorSubsystem;
+  private boolean useSensor = true;
 
   /**
    * Creates a new intakeCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public IntakeCommand(ConveyorSubsystem subsystem) {
+  public IntakeCommand(ConveyorSubsystem subsystem, boolean useSensor) {
     m_conveyorSubsystem = subsystem;
+    this.useSensor = useSensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -42,7 +44,9 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_conveyorSubsystem.getSensorTriggered();
+
+    if(!useSensor) return false;
+    else return m_conveyorSubsystem.getTopSensorTriggered();
 
   }
 }

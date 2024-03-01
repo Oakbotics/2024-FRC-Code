@@ -41,7 +41,7 @@ public class NoteLimelightSubsystem extends SubsystemBase {
     double forwardD = LimelightConstants.limelightHeight/Math.tan(Math.toRadians(30 - ty));
     
     double sideD = -forwardD * Math.tan(Math.toRadians(tx));
-    forwardD += 0.35;
+    forwardD += 0.5;
 
     // if(tx>=0){
     //   forwardD += LimelightConstants.crosshairDistance;

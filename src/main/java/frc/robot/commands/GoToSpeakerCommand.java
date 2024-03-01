@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
 
 import java.io.IOException;
@@ -24,9 +25,9 @@ public class GoToSpeakerCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
  
-  private final PIDController xController;
-  private final PIDController yController;
-  private final PIDController rotateController;
+  private final PIDController xController = DriveConstants.xController;
+  private final PIDController yController = DriveConstants.yController;
+  private final PIDController rotateController = DriveConstants.rotController;
   private AprilTagFieldLayout fieldLayout;
   double speakerPoseX = 0.0; // X postion of Speaker Apriltag on blue side
   double speakerPoseY = 5.55; // Y postion of Speaker Apriltag on blue side
@@ -48,10 +49,6 @@ public class GoToSpeakerCommand extends Command {
    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
-
-    xController = new PIDController(0.55, 0,1.25); 
-    yController = new PIDController(0.55, 0,1.25);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
 
     rotateController.enableContinuousInput(-180, 180);
   }

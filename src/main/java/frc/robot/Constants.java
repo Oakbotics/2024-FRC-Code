@@ -7,6 +7,7 @@ package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -34,6 +35,8 @@ public final class Constants {
     public static final int kLeftShooterMotorCANID = 21;
 
     public static final double revvedShooterRPM = 800;
+
+    public static final int topIntakeSensorCAN = 31;
   }
 
   public static class LimelightConstants {
@@ -83,6 +86,10 @@ public final class Constants {
     public static final int GyroCanId = 4;
     
     public static final boolean kGyroReversed = false;
+
+    public static final PIDController xController = new PIDController(0.75, 0,0.05);
+    public static final PIDController yController = new PIDController(0.75, 0,0.05);
+    public static final PIDController rotController = new PIDController(0.01, 0.0, 0.0);
   }
 
 
