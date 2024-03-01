@@ -44,9 +44,14 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   }
 
+  // public void runConveyorSpeed(double speed){
+  //   m_topConveyorMotor.set(speed);
+  //   m_bottomConveyorMotor.set(-speed);
+  // }
+
   public void runConveyorSpeed(double speed){
-    m_topConveyorMotor.set(speed);
-    m_bottomConveyorMotor.set(-speed);
+    m_topConveyorMotor.setVoltage(speed);
+    m_bottomConveyorMotor.setVoltage(-speed);
   }
 
 
