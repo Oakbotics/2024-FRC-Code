@@ -99,7 +99,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void simulationPeriodic()r
+  public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
 }
