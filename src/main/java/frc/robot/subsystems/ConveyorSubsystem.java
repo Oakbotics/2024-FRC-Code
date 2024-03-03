@@ -40,8 +40,8 @@ public class ConveyorSubsystem extends SubsystemBase {
     m_bottomConveyorMotor.set(speed);
   }
   public boolean getSensorTriggered(){
-    
-    return (intakeSensor.getValue() < 3);
+    return (intakeSensor.getValue() >= 0.06 && intakeSensor.getValue() <= 0.065);
+    //return (intakeSensor.getValue() < 3);
   }
   /**
    * Example command factory method.
