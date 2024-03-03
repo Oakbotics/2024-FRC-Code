@@ -13,8 +13,10 @@ import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeShootCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
+import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.ShootCommand;
@@ -74,10 +76,14 @@ public class RobotContainer {
     
     NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
     NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
-    NamedCommands.registerCommand("Shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
+    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
     NamedCommands.registerCommand("Intake", new IntakeCommand(m_conveyorSubsystem, true).withTimeout(2));
     NamedCommands.registerCommand("Rev Shooter", new ShootCommand(m_shooterSubsystem).withTimeout(15));
-    NamedCommands.registerCommand("Intake Into Shooter", getAutonomousCommand());
+    NamedCommands.registerCommand("Intake Into Shooter", new IntakeShootCommand(m_conveyorSubsystem, false));
+    NamedCommands.registerCommand("Pneumatics Up", new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    NamedCommands.registerCommand("Pneumatics Down", new PnuematicsReverseCommand(m_pnuematicSubsystem));
+
+
 
     autoChooser = new SendableChooser<>();
     autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
@@ -136,6 +142,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto(autoChooser.getSelected());
+    // return new PathPlannerAuto(autoChooser.getSelected());
+  
+    return new PathPlannerAuto("CloseBottom");
+
   }
 }
