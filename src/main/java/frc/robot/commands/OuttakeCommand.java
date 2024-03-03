@@ -5,21 +5,22 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An intake command that uses an intake subsystem. */
-public class ShootCommand extends Command {
+public class OuttakeCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ShooterSubsystem m_shooterSubsystem;
+  private final ConveyorSubsystem m_conveyorSubsystem;
+  private boolean useSensor = true;
 
   /**
    * Creates a new intakeCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootCommand(ShooterSubsystem subsystem) {
-    m_shooterSubsystem = subsystem;
+  public OuttakeCommand(ConveyorSubsystem subsystem, boolean useSensor) {
+    m_conveyorSubsystem = subsystem;
+    this.useSensor = useSensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -31,18 +32,21 @@ public class ShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooterSubsystem.runShooterSpeed(10);
+    m_conveyorSubsystem.runConveyorSpeed(2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooterSubsystem.runShooterSpeed(0);
+    m_conveyorSubsystem.runConveyorSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+
+    if(!useSensor) return false;
+    else return m_conveyorSubsystem.getTopSensorTriggered();
+
   }
 }

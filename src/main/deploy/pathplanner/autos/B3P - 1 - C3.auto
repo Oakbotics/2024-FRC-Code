@@ -6,12 +6,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "CloseMiddle"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "shoot"
@@ -20,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CloseTop"
+            "pathName": "B3P - C3 - 1 Path"
           }
         }
       ]

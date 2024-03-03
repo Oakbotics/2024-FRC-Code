@@ -13,6 +13,7 @@ import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
@@ -73,8 +74,10 @@ public class RobotContainer {
     
     NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
     NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
-    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
-    NamedCommands.registerCommand("intake", new IntakeCommand(m_conveyorSubsystem, true).withTimeout(2));
+    NamedCommands.registerCommand("Shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
+    NamedCommands.registerCommand("Intake", new IntakeCommand(m_conveyorSubsystem, true).withTimeout(2));
+    NamedCommands.registerCommand("Rev Shooter", new ShootCommand(m_shooterSubsystem).withTimeout(15));
+    NamedCommands.registerCommand("Intake Into Shooter", getAutonomousCommand());
 
     autoChooser = new SendableChooser<>();
     autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
@@ -104,6 +107,7 @@ public class RobotContainer {
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+    m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
 
     m_driverController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem).andThen(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem)));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
