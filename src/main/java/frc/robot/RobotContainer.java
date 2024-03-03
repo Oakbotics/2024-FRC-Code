@@ -13,6 +13,7 @@ import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
@@ -102,6 +103,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem, true));
+    m_operatorController.leftBumper().onFalse(new OuttakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
 

@@ -53,7 +53,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   public boolean getSensorTriggered(){
-    return intakeSensor.getMeasurement().distance_mm >= 70 && intakeSensor.getMeasurement().distance_mm <= 90;
+    return intakeSensor.getMeasurement().distance_mm >= 0 && intakeSensor.getMeasurement().distance_mm <= 300;
   }
 
   public double getSensorValue(){
@@ -63,6 +63,10 @@ public class ConveyorSubsystem extends SubsystemBase {
     } else {
       return 0.0;
     } 
+  }
+
+  public boolean getNoteAligned(){
+    return (intakeSensor.getMeasurement().distance_mm >= 45 && intakeSensor.getMeasurement().distance_mm <= 80 )|| intakeSensor.getMeasurement().distance_mm >= 300;
   }
   /**
    * Example command factory method.
@@ -93,6 +97,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Lidar value", getSensorValue());
+    SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
 
     // This method will be called once per scheduler run
     
