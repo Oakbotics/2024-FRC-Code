@@ -108,11 +108,11 @@ public class DriveSubsystem extends SubsystemBase {
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
             // new PIDConstants(3.0, 0.0, 0.5),// Translation PID constants
-            // new PIDConstants(1.6, 0.0, 0.0),// Translation PID constants
-            
-            new PIDConstants(3.8, 0.0,0.2),// Rotation PID constants
-            new PIDConstants(0.01, 0.0, 0.0),// Rotation PID constants
-            // new PIDConstants(0.0, 0.0, 0.0),
+            new PIDConstants(2.5, 0.0, 0.36),// Translation PID constants
+
+            // new PIDConstants(3.8, 0.0,0.2),// Translation PID constants
+            new PIDConstants(1.6, 0.0, 0.0),// Rotation
+            // new PIDConstants(0.01, 0.0, 0.0),// Rotation PID constants
             5.5, // Max module speed, in m/s
             
             0.368, // Drive base radius in meters. Distance from robot center to furthest module.
@@ -161,6 +161,7 @@ private SwerveModuleState[] getModuleStates() {
     SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
     SmartDashboard.putNumber("pose X", getPose().getX());
     SmartDashboard.putNumber("pose Y", getPose().getY());
+    SmartDashboard.putNumber("GyroRotation2d", m_gyro.getRotation2d().getDegrees());
 
     field.setRobotPose(getPose());
     SmartDashboard.putData(field);

@@ -144,7 +144,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto(autoChooser.getSelected());
   
-    return new PathPlannerAuto("CloseBottom");
+    return new PathPlannerAuto("Diagonal");
 
   }
 }
