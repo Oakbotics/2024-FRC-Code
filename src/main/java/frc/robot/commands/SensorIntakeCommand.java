@@ -34,13 +34,14 @@ public class SensorIntakeCommand extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SensorIntakeCommand(ConveyorSubsystem conveyorSubsystem) {
+  public SensorIntakeCommand(ConveyorSubsystem conveyorSubsystem, boolean useSensor) {
     m_conveyorSubsystem = conveyorSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_conveyorSubsystem);
 
     addCommands(
-        
+        new IntakeCommand(m_conveyorSubsystem, useSensor),
+        new OuttakeCommand(m_conveyorSubsystem, useSensor)
 
         /*
         new InstantCommand(()-> m_conveyorSubsystem.resetOdometry(AutoConstants.middleStartingPose)),

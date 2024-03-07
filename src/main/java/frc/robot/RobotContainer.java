@@ -19,8 +19,10 @@ import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TogglePnuematicsCommand;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
@@ -110,7 +112,7 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem, true));
+    m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
     m_operatorController.leftBumper().onFalse(new OuttakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
@@ -145,7 +147,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto(autoChooser.getSelected());
   
-    return new PathPlannerAuto("Diagonal");
+    return new M_2P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
 
   }
 }

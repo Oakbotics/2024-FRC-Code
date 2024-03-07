@@ -32,13 +32,13 @@ public class IntakeShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyorSubsystem.runConveyorVoltage(4);
+    m_conveyorSubsystem.runConveyorSpeed(4);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_conveyorSubsystem.runConveyorVoltage(0);
+    m_conveyorSubsystem.runConveyorSpeed(0);
   }
 
   // Returns true when the command should end.
