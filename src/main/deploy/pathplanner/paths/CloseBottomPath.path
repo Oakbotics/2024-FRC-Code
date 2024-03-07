@@ -23,22 +23,6 @@
         "x": 1.8260989423002736,
         "y": 4.216720515352294
       },
-      "nextControl": {
-        "x": 2.8367255437251955,
-        "y": 4.114332650175152
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.66,
-        "y": 3.9
-      },
-      "prevControl": {
-        "x": 2.274388166523773,
-        "y": 3.9085216736986372
-      },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
@@ -89,7 +73,7 @@
     },
     {
       "name": "Intake Into Shooter",
-      "waypointRelativePos": 2.0,
+      "waypointRelativePos": 1.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -106,14 +90,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 3.5,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -34.60000000000002,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

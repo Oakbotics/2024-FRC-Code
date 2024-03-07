@@ -2,9 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.autoCommands;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
 
 import com.pathplanner.lib.util.GeometryUtil;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class GoToPositionCommand extends Command {
+public class GoToAutoPositionCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final PIDController xController;
@@ -28,12 +29,8 @@ public class GoToPositionCommand extends Command {
   private final PIDController rotateController;
 
   Pose2d m_goToPose;
+  double errorMargin = 0.05;
 
- 
-  double ampPoseXBlue = 2;
-  double ampPoseY = 2;
-  double ampPoseRot = 180;
-  double errorMargin = 0.02; 
   // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
   // Pose2d ampPose;
   // Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
@@ -43,17 +40,18 @@ public class GoToPositionCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GoToPositionCommand(DriveSubsystem driveSubsystem) {
+  public GoToAutoPositionCommand(DriveSubsystem driveSubsystem, Pose2d goToPose) {
     m_driveSubsystem = driveSubsystem;
+    m_goToPose = goToPose;
  
    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
 
 
-    xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
-    yController = new PIDController(0.75, 0,0.05);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
+    xController = DriveConstants.xController;
+    yController = DriveConstants.yController;
+    rotateController = DriveConstants.rotController;
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -71,21 +69,16 @@ public class GoToPositionCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
-    SmartDashboard.putNumber("Set Point X", ampPoseXBlue);
-    SmartDashboard.putNumber("Set Point Y", ampPoseY);
-    SmartDashboard.putNumber("Set Point Rot", ampPoseRot);
-    
+  public void execute() {    
 
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees(); 
           
     m_driveSubsystem.drive(
-      xController.calculate(botPoseX, ampPoseXBlue),
-      yController.calculate(botPoseY, ampPoseY),
-      rotateController.calculate(botPoseRot, ampPoseRot),
+      xController.calculate(botPoseX, m_goToPose.getX()),
+      yController.calculate(botPoseY, m_goToPose.getY()),
+      rotateController.calculate(botPoseRot, m_goToPose.getRotation().getDegrees()),
       true, 
       true
     );    
@@ -103,7 +96,7 @@ public class GoToPositionCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     
-    if(Math.abs(botPoseX - ampPoseXBlue) <= errorMargin && Math.abs(botPoseY - ampPoseY) <= errorMargin && Math.abs(botPoseRot - ampPoseRot) <= 1){
+    if(Math.abs(botPoseX - m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 1){
       return true;
     }
     return false;
