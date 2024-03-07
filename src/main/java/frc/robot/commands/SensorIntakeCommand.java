@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.autoCommands.autoCommandGroups;
+package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,38 +25,36 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class T_2P extends SequentialCommandGroup {
+public class SensorIntakeCommand extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_driveSubsystem;
-  private final ShooterSubsystem m_shooterSubsystem;
   private final ConveyorSubsystem m_conveyorSubsystem;
-  private final PnuematicSubsystem m_pnuematicSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public T_2P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
-    m_driveSubsystem = driveSubsystem;
-    m_shooterSubsystem = shooterSubsystem;
+  public SensorIntakeCommand(ConveyorSubsystem conveyorSubsystem) {
     m_conveyorSubsystem = conveyorSubsystem;
-    m_pnuematicSubsystem = pnuematicSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_driveSubsystem);
+    addRequirements(m_conveyorSubsystem);
 
     addCommands(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.topStartingPose)),
+        
+
+        /*
+        new InstantCommand(()-> m_conveyorSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new IntakeCommand(m_conveyorSubsystem, true),
-          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC1Pose)
+          new GoToAutoPositionCommand(m_conveyorSubsystem, AutoConstants.bC2Pose)
         ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.topFarShootPose),
+        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
           // use this line if GoToSpeakerCommand doesnt work
         new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToSpeakerCommand(m_driveSubsystem),
+        new GoToSpeakerCommand(m_conveyorSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        */
     );
   }
 }

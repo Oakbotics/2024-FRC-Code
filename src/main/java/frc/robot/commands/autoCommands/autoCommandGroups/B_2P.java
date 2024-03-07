@@ -24,8 +24,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
+
 /** An example command that uses an example subsystem. */
-public class T_2P extends SequentialCommandGroup {
+public class B_2P extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -37,7 +38,7 @@ public class T_2P extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public T_2P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public B_2P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -46,13 +47,13 @@ public class T_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.topStartingPose)),
+        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.bottomStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new IntakeCommand(m_conveyorSubsystem, true),
-          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC1Pose)
+          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC3Pose)
         ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.topFarShootPose),
+        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bottomFarShootPose),
           // use this line if GoToSpeakerCommand doesnt work
         new PnuematicsReverseCommand(m_pnuematicSubsystem),
         new GoToSpeakerCommand(m_driveSubsystem),

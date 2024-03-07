@@ -8,6 +8,8 @@ package frc.robot;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -151,5 +153,20 @@ public final class Constants {
   public static final class OIConstants {
     public static final double kDriveDeadband = 0.05;
   }    
+
+  public static final class AutoConstants {
+    public static final Pose2d topStartingPose = new Pose2d(0.72, 6.675, Rotation2d.fromDegrees(60.0));
+    public static final Pose2d middleStartingPose = new Pose2d(1.4, 5.6, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bottomStartingPose = new Pose2d(0.72, 4.418, Rotation2d.fromDegrees(-60.0));
+
+    public static final Pose2d bC1Pose = new Pose2d(3, 7, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC2Pose = new Pose2d(3, 5.6, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC3Pose = new Pose2d(3, 4.103, Rotation2d.fromDegrees(0.0));
+
+    public static final Pose2d topFarShootPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0)); //set later
+    public static final Pose2d middleFarShootPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0)); //set later
+    public static final Pose2d bottomFarShootPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0)); //set later
+    
+  }
 
 }

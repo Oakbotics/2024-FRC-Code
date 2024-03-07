@@ -25,7 +25,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class T_2P extends SequentialCommandGroup {
+public class M_4P extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -37,7 +37,7 @@ public class T_2P extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public T_2P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public M_4P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -46,16 +46,27 @@ public class T_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.topStartingPose)),
+        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new IntakeCommand(m_conveyorSubsystem, true),
-          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC1Pose)
+          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC2Pose)
         ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.topFarShootPose),
+        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
           // use this line if GoToSpeakerCommand doesnt work
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToSpeakerCommand(m_driveSubsystem),
+        new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleStartingPose),
+        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new ParallelCommandGroup(
+          new IntakeCommand(m_conveyorSubsystem, true),
+          new GoToAutoPositionCommand(m_driveSubsystem, new Pose2d(AutoConstants.bC1Pose.getX(), AutoConstants.bC1Pose.getY(), Rotation2d.fromDegrees(45)))
+        ),
+        new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleStartingPose),
+        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new ParallelCommandGroup(
+          new IntakeCommand(m_conveyorSubsystem, true),
+          new GoToAutoPositionCommand(m_driveSubsystem, new Pose2d(AutoConstants.bC3Pose.getX(), AutoConstants.bC3Pose.getY(), Rotation2d.fromDegrees(-45)))
+        ),
+        new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleStartingPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
     );
   }
