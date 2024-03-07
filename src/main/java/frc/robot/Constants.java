@@ -40,7 +40,7 @@ public final class Constants {
   }
 
   public static class LimelightConstants {
-    public static final double limelightHeight = 0.3302;  //////////////////////// ACTUALLY ASK BUILD OR MEASURE
+    public static final double limelightHeight = 0.3302;
     public static final double crosshairDistance = 0.58; 
   }
   public static final class DriveConstants {

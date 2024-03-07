@@ -45,7 +45,6 @@ public class OuttakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
     // if(!useSensor) return false;
     // else return m_conveyorSubsystem.getSensorTriggered();
     return m_conveyorSubsystem.getNoteAligned();

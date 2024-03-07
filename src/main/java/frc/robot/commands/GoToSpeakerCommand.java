@@ -56,7 +56,7 @@ public class GoToSpeakerCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double radius = 2; //setpoint distance from middle of speaker
+    double radius = 2.19; //setpoint distance from middle of speaker
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     

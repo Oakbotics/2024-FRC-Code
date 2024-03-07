@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 5.6
+      "x": 0.6,
+      "y": 4.5
     },
-    "rotation": 0.0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CloseTopPath"
+            "pathName": "B3P - C3 - 1 Path"
           }
         }
       ]
