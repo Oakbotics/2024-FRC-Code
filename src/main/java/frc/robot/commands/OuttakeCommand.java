@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ConveyorSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An intake command that uses an intake subsystem. */
@@ -32,7 +33,7 @@ public class OuttakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyorSubsystem.runConveyorVoltage(2);
+    m_conveyorSubsystem.runConveyorSpeed(0.1);
   }
 
   // Called once the command ends or is interrupted.
@@ -44,9 +45,8 @@ public class OuttakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(!useSensor) return false;
-    else return m_conveyorSubsystem.getTopSensorTriggered();
-
+    // if(!useSensor) return false;
+    // else return m_conveyorSubsystem.getSensorTriggered();
+    return m_conveyorSubsystem.getNoteAligned();
   }
 }

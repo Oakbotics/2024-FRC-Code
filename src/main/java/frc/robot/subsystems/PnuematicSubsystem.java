@@ -17,7 +17,7 @@ public class PnuematicSubsystem extends SubsystemBase {
 
   public PnuematicSubsystem() {
     m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 14, 15);
-    m_doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+    m_doubleSolenoid.set(DoubleSolenoid.Value.kForward);
 
     m_compressor = new Compressor(PneumaticsModuleType.REVPH);
     m_compressor.enableAnalog(70, 120);

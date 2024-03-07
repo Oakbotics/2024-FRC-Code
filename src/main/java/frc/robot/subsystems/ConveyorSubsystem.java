@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,9 +21,7 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_topConveyorMotor;
   private final CANSparkMax m_bottomConveyorMotor;
-
-
-  // private final LaserCan intakeSensor = new LaserCan(ConveyorConstants.topIntakeSensorCAN); 
+  private LaserCan intakeSensor;
 
 
   public ConveyorSubsystem() {
@@ -31,34 +31,42 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     m_topConveyorMotor.restoreFactoryDefaults();
     m_bottomConveyorMotor.restoreFactoryDefaults();
-
-    m_topConveyorMotor.setInverted(true);
-    m_bottomConveyorMotor.setInverted(true);
-
     
     m_bottomConveyorMotor.setInverted(false);
-    m_topConveyorMotor.setInverted(true);
 
-
-    // intakeSensor = new LaserCan(8); //ID 8 is top, ID 7 is bottom
-
-  }
-
-  // public void runConveyorSpeed(double speed){
-  //   m_topConveyorMotor.set(speed);
-  //   m_bottomConveyorMotor.set(-speed);
-  // }
-
-  public void runConveyorVoltage(double voltage){
-    m_topConveyorMotor.setVoltage(voltage);
-    m_bottomConveyorMotor.setVoltage(-voltage);
-  }
-
-
-  public boolean getTopSensorTriggered(){
+    intakeSensor = new LaserCan(ConveyorConstants.kIntakeSensorCANID);
+    try {
+      intakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
+      intakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
+      intakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+    } catch (ConfigurationFailedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     
-    return false;
-    // return intakeSensor.getMeasurement().distance_mm < 250;
+
+  }
+
+  public void runConveyorSpeed(double speed){
+    m_topConveyorMotor.set(speed);
+    m_bottomConveyorMotor.set(speed);
+  }
+
+  public boolean getSensorTriggered(){
+    return intakeSensor.getMeasurement().distance_mm >= 0 && intakeSensor.getMeasurement().distance_mm <= 300;
+  }
+
+  public double getSensorValue(){
+    LaserCan.Measurement measurement = intakeSensor.getMeasurement();
+    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      return measurement.distance_mm;
+    } else {
+      return 0.0;
+    } 
+  }
+
+  public boolean getNoteAligned(){
+    return (intakeSensor.getMeasurement().distance_mm >= 45 && intakeSensor.getMeasurement().distance_mm <= 80 )|| intakeSensor.getMeasurement().distance_mm >= 300;
   }
   /**
    * Example command factory method.
@@ -88,8 +96,11 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Lidar value", getSensorValue());
+    SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
+
     // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Top intake sensor", intakeSensor.getMeasurement().distance_mm); 
+    
   }
 
   @Override

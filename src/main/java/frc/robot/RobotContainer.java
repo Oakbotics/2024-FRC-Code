@@ -111,6 +111,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_operatorController.leftBumper().whileTrue(new IntakeCommand(m_conveyorSubsystem, true));
+    m_operatorController.leftBumper().onFalse(new OuttakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));

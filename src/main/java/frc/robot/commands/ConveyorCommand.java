@@ -30,7 +30,7 @@ public class ConveyorCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyorSubsystem.runConveyorVoltage(4);
+    m_conveyorSubsystem.runConveyorSpeed(-0.7);
   }
 
   // Called once the command ends or is interrupted.
