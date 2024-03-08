@@ -52,7 +52,7 @@ public class B_2P extends SequentialCommandGroup {
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC3Pose)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3Pose)
         ),
         // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bottomFarShootPose),
           // use this ^^ line if GoToSpeakerCommand doesnt work

@@ -7,6 +7,7 @@ package frc.robot.commands.autoCommands.autoCommandGroups;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -47,17 +48,31 @@ public class M_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
-        new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC2Pose)
-        ),
+      new SequentialCommandGroup(
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
+        new RunCommand(()-> {}).withTimeout(2),
+        new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2),
+        new RunCommand(()-> {}).withTimeout(2),
+        new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.middleStartingPose)
+
+        
+        // new RunCommand(()-> m_driveSubsystem.setX()).withTimeout(1),
+        // new ParallelCommandGroup(
+        //   new ShootCommand(shooterSubsystem),
+        //   new SensorIntakeCommand(conveyorSubsystem, false)
+        // ).withTimeout(0.25),
+        // new ParallelCommandGroup(
+        //   new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
+        //   new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose)
+        // ),
+        // new InstantCommand(()-> m_driveSubsystem.setX())
+        // new GoToPositionCommand(m_driveSubsystem),
         // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
           // use this ^^ line if GoToSpeakerCommand doesnt work
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToSpeakerCommand(m_driveSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        // new PnuematicsReverseCommand(m_pnuematicSubsystem),
+        // new GoToSpeakerCommand(m_driveSubsystem),
+        // new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+      )
     );
   }
 }

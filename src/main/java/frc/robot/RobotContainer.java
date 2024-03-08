@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
@@ -22,6 +23,7 @@ import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TogglePnuematicsCommand;
+import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -120,10 +122,10 @@ public class RobotContainer {
 
     m_driverController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem).andThen(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem)));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
-    m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
+    m_driverController.y().whileTrue(new M_2P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_driverController.x().whileTrue(new GoToPositionCommand(m_driveSubsystem));
+    m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
 
   
     m_driveSubsystem.setDefaultCommand(

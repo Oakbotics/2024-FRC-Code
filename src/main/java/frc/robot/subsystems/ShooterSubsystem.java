@@ -24,6 +24,9 @@ public class ShooterSubsystem extends SubsystemBase {
     m_topShooterMotor = new CANSparkMax(ConveyorConstants.kRightShooterMotorCANID, MotorType.kBrushless);
     m_bottomShooterMotor = new CANSparkMax(ConveyorConstants.kLeftShooterMotorCANID, MotorType.kBrushless);
 
+    m_topShooterMotor.setSmartCurrentLimit(30);
+    m_bottomShooterMotor.setSmartCurrentLimit(30);
+
     m_bottomShooterMotor.restoreFactoryDefaults();
     m_topShooterMotor.restoreFactoryDefaults();    
 

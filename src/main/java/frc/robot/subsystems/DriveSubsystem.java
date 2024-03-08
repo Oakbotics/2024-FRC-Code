@@ -225,6 +225,19 @@ public void setGyroYawUsingAprilTag(){
         },
         pose);
   }
+  public void resetBotPose(Pose2d pose) {
+    m_gyro.setYaw(pose.getRotation().getDegrees());
+    m_odometry.resetPosition(
+        //m_gyro.getRotation2d(),
+        getWrappedHeading(),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        },
+        pose);
+  }
   public Pose2d getLimelightPose(){
     return new Pose2d(m_limelightSubsystem.getBotPose().getX(), m_limelightSubsystem.getBotPose().getY(), getWrappedHeading() );
   }
