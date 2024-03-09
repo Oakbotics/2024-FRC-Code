@@ -24,9 +24,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class GoToAutoPositionCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
-  private final PIDController xController;
-  private final PIDController yController;
-  private final PIDController rotateController;
+  private PIDController xController;
+  private PIDController yController;
+  private PIDController rotateController;
 
   Pose2d m_goToPose;
   double errorMargin = 0.05;
@@ -43,28 +43,24 @@ public class GoToAutoPositionCommand extends Command {
   public GoToAutoPositionCommand(DriveSubsystem driveSubsystem, Pose2d goToPose) {
     m_driveSubsystem = driveSubsystem;
     m_goToPose = goToPose;
- 
-   
+
+    xController = new PIDController(0,0,0);
+    yController = new PIDController(0,0,0);
+    rotateController = new PIDController(0,0,0);
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveSubsystem);
-
-
-    xController = DriveConstants.xController;
-    yController = DriveConstants.yController;
-    rotateController = DriveConstants.rotController;
-
-    rotateController.enableContinuousInput(-180, 180);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // if(DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)){
-    //   ampPose = ampPoseRed;
-    // }
-    // else{
-    //   ampPose = ampPoseBlue;
-    // }
+    xController = DriveConstants.xController;
+    yController = DriveConstants.yController;
+    rotateController = DriveConstants.rotController;
+    
+
+    rotateController.enableContinuousInput(-180, 180);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
