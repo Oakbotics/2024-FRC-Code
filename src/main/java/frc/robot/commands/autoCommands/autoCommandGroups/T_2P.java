@@ -47,18 +47,21 @@ public class T_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
+      new SequentialCommandGroup(
         new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.topStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
-        // new ParallelCommandGroup(
-        //   new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-        //   new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1Pose)
-        // ),
-         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1Pose),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.topFarShootPose),
-          // use this ^^ line if GoToSpeakerCommand doesnt work
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToSpeakerCommand(m_driveSubsystem),
+        new ParallelCommandGroup(
+          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1Pose)
+        ),
+        new ParallelCommandGroup(
+          new PnuematicsReverseCommand(m_pnuematicSubsystem),
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.topFarShootPose)
+        ),
+        // use this ^^ line if GoToSpeakerCommand doesnt work
+        // new GoToSpeakerCommand(m_driveSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+      )
     );
   }
 }

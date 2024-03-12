@@ -30,16 +30,16 @@ public class ShooterSubsystem extends SubsystemBase {
     m_bottomShooterMotor.restoreFactoryDefaults();
     m_topShooterMotor.restoreFactoryDefaults();    
 
-    m_bottomShooterMotor.setInverted(true );
-    m_topShooterMotor.setInverted(true  );
+    // m_bottomShooterMotor.setInverted(false);
+    // m_topShooterMotor.setInverted(false);
 
     m_bottomShooterMotor.setIdleMode(IdleMode.kBrake);
     m_topShooterMotor.setIdleMode(IdleMode.kBrake);    
   }
 
   public void runShooterSpeed(double speed){
-    m_topShooterMotor.setVoltage(speed);
-    m_bottomShooterMotor.setVoltage(speed);
+    m_topShooterMotor.setVoltage(-speed);
+    m_bottomShooterMotor.setVoltage(-speed);
   }
 
   public double getShooterVelocity(){

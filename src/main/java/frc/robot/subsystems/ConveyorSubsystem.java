@@ -53,7 +53,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   public boolean getSensorTriggered(){
-    return intakeSensor.getMeasurement().distance_mm >= 0 && intakeSensor.getMeasurement().distance_mm <= 275;
+    return getSensorValue() >= 0 && getSensorValue() <= 275;
   }
 
   public double getSensorValue(){
