@@ -30,7 +30,7 @@ public class GoToSpeakerCommand extends Command {
   private final PIDController rotateController = DriveConstants.rotController;
   private AprilTagFieldLayout fieldLayout;
   double speakerPoseX = 0.0; // X postion of Speaker Apriltag on blue side
-  double speakerPoseY = 5.55; // Y postion of Speaker Apriltag on blue side
+  double speakerPoseY = 5.6; // Y postion of Speaker Apriltag on blue side
   Pose2d speakerPose = new Pose2d(speakerPoseX, speakerPoseY, Rotation2d.fromDegrees(0));
   double xSetPoint;
   double ySetPoint;
@@ -56,7 +56,7 @@ public class GoToSpeakerCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double radius = 2.19; //setpoint distance from middle of speaker
+    double radius = 3.08; //setpoint distance from middle of speaker
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     

@@ -16,6 +16,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
@@ -48,31 +49,24 @@ public class M_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-      new SequentialCommandGroup(
+      
         new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
-        new RunCommand(()-> {}).withTimeout(2),
-        new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2),
-        new RunCommand(()-> {}).withTimeout(2),
-        new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.middleStartingPose)
-
+        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
-        // new RunCommand(()-> m_driveSubsystem.setX()).withTimeout(1),
-        // new ParallelCommandGroup(
-        //   new ShootCommand(shooterSubsystem),
-        //   new SensorIntakeCommand(conveyorSubsystem, false)
-        // ).withTimeout(0.25),
-        // new ParallelCommandGroup(
-        //   new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-        //   new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose)
-        // ),
-        // new InstantCommand(()-> m_driveSubsystem.setX())
-        // new GoToPositionCommand(m_driveSubsystem),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
-          // use this ^^ line if GoToSpeakerCommand doesnt work
-        // new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        // new GoToSpeakerCommand(m_driveSubsystem),
-        // new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new ParallelCommandGroup(
+          new SensorIntakeCommand(m_conveyorSubsystem, true),
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
+        ),
+
+      new SequentialCommandGroup(
+        new ParallelCommandGroup(
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose),
+          // new GoToSpeakerCommand(driveSubsystem).withTimeout(3),
+          new PnuematicsReverseCommand(m_pnuematicSubsystem)
+        ),
+
+        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       )
-    );
+    ); 
   }
 }

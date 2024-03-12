@@ -115,14 +115,13 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    m_operatorController.leftBumper().onFalse(new OuttakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
-
+    // m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
     m_driverController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem).andThen(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem)));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
-    m_driverController.y().whileTrue(new M_2P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem));
+    m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
@@ -147,8 +146,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return new PathPlannerAuto(autoChooser.getSelected());
-  
+    // return new PathPlannerAuto("Diagonal");
+
     return new M_2P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
 
   }

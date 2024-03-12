@@ -164,7 +164,7 @@ public final class Constants {
     public static final Pose2d bC3Pose = new Pose2d(3, 4.103, Rotation2d.fromDegrees(0.0));
 
     public static final Pose2d topFarShootPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0)); //set later
-    public static final Pose2d middleFarShootPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0)); //set later
+    public static final Pose2d middleFarShootPose = new Pose2d(3.08, 5.6, Rotation2d.fromDegrees(0.0)); //set later
     public static final Pose2d bottomFarShootPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0.0)); //set later
     
   }
