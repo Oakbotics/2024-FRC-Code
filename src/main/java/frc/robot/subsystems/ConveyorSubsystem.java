@@ -34,7 +34,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     
     m_bottomConveyorMotor.setInverted(false);
 
-    intakeSensor = new LaserCan(ConveyorConstants.kIntakeSensorCANID);
+    intakeSensor = new LaserCan(ConveyorConstants.kTopIntakeSensorCANID);
     try {
       intakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
       intakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));

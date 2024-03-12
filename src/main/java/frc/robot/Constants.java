@@ -38,7 +38,8 @@ public final class Constants {
 
     public static final double revvedShooterRPM = 800;
 
-    public static final int kIntakeSensorCANID = 5;
+    public static final int kTopIntakeSensorCANID = 5;
+    public static final int kBottomIntakeSensorCANID = 25;
   }
 
   public static class LimelightConstants {
