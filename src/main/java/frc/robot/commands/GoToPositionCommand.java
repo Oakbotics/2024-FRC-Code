@@ -30,9 +30,9 @@ public class GoToPositionCommand extends Command {
   Pose2d m_goToPose;
 
  
-  double ampPoseXBlue = 2;
-  double ampPoseY = 2;
-  double ampPoseRot = 180;
+  double ampPoseXBlue = 3;
+  double ampPoseY = 5.6;
+  double ampPoseRot = 0;
   double errorMargin = 0.02; 
   // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
   // Pose2d ampPose;

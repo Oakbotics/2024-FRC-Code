@@ -7,6 +7,7 @@ package frc.robot.commands.autoCommands.autoCommandGroups;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -15,6 +16,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
@@ -47,17 +49,24 @@ public class M_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
+      
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-          new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bC2Pose)
+          new SensorIntakeCommand(m_conveyorSubsystem, true),
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
         ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
-          // use this ^^ line if GoToSpeakerCommand doesnt work
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToSpeakerCommand(m_driveSubsystem),
+
+      new SequentialCommandGroup(
+        new ParallelCommandGroup(
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose),
+          // new GoToSpeakerCommand(driveSubsystem).withTimeout(3),
+          new PnuematicsReverseCommand(m_pnuematicSubsystem)
+        ),
+
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
-    );
+      )
+    ); 
   }
 }
