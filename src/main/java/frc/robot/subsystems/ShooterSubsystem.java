@@ -16,35 +16,37 @@ import frc.robot.Constants.ConveyorConstants;
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  private final CANSparkMax m_topShooterMotor;
-  private final CANSparkMax m_bottomShooterMotor;
+  private final CANSparkMax m_rightShooterMotor;
+  private final CANSparkMax m_leftShooterMotor;
 
   public ShooterSubsystem() {
 
-    m_topShooterMotor = new CANSparkMax(ConveyorConstants.kRightShooterMotorCANID, MotorType.kBrushless);
-    m_bottomShooterMotor = new CANSparkMax(ConveyorConstants.kLeftShooterMotorCANID, MotorType.kBrushless);
+    m_rightShooterMotor = new CANSparkMax(ConveyorConstants.kRightShooterMotorCANID, MotorType.kBrushless);
+    m_leftShooterMotor = new CANSparkMax(ConveyorConstants.kLeftShooterMotorCANID, MotorType.kBrushless);
 
-    m_topShooterMotor.setSmartCurrentLimit(30);
-    m_bottomShooterMotor.setSmartCurrentLimit(30);
+    m_rightShooterMotor.setSmartCurrentLimit(30);
+    m_leftShooterMotor.setSmartCurrentLimit(30);
 
-    m_bottomShooterMotor.restoreFactoryDefaults();
-    m_topShooterMotor.restoreFactoryDefaults();    
+    m_leftShooterMotor.restoreFactoryDefaults();
+    m_rightShooterMotor.restoreFactoryDefaults();    
 
-    m_bottomShooterMotor.setInverted(true );
-    m_topShooterMotor.setInverted(true  );
+    m_leftShooterMotor.setInverted(true );
+    m_rightShooterMotor.setInverted(true  );
 
-    m_bottomShooterMotor.setIdleMode(IdleMode.kBrake);
-    m_topShooterMotor.setIdleMode(IdleMode.kBrake);    
+    m_leftShooterMotor.setIdleMode(IdleMode.kCoast);
+    m_rightShooterMotor.setIdleMode(IdleMode.kCoast);   
+    
+    
   }
 
   public void runShooterSpeed(double speed){
-    m_topShooterMotor.setVoltage(speed);
-    m_bottomShooterMotor.setVoltage(speed);
+    m_rightShooterMotor.setVoltage(speed);
+    m_leftShooterMotor.setVoltage(speed);
   }
 
   public double getShooterVelocity(){
 
-    return (m_topShooterMotor.getEncoder().getVelocity() + m_bottomShooterMotor.getEncoder().getVelocity())/2;
+    return (m_rightShooterMotor.getEncoder().getVelocity() + m_leftShooterMotor.getEncoder().getVelocity())/2;
 
   }
 
