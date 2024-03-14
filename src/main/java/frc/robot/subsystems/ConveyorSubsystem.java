@@ -21,7 +21,8 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_topConveyorMotor;
   private final CANSparkMax m_bottomConveyorMotor;
-  private LaserCan intakeSensor;
+  private LaserCan topIntakeSensor;
+  private LaserCan bottomInakeSensor;
 
 
   public ConveyorSubsystem() {
@@ -34,11 +35,20 @@ public class ConveyorSubsystem extends SubsystemBase {
     
     m_bottomConveyorMotor.setInverted(false);
 
-    intakeSensor = new LaserCan(ConveyorConstants.kTopIntakeSensorCANID);
+    topIntakeSensor = new LaserCan(ConveyorConstants.kTopIntakeSensorCANID);
     try {
-      intakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-      intakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
-      intakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+      topIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
+      topIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
+      topIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+    } catch (ConfigurationFailedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    bottomInakeSensor = new LaserCan(ConveyorConstants.kBottomIntakeSensorCANID);
+    try {
+      bottomInakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
+      bottomInakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
+      bottomInakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
     } catch (ConfigurationFailedException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -53,20 +63,22 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   public boolean getSensorTriggered(){
-    return getSensorValue() >= 0 && getSensorValue() <= 275;
+    return getSensorValue() >= 0 && getSensorValue() <= 200;
   }
 
   public double getSensorValue(){
-    LaserCan.Measurement measurement = intakeSensor.getMeasurement();
-    if (measurement != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-      return measurement.distance_mm;
-    } else {
-      return 0.0;
+    LaserCan.Measurement measurement = topIntakeSensor.getMeasurement();
+    if (measurement != null) {
+        if(measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
+          return measurement.distance_mm;
+        }
     } 
+    
+    return 0;
   }
 
   public boolean getNoteAligned(){
-    return (intakeSensor.getMeasurement().distance_mm >= 45 && intakeSensor.getMeasurement().distance_mm <= 80 )|| intakeSensor.getMeasurement().distance_mm >= 300;
+    return (topIntakeSensor.getMeasurement().distance_mm >= 45 && topIntakeSensor.getMeasurement().distance_mm <= 80 )|| topIntakeSensor.getMeasurement().distance_mm >= 200;
   }
   /**
    * Example command factory method.

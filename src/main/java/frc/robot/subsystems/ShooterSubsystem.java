@@ -24,14 +24,14 @@ public class ShooterSubsystem extends SubsystemBase {
     m_rightShooterMotor = new CANSparkMax(ConveyorConstants.kRightShooterMotorCANID, MotorType.kBrushless);
     m_leftShooterMotor = new CANSparkMax(ConveyorConstants.kLeftShooterMotorCANID, MotorType.kBrushless);
 
-    m_rightShooterMotor.setSmartCurrentLimit(30);
-    m_leftShooterMotor.setSmartCurrentLimit(30);
+    m_rightShooterMotor.setSmartCurrentLimit(50);
+    m_leftShooterMotor.setSmartCurrentLimit(50);
 
     m_leftShooterMotor.restoreFactoryDefaults();
     m_rightShooterMotor.restoreFactoryDefaults();    
 
-    m_leftShooterMotor.setInverted(true );
-    m_rightShooterMotor.setInverted(true  );
+    // m_leftShooterMotor.setInverted(true );
+    // m_rightShooterMotor.setInverted(true  );
 
     m_leftShooterMotor.setIdleMode(IdleMode.kCoast);
     m_rightShooterMotor.setIdleMode(IdleMode.kCoast);   
@@ -40,8 +40,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void runShooterSpeed(double speed){
-    m_rightShooterMotor.setVoltage(speed);
-    m_leftShooterMotor.setVoltage(speed);
+    m_rightShooterMotor.setVoltage(-speed);
+    m_leftShooterMotor.setVoltage(-speed);
   }
 
   public double getShooterVelocity(){

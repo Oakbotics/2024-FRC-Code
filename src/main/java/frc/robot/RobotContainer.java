@@ -8,6 +8,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AmpShootCommand;
+import frc.robot.commands.AmpShootCommandGroup;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GoToAmpCommand;
@@ -119,7 +120,7 @@ public class RobotContainer {
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
-    m_operatorController.povDown().whileTrue(new AmpShootCommand(m_shooterSubsystem, m_conveyorSubsystem));
+    m_operatorController.povDown().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     // m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
     m_driverController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem).andThen(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem)));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));

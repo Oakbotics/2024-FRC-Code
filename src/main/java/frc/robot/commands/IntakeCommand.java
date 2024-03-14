@@ -48,6 +48,5 @@ public class IntakeCommand extends Command {
 
     if(!useSensor) return false;
     else return m_conveyorSubsystem.getSensorTriggered();
-
   }
 }
