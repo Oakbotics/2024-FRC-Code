@@ -44,15 +44,15 @@ public class ConveyorSubsystem extends SubsystemBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    bottomInakeSensor = new LaserCan(ConveyorConstants.kBottomIntakeSensorCANID);
-    try {
-      bottomInakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-      bottomInakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
-      bottomInakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-    } catch (ConfigurationFailedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // bottomInakeSensor = new LaserCan(ConveyorConstants.kBottomIntakeSensorCANID);
+    // try {
+    //   bottomInakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
+    //   bottomInakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
+    //   bottomInakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+    // } catch (ConfigurationFailedException e) {
+    //   // TODO Auto-generated catch block
+    //   e.printStackTrace();
+    // }
     
 
   }
