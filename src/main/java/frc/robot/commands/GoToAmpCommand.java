@@ -30,8 +30,8 @@ public class GoToAmpCommand extends Command {
 
  
   double ampPoseXBlue = 1.85;
-  double ampPoseY = 7.3;
-  double ampPoseRot = 90;
+  double ampPoseY = 6.8;    //Bumpers should hit amp, not center of robot
+  double ampPoseRot = -90;
   double errorMargin = 0.05; 
   // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
   Pose2d ampPose;

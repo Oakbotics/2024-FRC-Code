@@ -38,7 +38,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     topIntakeSensor = new LaserCan(ConveyorConstants.kTopIntakeSensorCANID);
     try {
       topIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-      topIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
+      topIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,4,4 ));
       topIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
     } catch (ConfigurationFailedException e) {
       // TODO Auto-generated catch block
@@ -74,11 +74,11 @@ public class ConveyorSubsystem extends SubsystemBase {
         }
     } 
     
-    return 0;
+    return 0.0;
   }
 
   public boolean getNoteAligned(){
-    return (topIntakeSensor.getMeasurement().distance_mm >= 45 && topIntakeSensor.getMeasurement().distance_mm <= 80 )|| topIntakeSensor.getMeasurement().distance_mm >= 200;
+    return (getSensorValue() >= 45 && getSensorValue() <= 80 )|| getSensorValue() >= 200;
   }
   /**
    * Example command factory method.

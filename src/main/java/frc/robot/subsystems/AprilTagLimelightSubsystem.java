@@ -47,6 +47,7 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
     getBotPose();
     SmartDashboard.putNumber("limelight x value", getBotPose().getX());
     SmartDashboard.putNumber("limelight y value", getBotPose().getY());
+    SmartDashboard.putNumber("Limelight tv", m_limelightTable.getEntry("tv").getDouble(-1));
   }
 
   @Override

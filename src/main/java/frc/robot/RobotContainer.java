@@ -13,6 +13,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToNoteCommand;
+import frc.robot.commands.GoToNoteCommandGroup;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -122,7 +123,7 @@ public class RobotContainer {
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
     m_operatorController.povDown().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     // m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    m_driverController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem).andThen(new GoToNoteCommand(m_driveSubsystem, m_noteLimelightSubsystem)));
+    m_driverController.b().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
     m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));

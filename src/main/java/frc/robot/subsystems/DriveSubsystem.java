@@ -139,9 +139,7 @@ private SwerveModuleState[] getModuleStates() {
     // setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees()); //accuracy of april tag may be worse than gyro drift
    }else{
       m_odometry.update(
-        //m_gyro.getRotation2d(),
         getWrappedHeading(),
-        // new Rotation2d(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
