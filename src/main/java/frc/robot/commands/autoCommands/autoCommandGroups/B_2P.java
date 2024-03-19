@@ -48,17 +48,18 @@ public class B_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.bottomStartingPose)),
+      new SequentialCommandGroup(
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3Pose)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3Pose).withTimeout(5)
         ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.bottomFarShootPose),
-          // use this ^^ line if GoToSpeakerCommand doesnt work
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToSpeakerCommand(m_driveSubsystem),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(2.6, 4.5, Rotation2d.fromDegrees(0))),
+        new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.2),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomFarShootPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+      )
     );
   }
 }

@@ -33,7 +33,7 @@ public class GoToAutoPositionCommand extends Command {
   Pose2d m_goToPose;
   Supplier<Pose2d> m_goToPoseSupplier;
 
-  double errorMargin = 0.02; 
+  double errorMargin = 0.05; 
   // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
   // Pose2d ampPose;
   // Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
@@ -101,7 +101,7 @@ public class GoToAutoPositionCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     
-    if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 1){
+    if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 3){
       return true;
     }
     return false;

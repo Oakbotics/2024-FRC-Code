@@ -55,18 +55,11 @@ public class M_2P extends SequentialCommandGroup {
         
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, true),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose)
         ),
 
-      new SequentialCommandGroup(
-        new ParallelCommandGroup(
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose),
-          // new GoToSpeakerCommand(driveSubsystem).withTimeout(3),
-          new PnuematicsReverseCommand(m_pnuematicSubsystem)
-        ),
-
+        new PnuematicsReverseCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
-      )
     ); 
   }
 }
