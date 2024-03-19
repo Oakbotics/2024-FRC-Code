@@ -42,10 +42,16 @@ public final class Constants {
     public static final int kBottomIntakeSensorCANID = 25;
   }
 
+  public static class ClimberConstants{
+
+    public static final int kClimberMotorCANID = 22;
+  }
+
   public static class LimelightConstants {
     public static final double limelightHeight = 0.3302;
     public static final double crosshairDistance = 0.58; 
   }
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds

@@ -11,6 +11,7 @@ import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AmpShootCommandGroup;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtendClimberCommand;
 import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToNoteCommandGroup;
@@ -22,9 +23,11 @@ import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
+import frc.robot.commands.RetractClimberCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.TogglePnuematicsCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
@@ -65,6 +68,7 @@ public class RobotContainer {
   private final AprilTagLimelightSubsystem m_aprilTagLimelightSubsystem = new AprilTagLimelightSubsystem();
   private final NoteLimelightSubsystem m_noteLimelightSubsystem = new NoteLimelightSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_aprilTagLimelightSubsystem);
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
   private final SendableChooser<String> autoChooser;
   private final PnuematicSubsystem m_pnuematicSubsystem = new PnuematicSubsystem();
@@ -119,6 +123,9 @@ public class RobotContainer {
     // cancelling on release.
     m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
     m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.b().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
+    m_operatorController.y().whileTrue(new RetractClimberCommand(m_climberSubsystem));
+
     m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
     m_operatorController.povDown().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
