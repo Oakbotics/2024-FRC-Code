@@ -6,12 +6,15 @@ package frc.robot.subsystems;
 
 import java.lang.reflect.Field;
 
+import com.pathplanner.lib.util.GeometryUtil;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,7 +32,19 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
   }
 
   public Pose2d getBotPose(){
-    double[] botPoseArray = m_limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]); 
+
+    double[] botPoseArray;
+
+    // if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){ 
+    //   botPoseArray = m_limelightTable.getEntry("botpose_wpired").getDoubleArray(new double[10]); 
+    // }
+    // else{
+    //   botPoseArray = m_limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]); 
+    // }
+
+  botPoseArray = m_limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[10]); 
+
+    
 
     Pose2d botPose = new Pose2d(botPoseArray[0], botPoseArray[1], Rotation2d.fromDegrees(botPoseArray[5]));
 

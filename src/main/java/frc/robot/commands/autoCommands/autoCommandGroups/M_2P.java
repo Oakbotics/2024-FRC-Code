@@ -4,9 +4,12 @@
 
 package frc.robot.commands.autoCommands.autoCommandGroups;
 
+import com.pathplanner.lib.util.GeometryUtil;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -50,15 +53,17 @@ public class M_2P extends SequentialCommandGroup {
 
     addCommands(
       
-        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(DriverStation.getAlliance().get() == (DriverStation.Alliance.Blue)?(AutoConstants.middleStartingPose) : (GeometryUtil.flipFieldPose(AutoConstants.middleStartingPose)))),
+        new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true),
+          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(2),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose)
         ),
 
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
+        new InstantCommand(()-> m_driveSubsystem.setX()),
+        new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.75),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
     ); 
   }

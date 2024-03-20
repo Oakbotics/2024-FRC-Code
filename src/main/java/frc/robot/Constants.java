@@ -163,7 +163,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final Pose2d topStartingPose = new Pose2d(0.8, 6.675, Rotation2d.fromDegrees(60.0));
-    public static final Pose2d middleStartingPose = new Pose2d(1.2, 5.6, Rotation2d.fromDegrees(0));
+    public static final Pose2d middleStartingPose = new Pose2d(1.4, 5.6, Rotation2d.fromDegrees(0));
     public static final Pose2d bottomStartingPose = new Pose2d(0.8, 4.59, Rotation2d.fromDegrees(-60.0));
 
     public static final Pose2d bC1Pose = new Pose2d(3.2, 7.05, Rotation2d.fromDegrees(15.0));

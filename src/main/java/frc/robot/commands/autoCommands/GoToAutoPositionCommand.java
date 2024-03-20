@@ -55,8 +55,15 @@ public class GoToAutoPositionCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
+
     m_goToPose = m_goToPoseSupplier.get();
 
+    // if(DriverStation.getAlliance().get() != (DriverStation.Alliance.Blue)){ 
+    //   m_goToPose = GeometryUtil.flipFieldPose(m_goToPose);
+    // }
+
+    // SmartDashboard.putNumber("Initialize GoToPose", m_goToPose.getX());
     m_driveSubsystem.drive(0, 0, 0, true, true);
 
     xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15

@@ -48,6 +48,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -123,20 +125,23 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    m_operatorController.rightBumper().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.b().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
-    m_operatorController.y().whileTrue(new RetractClimberCommand(m_climberSubsystem));
-
-    m_operatorController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+    // m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
+    m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
+    m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
-    m_operatorController.povDown().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    // m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    m_driverController.b().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
-    m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
-    m_driverController.y().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
-    m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
-    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
+    m_operatorController.leftTrigger().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.leftBumper().whileTrue(new GoToAmpCommand(m_driveSubsystem));
+    m_operatorController.rightBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
+
+    
+
+
+    m_driverController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
+    m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
+    m_driverController.rightBumper().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
+    m_driverController.povDown().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
+    m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
     m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
 
   
@@ -145,11 +150,46 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right st
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.5 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getRightTriggerAxis()) * (1.25 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getRightTriggerAxis()) * (1.25 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.5 - m_driverController.getRightTriggerAxis()) * (1.25 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
+
+    new Trigger(
+        () -> m_conveyorSubsystem.getNoteAligned() == true
+
+      ).onTrue(
+        new RunCommand(() -> {
+            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
+        }
+        )
+        .withTimeout(2).andThen(new InstantCommand(() -> {
+          m_operatorController.getHID().setRumble(RumbleType.kBothRumble, 0);
+
+        })
+        )
+    );
+
+    new Trigger(
+        () -> m_conveyorSubsystem.getSensorTriggered() == true
+
+      ).onTrue(
+        new RunCommand(() -> {
+            m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
+        }
+        )
+        .withTimeout(2).andThen(new InstantCommand(() -> {
+          m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0);
+
+        })
+        )
+    );
+
+
+
+
+
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -161,7 +201,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");
 
-    return new T_2P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    return new M_2P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
 
   }
 }
