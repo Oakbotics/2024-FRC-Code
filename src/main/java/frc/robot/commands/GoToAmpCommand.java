@@ -55,7 +55,7 @@ public class GoToAmpCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)){
+    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
       ampPose = ampPoseRed;
     }
     else{

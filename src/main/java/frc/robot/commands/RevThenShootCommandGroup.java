@@ -14,7 +14,7 @@ public class RevThenShootCommandGroup extends SequentialCommandGroup {
 
     addCommands(
      new ShootCommand(m_shooterSubsystem).withTimeout(1),
-     new ShootCommand(m_shooterSubsystem).alongWith(new ConveyorCommand(m_conveyorSubsystem))
+     new ShootCommand(m_shooterSubsystem).alongWith(new ConveyorCommand(m_conveyorSubsystem)).withTimeout(0.5)
 
     );
 

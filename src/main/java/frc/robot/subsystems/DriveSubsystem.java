@@ -134,9 +134,11 @@ private SwerveModuleState[] getModuleStates() {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-   if (m_limelightSubsystem.getId() > 0){
-    resetOdometry(getLimelightPose());
-    // setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees()); //accuracy of april tag may be worse than gyro drift
+    if (DriverStation.isTeleop() == true){
+      if (m_limelightSubsystem.getId() > 0){
+        resetOdometry(getLimelightPose());
+    //  setGyroYaw(m_limelightSubsystem.getBotPose().getRotation().getDegrees()); //accuracy of april tag may be worse than gyro drift
+      }
    }else{
       m_odometry.update(
         getWrappedHeading(),

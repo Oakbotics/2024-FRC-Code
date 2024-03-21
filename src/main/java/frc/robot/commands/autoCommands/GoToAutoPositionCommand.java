@@ -57,6 +57,10 @@ public class GoToAutoPositionCommand extends Command {
   public void initialize() {
     m_goToPose = m_goToPoseSupplier.get();
 
+    // if(DriverStation.getAlliance().get() = (DriverStation.Alliance.Red)){ 
+      //   m_goToPose = GeometryUtil.flipFieldPose(m_goToPose);
+      // }
+
     m_driveSubsystem.drive(0, 0, 0, true, true);
 
     xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
