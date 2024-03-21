@@ -15,6 +15,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
@@ -48,7 +49,9 @@ public class T_2P extends SequentialCommandGroup {
 
     addCommands(
       new SequentialCommandGroup(
+
         new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.topStartingPose)),
+        new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
@@ -60,6 +63,7 @@ public class T_2P extends SequentialCommandGroup {
         ),
         // use this ^^ line if GoToSpeakerCommand doesnt work
         // new GoToSpeakerCommand(m_driveSubsystem),
+        new InstantCommand(() -> m_driveSubsystem.setX()),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       )
     );

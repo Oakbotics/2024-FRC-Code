@@ -61,7 +61,7 @@ public class GoToSpeakerCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     
     // Flips Pose of Speaker depending on Alliance
-    if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){ 
+    if(DriverStation.getAlliance().get() == (DriverStation.Alliance.Red)){ 
       speakerPose = GeometryUtil.flipFieldPose(speakerPose);
     }
   

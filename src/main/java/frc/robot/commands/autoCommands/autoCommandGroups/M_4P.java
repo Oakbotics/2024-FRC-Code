@@ -15,6 +15,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
@@ -47,10 +48,12 @@ public class M_4P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
+      new SequentialCommandGroup(
         new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
+        new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
+          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
         ),
         // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
@@ -58,17 +61,18 @@ public class M_4P extends SequentialCommandGroup {
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleStartingPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
+          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC1Pose.getX(), AutoConstants.bC1Pose.getY(), Rotation2d.fromDegrees(45)))
         ),
         new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
+          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC3Pose.getX(), AutoConstants.bC3Pose.getY(), Rotation2d.fromDegrees(-45)))
         ),
         new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+      )
     );
   }
 }
