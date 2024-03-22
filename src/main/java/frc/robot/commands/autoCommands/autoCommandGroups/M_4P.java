@@ -53,7 +53,7 @@ public class M_4P extends SequentialCommandGroup {
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(3),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
         ),
         // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
@@ -61,13 +61,13 @@ public class M_4P extends SequentialCommandGroup {
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleStartingPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(3),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC1Pose.getX(), AutoConstants.bC1Pose.getY(), Rotation2d.fromDegrees(45)))
         ),
         new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(3),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC3Pose.getX(), AutoConstants.bC3Pose.getY(), Rotation2d.fromDegrees(-45)))
         ),
         new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose),

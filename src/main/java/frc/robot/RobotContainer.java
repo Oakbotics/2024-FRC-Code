@@ -13,6 +13,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ExtendClimberCommand;
 import frc.robot.commands.GoToAmpCommand;
+import frc.robot.commands.GoToAngleCommand;
 import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToNoteCommandGroup;
 import frc.robot.commands.GoToPositionCommand;
@@ -32,6 +33,7 @@ import frc.robot.commands.TogglePnuematicsCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
+import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -48,6 +50,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -129,20 +132,21 @@ public class RobotContainer {
     m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
     m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
-    m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, true));
+    m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, false));
     m_operatorController.leftTrigger().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.leftBumper().whileTrue(new GoToAmpCommand(m_driveSubsystem));
-    m_operatorController.rightBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
-
+    m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
     
 
 
-    m_driverController.a().whileTrue(new TogglePnuematicsCommand(m_pnuematicSubsystem));
-    m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    m_driverController.rightBumper().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
-    m_driverController.povDown().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
-    m_driverController.povUp().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
+    m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
+    // m_driverController.leftBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
+    m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true));
+    m_driverController.rightBumper().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
+    m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
+    // m_driverController.povLeft().whileTrue(new GoToAngle(m_pnuematicSubsystem, m_driveSubsystem));
+    // m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
 
   
     m_driveSubsystem.setDefaultCommand(
@@ -177,10 +181,14 @@ public class RobotContainer {
       ).onTrue(
         new RunCommand(() -> {
             m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
+            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
+
         }
         )
         .withTimeout(2).andThen(new InstantCommand(() -> {
           m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0);
+          m_operatorController.getHID().setRumble(RumbleType.kBothRumble, 0);
+
 
         })
         )

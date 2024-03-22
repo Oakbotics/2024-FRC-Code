@@ -55,7 +55,7 @@ public class M_2P extends SequentialCommandGroup {
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(2),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(2),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose)
         ),
         new InstantCommand(() -> m_driveSubsystem.setX()),

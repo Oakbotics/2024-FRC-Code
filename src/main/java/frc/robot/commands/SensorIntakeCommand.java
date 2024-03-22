@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import javax.naming.PartialResultException;
+import javax.print.attribute.standard.OutputDeviceAssigned;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -28,21 +31,22 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class SensorIntakeCommand extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ConveyorSubsystem m_conveyorSubsystem;
+  private final ShooterSubsystem m_shooterSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SensorIntakeCommand(ConveyorSubsystem conveyorSubsystem, boolean useSensor) {
+  public SensorIntakeCommand(ConveyorSubsystem conveyorSubsystem, ShooterSubsystem shooterSubsystem, boolean useSensor) {
     m_conveyorSubsystem = conveyorSubsystem;
+    m_shooterSubsystem = shooterSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_conveyorSubsystem);
+    addRequirements(m_conveyorSubsystem, m_shooterSubsystem);
 
     addCommands(
         new IntakeCommand(m_conveyorSubsystem, useSensor),
-        new OuttakeCommand(m_conveyorSubsystem, useSensor)
-
+        new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, useSensor)
         /*
         new InstantCommand(()-> m_conveyorSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),

@@ -28,13 +28,16 @@ public class NoteLimelightSubsystem extends SubsystemBase {
   public NoteLimelightSubsystem() {
     SmartDashboard.putData("Field", m_field);
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-note");
+    m_limelightTable.getEntry("pipeline").setNumber(0);
+
   }
 
 
 
   public Pose2d getNotePose(Pose2d robotPose){
     double tx = m_limelightTable.getEntry("tx").getDouble(-1); 
-    double ty = m_limelightTable.getEntry("ty").getDouble(-1);  
+    double ty = m_limelightTable.getEntry("ty").getDouble(-1); 
+    double tv = m_limelightTable.getEntry("tv").getDouble(-1); 
     
 
     // double forwardD = LimelightConstants.limelightHeight * Math.tan(Math.toRadians(90 - 30 - Math.abs(ty)));// ADD THIRTY ITS TILTED
@@ -43,6 +46,11 @@ public class NoteLimelightSubsystem extends SubsystemBase {
     double sideD = -forwardD * Math.tan(Math.toRadians(tx));
     forwardD += 0.5;
 
+    if(tv != 1){
+      forwardD = 0;
+      sideD = 0;
+    }
+
     // if(tx>=0){
     //   forwardD += LimelightConstants.crosshairDistance;
     // }
@@ -50,7 +58,7 @@ public class NoteLimelightSubsystem extends SubsystemBase {
     //   forwardD -= LimelightConstants.crosshairDistance;
     // }
 
-
+    
     Transform2d relativeNotePose = new Transform2d(forwardD, sideD, Rotation2d.fromDegrees(-tx));
 
     SmartDashboard.putNumber("Note Distance X", forwardD);

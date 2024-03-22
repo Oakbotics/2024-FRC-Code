@@ -54,7 +54,7 @@ public class T_2P extends SequentialCommandGroup {
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(5),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1Pose)
         ),
         new ParallelCommandGroup(

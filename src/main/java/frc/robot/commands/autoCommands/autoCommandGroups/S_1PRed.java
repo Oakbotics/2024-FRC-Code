@@ -7,6 +7,8 @@ package frc.robot.commands.autoCommands.autoCommandGroups;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -19,6 +21,7 @@ import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
+import frc.robot.commands.SetGyroAllianceRelative;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -26,9 +29,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-
 /** An example command that uses an example subsystem. */
-public class B_2P extends SequentialCommandGroup {
+public class S_1PRed extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -40,7 +42,7 @@ public class B_2P extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public B_2P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public S_1PRed(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -49,21 +51,26 @@ public class B_2P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-      new SequentialCommandGroup(
-        
-        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)),
+      new SequentialCommandGroup(      
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(5),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3Pose).withTimeout(5)
-        ),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(2.6, 4.5, Rotation2d.fromDegrees(0))),
-        new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.2),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomFarShootPose),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(2),
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomGetOutOfWay)
+        ),  
+    
         new InstantCommand(() -> m_driveSubsystem.setX()),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new PnuematicsReverseCommand(m_pnuematicSubsystem),
+        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+
+        new SetGyroAllianceRelative(driveSubsystem, 60)
+        // new InstantCommand(() -> m_driveSubsystem.setGyroYaw(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 60 : -60))
+
+        
+
       )
-    );
+    ); 
   }
 }

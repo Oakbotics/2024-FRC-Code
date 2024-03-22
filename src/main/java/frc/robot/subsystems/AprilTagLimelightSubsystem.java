@@ -26,6 +26,8 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
   public AprilTagLimelightSubsystem() {
     SmartDashboard.putData("Field", m_field);
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-april");
+    m_limelightTable.getEntry("pipeline").setNumber(1);
+
   }
 
   public Pose2d getBotPose(){
