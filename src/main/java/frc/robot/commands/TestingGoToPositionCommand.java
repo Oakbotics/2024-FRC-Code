@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
 
 import com.pathplanner.lib.util.GeometryUtil;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class GoToPositionCommand extends Command {
+public class TestingGoToPositionCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final PIDController xController;
@@ -38,8 +39,6 @@ public class GoToPositionCommand extends Command {
   double botPoseX;
   double botPoseY;
   double botPoseRot;
-
-  Pose2d m_setPoint;
   // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
   // Pose2d ampPose;
   // Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
@@ -49,10 +48,8 @@ public class GoToPositionCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GoToPositionCommand(DriveSubsystem driveSubsystem, Pose2d setPoint) {
+  public TestingGoToPositionCommand(DriveSubsystem driveSubsystem) {
     m_driveSubsystem = driveSubsystem;
-    m_setPoint = setPoint;
-
  
    
     // Use addRequirements() here to declare subsystem dependencies.
@@ -74,11 +71,20 @@ public class GoToPositionCommand extends Command {
     botPoseY = m_driveSubsystem.getPose().getY();
     botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees(); 
 
-    
-
     // setPoseX = botPoseX + 1;
     // setPoseY = botPoseY + 1;
     // setPoseRot = -45;
+
+    // setPoseX = AutoConstants.bC3Pose.getX();
+    // setPoseY = AutoConstants.bC3Pose.getY();
+    // setPoseRot = 0;
+
+    setPoseX = AutoConstants.bottomStartingPose.getX() + 2.3;
+    setPoseY = AutoConstants.bottomStartingPose.getY() + 0.4;
+    setPoseX = 0;
+
+
+
 
     // if(DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)){
     //   ampPose = ampPoseRed;
@@ -92,9 +98,9 @@ public class GoToPositionCommand extends Command {
   @Override
   public void execute() {
     
-    SmartDashboard.putNumber("Set Point X", m_setPoint.getX());
-    SmartDashboard.putNumber("Set Point Y", m_setPoint.getY());
-    SmartDashboard.putNumber("Set Point Rot", m_setPoint.getRotation().getDegrees());
+    SmartDashboard.putNumber("Set Point X", setPoseX);
+    SmartDashboard.putNumber("Set Point Y", setPoseY);
+    SmartDashboard.putNumber("Set Point Rot", setPoseRot);
     
 
     botPoseX = m_driveSubsystem.getPose().getX();
@@ -102,10 +108,9 @@ public class GoToPositionCommand extends Command {
     botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees(); 
           
     m_driveSubsystem.drive(
-      xController.calculate(botPoseX, m_setPoint.getX()),
-      yController.calculate(botPoseY, m_setPoint.getY()),
-    //   rotateController.calculate(botPoseRot, m_setPoint.getRotation().getDegrees()),
-      0,
+      xController.calculate(botPoseX, setPoseX),
+      yController.calculate(botPoseY, setPoseY),
+      rotateController.calculate(botPoseRot, setPoseRot),
       true, 
       true
     );    
@@ -123,9 +128,8 @@ public class GoToPositionCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     
-    // if(Math.abs(botPoseX - setPoseX) <= errorMargin && Math.abs(botPoseY - setPoseY) <= errorMargin && Math.abs(botPoseRot - setPoseRot) <= 3){
-    if(Math.abs(botPoseX - setPoseX) <= errorMargin && Math.abs(botPoseY - setPoseY) <= errorMargin){
-        return true;
+    if(Math.abs(botPoseX - setPoseX) <= errorMargin && Math.abs(botPoseY - setPoseY) <= errorMargin && Math.abs(botPoseRot - setPoseRot) <= 3){
+      return true;
     }
     return false;
   }

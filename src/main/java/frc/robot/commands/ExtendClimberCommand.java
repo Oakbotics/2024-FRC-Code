@@ -45,7 +45,7 @@ public class ExtendClimberCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climberSubsystem.getEncoderValue() > 400){
+    if(m_climberSubsystem.getEncoderValue() > 1200){
       return true;
     }
      return false;

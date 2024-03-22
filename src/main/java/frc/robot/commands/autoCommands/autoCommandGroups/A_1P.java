@@ -30,7 +30,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class S_1PRed extends SequentialCommandGroup {
+public class A_1P extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -42,7 +42,7 @@ public class S_1PRed extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public S_1PRed(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public A_1P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -52,13 +52,13 @@ public class S_1PRed extends SequentialCommandGroup {
 
     addCommands(
       new SequentialCommandGroup(      
-        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.topStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(2),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomGetOutOfWay)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC1Pose.getTranslation(), m_driveSubsystem.getWrappedHeading()))
         ),  
     
         new InstantCommand(() -> m_driveSubsystem.setX()),

@@ -47,9 +47,9 @@ public class GoToAutoPositionCommand extends Command {
     m_driveSubsystem = driveSubsystem;
     m_goToPoseSupplier = goToPoseSupplier;
 
-    xController = new PIDController(0, 0,0); //Best values: 0.5, 0, 1.15
-    yController = new PIDController(0, 0,0);
-    rotateController = new PIDController(0, 0, 0);
+    // xController = new PIDController(0, 0,0); //Best values: 0.5, 0, 1.15
+    // yController = new PIDController(0, 0,0);
+    // rotateController = new PIDController(0, 0, 0);
   }
 
   // Called when the command is initially scheduled.
@@ -61,7 +61,7 @@ public class GoToAutoPositionCommand extends Command {
       //   m_goToPose = GeometryUtil.flipFieldPose(m_goToPose);
       // }
 
-    m_driveSubsystem.drive(0, 0, 0, true, true);
+    // m_driveSubsystem.drive(0, 0, 0, true, true);
 
     xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
     yController = new PIDController(0.75, 0,0.05);

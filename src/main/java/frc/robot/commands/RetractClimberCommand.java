@@ -45,9 +45,9 @@ public class RetractClimberCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climberSubsystem.getEncoderValue() < 5){
-      return true;
-    }
+    // if(m_climberSubsystem.getEncoderValue() < 5){
+    //   return true;
+    // }
      return false;
     
   }

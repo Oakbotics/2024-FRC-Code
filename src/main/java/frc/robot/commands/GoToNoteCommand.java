@@ -85,8 +85,10 @@ public class GoToNoteCommand extends Command {
     // }
     // m_driveSubsystem.drive(0, 0,rotateController.calculate(botPoseRot, rotSetPoint), true, true);
     // else if(Math.abs(botPoseRot - rotSetPoint) <= 0.5){
-       m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
-    // }
+      //  m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint),rotateController.calculate(botPoseRot, rotSetPoint), true, true);
+    m_driveSubsystem.drive(xController.calculate(botPoseX, xSetPoint), yController.calculate(botPoseY, ySetPoint), 0, true, true);
+
+      // }
   }
 
   // Called once the command ends or is interrupted.
