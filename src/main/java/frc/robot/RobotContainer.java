@@ -16,7 +16,7 @@ import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToAngleCommand;
 import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToNoteCommandGroup;
-import frc.robot.commands.GoToPositionCommand;
+// import frc.robot.commands.TestingGoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeShootCommand;
@@ -31,7 +31,10 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.TogglePnuematicsCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
+// import frc.robot.commands.autoCommands.autoCommandGroups.A_1P;
+// import frc.robot.commands.autoCommands.autoCommandGroups.A_MessUpMiddle;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
+// import frc.robot.commands.autoCommands.autoCommandGroups.B_2PTesting;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
@@ -148,15 +151,16 @@ public class RobotContainer {
     // m_driverController.povLeft().whileTrue(new GoToAngle(m_pnuematicSubsystem, m_driveSubsystem));
     // m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
 
-  
+    // m_driverController.povRight().whileTrue(new TestingGoToPositionCommand(m_driveSubsystem));
+
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right st
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getRightTriggerAxis()) * (1.25 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getRightTriggerAxis()) * (1.25 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.5 - m_driverController.getRightTriggerAxis()) * (1.25 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * 0.75 * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
 
