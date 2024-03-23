@@ -32,6 +32,7 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.TogglePnuematicsCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.A_1P;
+import frc.robot.commands.autoCommands.autoCommandGroups.A_MessUpMiddle;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2PTesting;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
@@ -150,7 +151,7 @@ public class RobotContainer {
     // m_driverController.povLeft().whileTrue(new GoToAngle(m_pnuematicSubsystem, m_driveSubsystem));
     // m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
 
-    m_driverController.povRight().whileTrue(new TestingGoToPositionCommand(m_driveSubsystem));
+    // m_driverController.povRight().whileTrue(new TestingGoToPositionCommand(m_driveSubsystem));
 
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -212,7 +213,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");
 
-    return new B_2PTesting(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    return new S_1PRed(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
 
   }
 }

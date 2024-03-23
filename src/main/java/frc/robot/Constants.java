@@ -175,5 +175,15 @@ public final class Constants {
     public static final Pose2d bottomFarShootPose = new Pose2d(3.35, 4.7, Rotation2d.fromDegrees(-25)); //set later
     
     public static final Pose2d bottomGetOutOfWay = new Pose2d(4.38, 5.6, Rotation2d.fromDegrees(0.0)); //set later
+
+    // public static final Pose2d midGetOutOfWay = new Pose2d(2.6, 1.96, Rotation2d.fromDegrees(-60.0));
+    // public static final Pose2d m1_5Pose = new Pose2d(8.45, 6.58, Rotation2d.fromDegrees(-60.0));
+    // public static final Pose2d m5Pose = new Pose2d(8.5, 0.97, Rotation2d.fromDegrees(-60.0));
+    
+    public static final Pose2d midGetOutOfWay = new Pose2d(1.4, 4, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d m1_5Pose = new Pose2d(2.75, 5.24, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d m5Pose = new Pose2d(3.81, 3.72, Rotation2d.fromDegrees(-60.0));
+
+
   }
 }

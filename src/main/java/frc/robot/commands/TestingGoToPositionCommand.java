@@ -24,9 +24,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class TestingGoToPositionCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
-  private final PIDController xController;
-  private final PIDController yController;
-  private final PIDController rotateController;
+  private PIDController xController;
+  private PIDController yController;
+  private PIDController rotateController;
 
   Pose2d m_goToPose;
 
@@ -56,9 +56,9 @@ public class TestingGoToPositionCommand extends Command {
     addRequirements(driveSubsystem);
 
 
-    xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
-    yController = new PIDController(0.75, 0,0.05);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
+    xController = new PIDController(0.0, 0,0.0); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(0.0, 0,0.0);
+    rotateController = new PIDController(0.0, 0.0, 0.0);
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -66,6 +66,12 @@ public class TestingGoToPositionCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(0.75, 0,0.05);
+    rotateController = new PIDController(0.01, 0.0, 0.0);
+
+    rotateController.enableContinuousInput(-180, 180);
 
     botPoseX = m_driveSubsystem.getPose().getX();
     botPoseY = m_driveSubsystem.getPose().getY();
@@ -81,7 +87,7 @@ public class TestingGoToPositionCommand extends Command {
 
     setPoseX = AutoConstants.bottomStartingPose.getX() + 2.3;
     setPoseY = AutoConstants.bottomStartingPose.getY() + 0.4;
-    setPoseX = 0;
+    setPoseRot = 0;
 
 
 
@@ -119,6 +125,11 @@ public class TestingGoToPositionCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_driveSubsystem.drive(0, 0, 0, true, true);
+
+    xController = new PIDController(0.0, 0,0.0); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(0.0, 0,0.0);
+    rotateController = new PIDController(0.0, 0.0, 0.0);
   }
 
   // Returns true when the command should end.

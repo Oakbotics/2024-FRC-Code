@@ -54,10 +54,10 @@ public class B_2PTesting extends SequentialCommandGroup {
         
         // new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)),
         new InstantCommand(()-> m_driveSubsystem.resetBotPose(new Pose2d(AutoConstants.bottomStartingPose.getTranslation(), Rotation2d.fromDegrees(0)))),
-        new PnuematicsForwardCommand(m_pnuematicSubsystem),
+        // new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(5),
+        //   new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(5),
           new TestingGoToPositionCommand(m_driveSubsystem)
         )
       )
