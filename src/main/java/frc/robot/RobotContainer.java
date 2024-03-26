@@ -36,6 +36,7 @@ import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
 // import frc.robot.commands.autoCommands.autoCommandGroups.B_2PTesting;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -213,7 +214,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");
 
-    return new S_1PRed(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    return new M_4P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
 
   }
 }
