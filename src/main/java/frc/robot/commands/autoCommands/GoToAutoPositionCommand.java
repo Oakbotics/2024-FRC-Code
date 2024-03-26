@@ -61,7 +61,7 @@ public class GoToAutoPositionCommand extends Command {
       //   m_goToPose = GeometryUtil.flipFieldPose(m_goToPose);
       // }
 
-    m_driveSubsystem.drive(0, 0, 0, true, true);
+    m_driveSubsystem.driveAutoSpeed(0, 0, 0, true, true);
 
     xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
     yController = new PIDController(0.75, 0,0.05);
@@ -83,7 +83,7 @@ public class GoToAutoPositionCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees(); 
           
-    m_driveSubsystem.drive(
+    m_driveSubsystem.driveAutoSpeed(
       xController.calculate(botPoseX, m_goToPose.getX()),
       yController.calculate(botPoseY, m_goToPose.getY()),
       rotateController.calculate(botPoseRot, m_goToPose.getRotation().getDegrees()),
@@ -95,7 +95,7 @@ public class GoToAutoPositionCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveSubsystem.drive(0, 0, 0, true, true);
+    m_driveSubsystem.driveAutoSpeed(0, 0, 0, true, true);
   }
 
   // Returns true when the command should end.

@@ -55,8 +55,12 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 5.5;
-    public static final double kMaxAngularSpeed = 3.0 * Math.PI; // radians per second
+    public static final double kTeleopMaxSpeedMetersPerSecond = 5.5;
+    public static final double kTeleopMaxAngularSpeed = 3.0 * Math.PI; // radians per second
+
+    public static final double kAutoMaxSpeedMetersPerSecond = 5.5;
+    public static final double kAutoMaxAngularSpeed = 3.0 * Math.PI; // radians per second
+
     public static final double kSpeedLimiter = 0.5;
     public static final double kDirectionSlewRate = 1.2; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
@@ -165,15 +169,23 @@ public final class Constants {
     public static final Pose2d topStartingPose = new Pose2d(0.8, 6.675, Rotation2d.fromDegrees(60.0));
     public static final Pose2d middleStartingPose = new Pose2d(1.4, 5.6, Rotation2d.fromDegrees(0));
     public static final Pose2d bottomStartingPose = new Pose2d(0.8, 4.59, Rotation2d.fromDegrees(-60.0));
+    
+    public static final Pose2d subwooferShootSafe = new Pose2d(1.25, 5.69, Rotation2d.fromDegrees(0));
+
 
     public static final Pose2d bC1Pose = new Pose2d(3.2, 7.05, Rotation2d.fromDegrees(15.0));
-    public static final Pose2d bC2Pose = new Pose2d(3, 5.6, Rotation2d.fromDegrees(0.0));
-    public static final Pose2d bC3Pose = new Pose2d(3.13, 4.1, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC2Pose = new Pose2d(3.15, 5.6, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC3Pose = new Pose2d(3.20, 4.03, Rotation2d.fromDegrees(0.0));
 
     public static final Pose2d topFarShootPose = new Pose2d(3.35, 6.5, Rotation2d.fromDegrees(25)); //set later
     public static final Pose2d middleFarShootPose = new Pose2d(3.63, 5.6, Rotation2d.fromDegrees(0.0)); //set later
     public static final Pose2d bottomFarShootPose = new Pose2d(3.35, 4.7, Rotation2d.fromDegrees(-25)); //set later
     
     public static final Pose2d bottomGetOutOfWay = new Pose2d(4.38, 5.6, Rotation2d.fromDegrees(0.0)); //set later
+   
+    public static final Pose2d midGetOutOfWay = new Pose2d(2.6, 1.96, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d m1_5Pose = new Pose2d(8.45, 6.58, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d m5Pose = new Pose2d(8.5, 0.97, Rotation2d.fromDegrees(-60.0));
+    
   }
 }

@@ -7,6 +7,7 @@ package frc.robot.commands.autoCommands.autoCommandGroups;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -27,7 +28,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class M_4P extends SequentialCommandGroup {
+public class S_1PMessUpMiddle extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -39,7 +40,7 @@ public class M_4P extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public M_4P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public S_1PMessUpMiddle(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -48,31 +49,17 @@ public class M_4P extends SequentialCommandGroup {
     addRequirements(m_driveSubsystem);
 
     addCommands(
-      new SequentialCommandGroup(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
+      new SequentialCommandGroup(      
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
-        new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose).withTimeout(3)
-        ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
-          // use this line ^^ if GoToSpeakerCommand doesnt work
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleStartingPose).withTimeout(3),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
-        new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC3Pose.getTranslation(), Rotation2d.fromDegrees(-45))).withTimeout(3)
-        ),
-        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose).withTimeout(3),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
-        new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(45))).withTimeout(3)
-        ),
-        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose).withTimeout(3),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.midGetOutOfWay),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.m1_5Pose),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.m5Pose),
+
+        new InstantCommand(() -> m_driveSubsystem.setX())
       )
-    );
+    ); 
   }
 }
