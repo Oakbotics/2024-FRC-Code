@@ -27,7 +27,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class T_2P extends SequentialCommandGroup {
+public class M_3P extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -39,7 +39,7 @@ public class T_2P extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public T_2P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public M_3P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -49,23 +49,27 @@ public class T_2P extends SequentialCommandGroup {
 
     addCommands(
       new SequentialCommandGroup(
-
-        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.topStartingPose)),
+        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(60))).withTimeout(5)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose).withTimeout(1.5)
         ),
-        // new ParallelCommandGroup(
-        //   new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.topStartingPose).withTimeout(3),
-        
-        // use this ^^ line if GoToSpeakerCommand doesnt work
-        // new GoToSpeakerCommand(m_driveSubsystem),
+        // new GoToAutoPositioCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
+          // use this line ^^ if GoToSpeakerCommand doesnt workn
+        new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.5),
+        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new PnuematicsForwardCommand(m_pnuematicSubsystem),
+        new ParallelCommandGroup(
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(8.3, 4.1, Rotation2d.fromDegrees(0))),
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true)
+        ),
+        new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(3.35, 4.4, Rotation2d.fromDegrees(0))).withTimeout(2),
         new InstantCommand(() -> m_driveSubsystem.setX()),
+        new PnuematicsReverseCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
-      )
+      ) 
     );
   }
 }

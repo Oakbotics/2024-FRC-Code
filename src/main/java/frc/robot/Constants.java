@@ -172,11 +172,13 @@ public final class Constants {
     
     public static final Pose2d subwooferShootSafe = new Pose2d(1.25, 5.69, Rotation2d.fromDegrees(0));
 
-
-    public static final Pose2d bC1Pose = new Pose2d(3.2, 7.05, Rotation2d.fromDegrees(15.0));
+    public static final Pose2d bC1Pose = new Pose2d(3.02, 7.3, Rotation2d.fromDegrees(0.0));
     public static final Pose2d bC2Pose = new Pose2d(3.15, 5.6, Rotation2d.fromDegrees(0.0));
-    public static final Pose2d bC3Pose = new Pose2d(3.20, 4.03, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC3Pose = new Pose2d(3.02, 4.03, Rotation2d.fromDegrees(0.0));
 
+    public static final Pose2d bC1LineupPose = new Pose2d(2.52, 7.3, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC3LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0));
+    
     public static final Pose2d topFarShootPose = new Pose2d(3.35, 6.5, Rotation2d.fromDegrees(25)); //set later
     public static final Pose2d middleFarShootPose = new Pose2d(3.63, 5.6, Rotation2d.fromDegrees(0.0)); //set later
     public static final Pose2d bottomFarShootPose = new Pose2d(3.35, 4.7, Rotation2d.fromDegrees(-25)); //set later

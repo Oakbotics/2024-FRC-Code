@@ -54,25 +54,32 @@ public class M_4P extends SequentialCommandGroup {
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose).withTimeout(3)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
         ),
-        // new GoToAutoPositionCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
-          // use this line ^^ if GoToSpeakerCommand doesnt work
+        // new GoToAutoPositioCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
+          // use this line ^^ if GoToSpeakerCommand doesnt workn
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleStartingPose).withTimeout(3),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3LineupPose),
+
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC3Pose.getTranslation(), Rotation2d.fromDegrees(-45))).withTimeout(3)
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC3Pose.getTranslation(), Rotation2d.fromDegrees(0)))
         ),
-        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose).withTimeout(3),
+        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.subwooferShootSafe).withTimeout(2),
+        new InstantCommand(() -> m_driveSubsystem.setX()),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1LineupPose).alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(45))).withTimeout(3)
+          new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(0))).withTimeout(3)
         ),
-        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.middleStartingPose).withTimeout(3),
+        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.subwooferShootSafe).withTimeout(2),
+        new InstantCommand(() -> m_driveSubsystem.setX()),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
-      )
+      ) 
     );
   }
 }

@@ -24,7 +24,7 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public AprilTagLimelightSubsystem() {
-    SmartDashboard.putData("Field", m_field);
+    // SmartDashboard.putData("Field", m_field);
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-april");
     m_limelightTable.getEntry("pipeline").setNumber(1);
 
@@ -47,9 +47,9 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     getBotPose();
-    SmartDashboard.putNumber("limelight x value", getBotPose().getX());
-    SmartDashboard.putNumber("limelight y value", getBotPose().getY());
-    SmartDashboard.putNumber("Limelight tv", m_limelightTable.getEntry("tv").getDouble(-1));
+    // SmartDashboard.putNumber("limelight x value", getBotPose().getX());
+    // SmartDashboard.putNumber("limelight y value", getBotPose().getY());
+    // SmartDashboard.putNumber("Limelight tv", m_limelightTable.getEntry("tv").getDouble(-1));
   }
 
   @Override

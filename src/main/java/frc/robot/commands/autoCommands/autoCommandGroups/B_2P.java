@@ -58,9 +58,9 @@ public class B_2P extends SequentialCommandGroup {
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(5),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3Pose).withTimeout(5)
         ),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(2.6, 4.5, Rotation2d.fromDegrees(0))),
-        new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.2),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomFarShootPose),
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(2.6, 4.5, Rotation2d.fromDegrees(0))),
+        // new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.2),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomStartingPose).withTimeout((2)),
         new InstantCommand(() -> m_driveSubsystem.setX()),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       )

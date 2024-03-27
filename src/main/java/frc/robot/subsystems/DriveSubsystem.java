@@ -97,7 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_limelightSubsystem = limelightSubsystem;
 
 
-    SmartDashboard.putData(field);
+    // SmartDashboard.putData(field);
 
     m_gyro.reset();
 
@@ -150,8 +150,8 @@ private SwerveModuleState[] getModuleStates() {
       );
    }
 
-    SmartDashboard.putNumber("botpose x", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("botpose y", m_odometry.getPoseMeters().getY());
+    // SmartDashboard.putNumber("botpose x", m_odometry.getPoseMeters().getX());
+    // SmartDashboard.putNumber("botpose y", m_odometry.getPoseMeters().getY());
 
   
 
@@ -159,10 +159,10 @@ private SwerveModuleState[] getModuleStates() {
     SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
     SmartDashboard.putNumber("pose X", getPose().getX());
     SmartDashboard.putNumber("pose Y", getPose().getY());
-    SmartDashboard.putNumber("GyroRotation2d", m_gyro.getRotation2d().getDegrees());
+    // SmartDashboard.putNumber("GyroRotation2d", m_gyro.getRotation2d().getDegrees());
 
-    field.setRobotPose(getPose());
-    SmartDashboard.putData(field);
+    // field.setRobotPose(getPose());
+    // SmartDashboard.putData(field);
   }
 
 
@@ -176,7 +176,7 @@ private SwerveModuleState[] getModuleStates() {
   }
   
   // public Pose2d getPose(){
-  //   return new Pose2d(
+  //     return new Pose2d(
   //     new Translation2d(m_odometry.getPoseMeters().getX(), m_odometry.getPoseMeters().getY()),
   //     new Rotation2d(m_gyro.getYaw().getValueAsDouble())
   //   );

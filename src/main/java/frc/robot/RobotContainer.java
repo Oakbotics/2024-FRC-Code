@@ -36,6 +36,7 @@ import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
 // import frc.robot.commands.autoCommands.autoCommandGroups.B_2PTesting;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_3P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
@@ -81,7 +82,7 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_aprilTagLimelightSubsystem);
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 
-  private final SendableChooser<String> autoChooser;
+  // private final SendableChooser<String> autoChooser;
   private final PnuematicSubsystem m_pnuematicSubsystem = new PnuematicSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -96,23 +97,23 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     
-    NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
-    NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
-    NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
-    NamedCommands.registerCommand("Intake", new IntakeCommand(m_conveyorSubsystem, true).withTimeout(2));
-    NamedCommands.registerCommand("Rev Shooter", new ShootCommand(m_shooterSubsystem).withTimeout(15));
-    NamedCommands.registerCommand("Intake Into Shooter", new IntakeShootCommand(m_conveyorSubsystem, false));
-    NamedCommands.registerCommand("Pneumatics Up", new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    NamedCommands.registerCommand("Pneumatics Down", new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    // NamedCommands.registerCommand("ResetGyro0", new InstantCommand(()-> m_driveSubsystem.setGyro(0)));
+    // NamedCommands.registerCommand("ResetGyro180", new InstantCommand(()-> m_driveSubsystem.setGyro(180)));
+    // NamedCommands.registerCommand("shoot", new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem).withTimeout(1.5));
+    // NamedCommands.registerCommand("Intake", new IntakeCommand(m_conveyorSubsystem, true).withTimeout(2));
+    // NamedCommands.registerCommand("Rev Shooter", new ShootCommand(m_shooterSubsystem).withTimeout(15));
+    // NamedCommands.registerCommand("Intake Into Shooter", new IntakeShootCommand(m_conveyorSubsystem, false));
+    // NamedCommands.registerCommand("Pneumatics Up", new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    // NamedCommands.registerCommand("Pneumatics Down", new PnuematicsReverseCommand(m_pnuematicSubsystem));
 
 
 
-    autoChooser = new SendableChooser<>();
-    autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
-    autoChooser.addOption("MoveStraight180", "MoveStraight180");
-    autoChooser.addOption("MoveStraight", "MoveStraight");
-    autoChooser.addOption("Two piece", "Two piece");
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // autoChooser = new SendableChooser<>();
+    // autoChooser.setDefaultOption("JustCloseMiddle", "JustCloseMiddle");
+    // autoChooser.addOption("MoveStraight180", "MoveStraight180");
+    // autoChooser.addOption("MoveStraight", "MoveStraight");
+    // autoChooser.addOption("Two piece", "Two piece");
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -196,13 +197,8 @@ public class RobotContainer {
 
 
         })
-        )
+      )
     );
-
-
-
-
-
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -214,7 +210,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");
 
-    return new M_4P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
-
+    return new M_3P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
   }
 }

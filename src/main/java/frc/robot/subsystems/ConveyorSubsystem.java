@@ -42,7 +42,7 @@ public class ConveyorSubsystem extends SubsystemBase {
       topIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
     } catch (ConfigurationFailedException e) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
+      // e.printStackTrace();
     }
     // bottomInakeSensor = new LaserCan(ConveyorConstants.kBottomIntakeSensorCANID);
     // try {
@@ -108,8 +108,8 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Lidar value", getSensorValue());
-    SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
+    // SmartDashboard.putNumber("Lidar value", getSensorValue());
+    // SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
 
     // This method will be called once per scheduler run
     
