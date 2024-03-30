@@ -47,6 +47,10 @@ public final class Constants {
     public static final int kClimberMotorCANID = 22;
   }
 
+  public static class CANdleConstants{
+    public static final int CANdleCanID = 26;
+  }
+
   public static class LimelightConstants {
     public static final double limelightHeight = 0.3302;
     public static final double crosshairDistance = 0.58; 
@@ -175,6 +179,13 @@ public final class Constants {
     public static final Pose2d bC1Pose = new Pose2d(3.02, 7.3, Rotation2d.fromDegrees(0.0));
     public static final Pose2d bC2Pose = new Pose2d(3.15, 5.6, Rotation2d.fromDegrees(0.0));
     public static final Pose2d bC3Pose = new Pose2d(3.02, 4.03, Rotation2d.fromDegrees(0.0));
+    
+    public static final Pose2d rC1Pose = new Pose2d(3.02, 4.03, Rotation2d.fromDegrees(0.0));  //RED AMP
+    public static final Pose2d rC3Pose = new Pose2d(3.02, 7.35, Rotation2d.fromDegrees(0.0));  //RED PODIUM
+
+    public static final Pose2d rC1LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0)); //RED AMP
+    public static final Pose2d rC3LineupPose = new Pose2d(2.52, 7.35, Rotation2d.fromDegrees(0.0)); //RED PODIUM
+
 
     public static final Pose2d bC1LineupPose = new Pose2d(2.52, 7.3, Rotation2d.fromDegrees(0.0));
     public static final Pose2d bC3LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0));

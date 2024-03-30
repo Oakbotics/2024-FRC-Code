@@ -34,10 +34,6 @@ public class GoToAutoPositionCommand extends Command {
   Supplier<Pose2d> m_goToPoseSupplier;
 
   double errorMargin = 0.05; 
-  // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
-  // Pose2d ampPose;
-  // Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
-  // Pose2d ampPoseRed = GeometryUtil.flipFieldPose(ampPoseBlue);
   /**
    * Creates a new ExampleCommand.
    *

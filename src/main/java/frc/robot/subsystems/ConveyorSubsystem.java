@@ -22,7 +22,7 @@ public class ConveyorSubsystem extends SubsystemBase {
   private final CANSparkMax m_topConveyorMotor;
   private final CANSparkMax m_bottomConveyorMotor;
   private LaserCan topIntakeSensor;
-  private LaserCan bottomInakeSensor;
+  private LaserCan bottomIntakeSensor;
 
 
   public ConveyorSubsystem() {
@@ -44,15 +44,15 @@ public class ConveyorSubsystem extends SubsystemBase {
       // TODO Auto-generated catch block
       // e.printStackTrace();
     }
-    // bottomInakeSensor = new LaserCan(ConveyorConstants.kBottomIntakeSensorCANID);
-    // try {
-    //   bottomInakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
-    //   bottomInakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,16,16));
-    //   bottomInakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
-    // } catch (ConfigurationFailedException e) {
-    //   // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
+    bottomIntakeSensor = new LaserCan(ConveyorConstants.kBottomIntakeSensorCANID);
+    try {
+      bottomIntakeSensor.setRangingMode(LaserCan.RangingMode.SHORT);
+      bottomIntakeSensor.setRegionOfInterest(new LaserCan.RegionOfInterest(8,8,4,4));
+      bottomIntakeSensor.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+    } catch (ConfigurationFailedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     
 
   }
@@ -66,8 +66,23 @@ public class ConveyorSubsystem extends SubsystemBase {
     return getSensorValue() >= 0 && getSensorValue() <= 200;
   }
 
+  public boolean getBottomSensorTriggered(){
+    return (getBottomSensorValue() >= 0 && getBottomSensorValue() <= 70) || (getBottomSensorValue() > 200 && getSensorValue() > 200) ;
+  }
+
   public double getSensorValue(){
     LaserCan.Measurement measurement = topIntakeSensor.getMeasurement();
+    if (measurement != null) {
+        if(measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
+          return measurement.distance_mm;
+        }
+    } 
+    
+    return 0.0;
+  }
+
+  public double getBottomSensorValue(){
+    LaserCan.Measurement measurement = bottomIntakeSensor.getMeasurement();
     if (measurement != null) {
         if(measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT){
           return measurement.distance_mm;
@@ -108,7 +123,7 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Lidar value", getSensorValue());
+    SmartDashboard.putNumber("Lidar value", getBottomSensorValue());
     // SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
 
     // This method will be called once per scheduler run

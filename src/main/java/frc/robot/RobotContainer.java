@@ -18,6 +18,7 @@ import frc.robot.commands.GoToNoteCommand;
 import frc.robot.commands.GoToNoteCommandGroup;
 // import frc.robot.commands.TestingGoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
+import frc.robot.commands.IndexCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeShootCommand;
 import frc.robot.commands.OuttakeCommand;
@@ -26,8 +27,10 @@ import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.RetractClimberCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.TogglePnuematicsCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
@@ -38,6 +41,8 @@ import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_3P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevBlue;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -134,19 +139,24 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    //m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
     m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, false));
     m_operatorController.leftTrigger().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));
     m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
     
-
+    
+    // operator controls for shoot while rev - shoot command and rev command
+    // switched rev up to left bumper, and shoot piece to right trigger
+    m_operatorController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.leftBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
 
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
     // m_driverController.leftBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
-    m_driverController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true));
+    m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
+    // m_driverController.leftBumper().whileTrue(new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
@@ -210,6 +220,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");
 
-    return new M_3P(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    return new M_4PRevBlue(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
   }
 }
