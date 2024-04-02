@@ -173,6 +173,17 @@ public final class Constants {
     public static final Pose2d topStartingPose = new Pose2d(0.8, 6.675, Rotation2d.fromDegrees(60.0));
     public static final Pose2d middleStartingPose = new Pose2d(1.4, 5.6, Rotation2d.fromDegrees(0));
     public static final Pose2d bottomStartingPose = new Pose2d(0.8, 4.59, Rotation2d.fromDegrees(-60.0));
+
+    public static final Pose2d redBottomStartingPose = new Pose2d(16.09, 4.74, Rotation2d.fromDegrees(-130.0));
+    public static final Pose2d redM5GetOutOfWayPose = new Pose2d(12.46, 1.5, Rotation2d.fromDegrees(-130.0));
+    public static final Pose2d redM5LineupPose = new Pose2d(9, 1.5, Rotation2d.fromDegrees(-130.0));
+    public static final Pose2d redM5Pose = new Pose2d(8.27, 0.73, Rotation2d.fromDegrees(-130.0));
+
+    public static final Pose2d redM4GetOutOfWayPose = new Pose2d(9.79, 0.98, Rotation2d.fromDegrees(-130.0));
+    public static final Pose2d redM4LineupPose = new Pose2d(9.04, 3.37, Rotation2d.fromDegrees(-130.0));
+    public static final Pose2d redM4Pose = new Pose2d(8.26, 2.41, Rotation2d.fromDegrees(-130.0));
+
+
     
     public static final Pose2d subwooferShootSafe = new Pose2d(1.25, 5.69, Rotation2d.fromDegrees(0));
 
@@ -186,15 +197,18 @@ public final class Constants {
     public static final Pose2d rC1LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0)); //RED AMP
     public static final Pose2d rC3LineupPose = new Pose2d(2.52, 7.35, Rotation2d.fromDegrees(0.0)); //RED PODIUM
 
-
-    public static final Pose2d bC1LineupPose = new Pose2d(2.52, 7.3, Rotation2d.fromDegrees(0.0));
-    public static final Pose2d bC3LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0));
     
+
+    // public static final Pose2d bC1LineupPose = new Pose2d(2.52, 7.3, Rotation2d.fromDegrees(0.0));
+    // public static final Pose2d bC3LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC1LineupPose = new Pose2d(2.27, 7.3, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d bC3LineupPose = new Pose2d(2.27, 4.03, Rotation2d.fromDegrees(0.0));
+
     public static final Pose2d topFarShootPose = new Pose2d(3.35, 6.5, Rotation2d.fromDegrees(25)); //set later
     public static final Pose2d middleFarShootPose = new Pose2d(3.63, 5.6, Rotation2d.fromDegrees(0.0)); //set later
     public static final Pose2d bottomFarShootPose = new Pose2d(3.35, 4.7, Rotation2d.fromDegrees(-25)); //set later
     
-    public static final Pose2d bottomGetOutOfWay = new Pose2d(4.38, 5.6, Rotation2d.fromDegrees(0.0)); //set later
+    public static final Pose2d bottomGetOutOfWay = new Pose2d(5.00, 5.6, Rotation2d.fromDegrees(0.0)); //set later
    
     public static final Pose2d midGetOutOfWay = new Pose2d(2.6, 1.96, Rotation2d.fromDegrees(-60.0));
     public static final Pose2d m1_5Pose = new Pose2d(8.45, 6.58, Rotation2d.fromDegrees(-60.0));

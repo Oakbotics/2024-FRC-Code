@@ -97,7 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_limelightSubsystem = limelightSubsystem;
 
 
-    // SmartDashboard.putData(field);
+    SmartDashboard.putData(field);
 
     m_gyro.reset();
 
@@ -161,8 +161,8 @@ private SwerveModuleState[] getModuleStates() {
     SmartDashboard.putNumber("pose Y", getPose().getY());
     // SmartDashboard.putNumber("GyroRotation2d", m_gyro.getRotation2d().getDegrees());
 
-    // field.setRobotPose(getPose());
-    // SmartDashboard.putData(field);
+    field.setRobotPose(getPose());
+    SmartDashboard.putData(field);
   }
 
 
