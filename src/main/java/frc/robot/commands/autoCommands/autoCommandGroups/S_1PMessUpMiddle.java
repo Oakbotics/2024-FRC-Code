@@ -50,13 +50,13 @@ public class S_1PMessUpMiddle extends SequentialCommandGroup {
 
     addCommands(
       new SequentialCommandGroup(      
-        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)),
+        new RunCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)).withTimeout(1),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.midGetOutOfWay),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.m1_5Pose),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.m5Pose),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.midGetOutOfWay).withTimeout(2.0),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.m1_5Pose).withTimeout(2),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.m5Pose).withTimeout(2),
 
         new InstantCommand(() -> m_driveSubsystem.setX())
       )

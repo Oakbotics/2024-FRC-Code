@@ -224,7 +224,6 @@ public void setGyroYawUsingAprilTag(){
         pose);
   }
   public void resetBotPose(Pose2d pose) {
-    m_gyro.setYaw(pose.getRotation().getDegrees());
     m_odometry.resetPosition(
         //m_gyro.getRotation2d(),
         getWrappedHeading(),
@@ -235,6 +234,9 @@ public void setGyroYawUsingAprilTag(){
             m_rearRight.getPosition()
         },
         pose);
+        
+    m_gyro.setYaw(pose.getRotation().getDegrees());
+        
   }
   public Pose2d getLimelightPose(){
     return new Pose2d(m_limelightSubsystem.getBotPose().getX(), m_limelightSubsystem.getBotPose().getY(), getWrappedHeading() );

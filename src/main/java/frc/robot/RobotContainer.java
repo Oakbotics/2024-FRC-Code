@@ -38,6 +38,7 @@ import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 // import frc.robot.commands.autoCommands.autoCommandGroups.A_MessUpMiddle;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.B_2PMiddleLineRed;
+import frc.robot.commands.autoCommands.autoCommandGroups.B_2PRedTesting;
 // import frc.robot.commands.autoCommands.autoCommandGroups.B_2PTesting;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_3P;
@@ -48,6 +49,7 @@ import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevBlue;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PMessUpMiddle;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
+import frc.robot.commands.autoCommands.autoCommandGroups.S_M2PBlue;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -224,6 +226,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");''
 
-    return new S_1PRed(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    return new B_2PMiddleLineRed(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
   }
 }
