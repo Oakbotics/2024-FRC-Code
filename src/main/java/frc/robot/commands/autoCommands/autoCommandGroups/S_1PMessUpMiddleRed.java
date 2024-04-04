@@ -28,7 +28,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class S_1PMessUpMiddle extends SequentialCommandGroup {
+public class S_1PMessUpMiddleRed extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -40,7 +40,7 @@ public class S_1PMessUpMiddle extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public S_1PMessUpMiddle(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public S_1PMessUpMiddleRed(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -50,13 +50,13 @@ public class S_1PMessUpMiddle extends SequentialCommandGroup {
 
     addCommands(
       new SequentialCommandGroup(      
-        new RunCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)).withTimeout(0.2),
+        new RunCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.redBottomStartingPose)).withTimeout(0.2),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueMidGetOutOfWay).withTimeout(4),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueM5Pose).withTimeout(4),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueM1_5Pose).withTimeout(4),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.redMidGetOutOfWay).withTimeout(2),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.blueM1_5Pose.getTranslation(), Rotation2d.fromDegrees(-130.0))).withTimeout(2),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.blueM5Pose.getTranslation(), Rotation2d.fromDegrees(-130.0))).withTimeout(2),
 
         new InstantCommand(() -> m_driveSubsystem.setX())
       )

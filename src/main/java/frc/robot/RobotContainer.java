@@ -11,7 +11,7 @@ import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AmpShootCommandGroup;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ExtendClimberCommand;
+import frc.robot.commands.RetractClimberCommand;
 import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToAngleCommand;
 import frc.robot.commands.GoToNoteCommand;
@@ -22,10 +22,11 @@ import frc.robot.commands.IndexCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeShootCommand;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.OuttakeShooterConveyorCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
-import frc.robot.commands.RetractClimberCommand;
+import frc.robot.commands.ExtendClimberCommand;
 import frc.robot.commands.RevThenShootCommandGroup;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.SensorIntakeCommand;
@@ -47,7 +48,9 @@ import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevBlue;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PMessUpMiddle;
+import frc.robot.commands.autoCommands.autoCommandGroups.S_1PMessUpMiddleRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
+import frc.robot.commands.autoCommands.autoCommandGroups.S_2PBlue;
 import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -144,9 +147,9 @@ public class RobotContainer {
     // cancelling on release.
     // m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
     //m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
-    m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
-    m_operatorController.povUp().whileTrue(new OuttakeCommand(m_conveyorSubsystem, false));
+    m_operatorController.y().whileTrue(new RetractClimberCommand(m_climberSubsystem));
+    m_operatorController.a().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
+    m_operatorController.povUp().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
     m_operatorController.leftTrigger().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));
     m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
@@ -224,6 +227,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");''
 
-    return new S_1PRed(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    return new S_2PBlue(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
   }
 }

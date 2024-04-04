@@ -38,7 +38,7 @@ public class OuttakeShooterConveyorCommand extends Command {
   @Override
   public void execute() {
     m_conveyorSubsystem.runConveyorSpeed(0.15);
-    m_shooterSubsystem.runShooterSpeed(-2);
+    m_shooterSubsystem.runShooterSpeed(-12);
   }
 
   // Called once the command ends or is interrupted.

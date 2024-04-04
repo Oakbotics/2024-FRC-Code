@@ -210,9 +210,16 @@ public final class Constants {
     
     public static final Pose2d bottomGetOutOfWay = new Pose2d(5.00, 5.6, Rotation2d.fromDegrees(0.0)); //set later
    
-    public static final Pose2d midGetOutOfWay = new Pose2d(2.6, 1.96, Rotation2d.fromDegrees(-60.0));
-    public static final Pose2d m1_5Pose = new Pose2d(8.45, 6.58, Rotation2d.fromDegrees(-60.0));
-    public static final Pose2d m5Pose = new Pose2d(8.5, 0.97, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d blueMidGetOutOfWay = new Pose2d(2.6, 1.96, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d blueM1_5Pose = new Pose2d(8.45, 6.58, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d blueM5Pose = new Pose2d(8.5, 0.97, Rotation2d.fromDegrees(-60.0));
+
+    public static final Pose2d blueM4GetOutOfWayPose = new Pose2d(5.21, 1.11, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d blueM4LineupPose = new Pose2d(7.57, 3.38, Rotation2d.fromDegrees(-60.0));
+
+    public static final Pose2d redMidGetOutOfWay = new Pose2d(12.92, 2.15, Rotation2d.fromDegrees(-130.00));
+    // public static final Pose2d redM1_5Pose = new Pose2d(8.27, 6.88, Rotation2d.fromDegrees(-60.0));
+    // public static final Pose2d redM5Pose = new Pose2d(8.5, 0.97, Rotation2d.fromDegrees(-60.0));
     
   }
 }

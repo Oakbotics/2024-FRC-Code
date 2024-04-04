@@ -6,11 +6,17 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix.led.*;
+
 
 public class CandleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
+
+
+  // private final CANdle m_candle;
+
   public CandleSubsystem() {
-      
+    
   }
 
   /**
