@@ -17,7 +17,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
@@ -52,7 +52,7 @@ public class M_4PRevRed extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
@@ -65,7 +65,7 @@ public class M_4PRevRed extends SequentialCommandGroup {
         ),
         new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3LineupPose),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bluePodiumNoteLineupPose),
 
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
@@ -79,7 +79,7 @@ public class M_4PRevRed extends SequentialCommandGroup {
         new InstantCommand(() -> m_driveSubsystem.setX()),
         new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1LineupPose).alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueAmpNoteLineupPose).alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(0))).withTimeout(3)

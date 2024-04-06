@@ -6,17 +6,50 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.CANdleConstants;
+
 import com.ctre.phoenix.led.*;
+import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.ctre.phoenix.led.CANdle.VBatOutputMode;
+import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+
 
 
 public class CandleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
 
-  // private final CANdle m_candle;
+  private final CANdle m_candle;
+  private final int ledCount = 28;
 
   public CandleSubsystem() {
+
+    m_candle = new CANdle(CANdleConstants.CANdleCanID);
+
+    CANdleConfiguration configAll = new CANdleConfiguration();
+    configAll.statusLedOffWhenActive = false;
+    configAll.disableWhenLOS = false;
+    configAll.stripType = LEDStripType.GRB;
+    configAll.brightnessScalar = 0.5;
+    configAll.vBatOutputMode = VBatOutputMode.On;   
     
+    
+    m_candle.configAllSettings(configAll, 100);
+    setRainbowAnimation();
+
+  }
+
+
+  public void setRainbowAnimation(){
+    m_candle.animate(new RainbowAnimation(1, 0.3, ledCount, true, 0));
+  }
+
+  public void setRed(){
+    m_candle.setLEDs(255, 0, 0, 0, 0, ledCount);
+  }
+  public void setGreen(){
+    m_candle.animate(new ColorFlowAnimation(0, 255, 0, 0, 0.7, ledCount, Direction.Forward));
   }
 
   /**

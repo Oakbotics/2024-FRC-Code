@@ -19,7 +19,7 @@ import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.subsystems.ConveyorSubsystem;

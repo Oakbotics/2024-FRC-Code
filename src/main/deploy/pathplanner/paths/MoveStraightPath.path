@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.47025552740564164,
-        "y": 4.443778688127177
+        "x": 1.42,
+        "y": 5.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.5202555274056416,
-        "y": 4.443778688127177
+        "x": 1.4699999999999998,
+        "y": 5.6
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.21,
-        "y": 1.1109446720317941
+        "x": 4.71,
+        "y": 1.11
       },
       "prevControl": {
-        "x": 5.16,
-        "y": 1.1109446720317941
+        "x": 4.66,
+        "y": 1.11
       },
       "nextControl": {
-        "x": 5.26,
-        "y": 1.1109446720317941
+        "x": 4.76,
+        "y": 1.11
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,40 @@
         "y": 3.3796106338682113
       },
       "prevControl": {
-        "x": 7.003052474617442,
-        "y": 2.7598204484188944
+        "x": 6.948817088517369,
+        "y": 2.8416795295129056
+      },
+      "nextControl": {
+        "x": 8.188397459403948,
+        "y": 3.917541738223517
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8792513425482693,
+        "y": 4.1046482092964185
+      },
+      "prevControl": {
+        "x": 5.568906864303429,
+        "y": 4.057871591529727
+      },
+      "nextControl": {
+        "x": 0.18959582079310966,
+        "y": 4.15142482706311
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 13.684650047362773,
+        "y": 4.0695657459691
+      },
+      "prevControl": {
+        "x": 6.937122934077941,
+        "y": 4.110495286516105
       },
       "nextControl": null,
       "isLocked": false,
@@ -60,6 +92,9 @@
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": -60.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

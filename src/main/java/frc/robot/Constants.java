@@ -194,15 +194,15 @@ public final class Constants {
     public static final Pose2d rC1Pose = new Pose2d(3.02, 4.03, Rotation2d.fromDegrees(0.0));  //RED AMP
     public static final Pose2d rC3Pose = new Pose2d(3.02, 7.35, Rotation2d.fromDegrees(0.0));  //RED PODIUM
 
-    public static final Pose2d rC1LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0)); //RED AMP
-    public static final Pose2d rC3LineupPose = new Pose2d(2.52, 7.35, Rotation2d.fromDegrees(0.0)); //RED PODIUM
+    public static final Pose2d redAmpNoteLineupPose = new Pose2d(2.27, 4.08, Rotation2d.fromDegrees(0.0)); //RED AMP
+    public static final Pose2d redPodiumNoteLineupPose = new Pose2d(2.00, 7.3, Rotation2d.fromDegrees(0.0)); //RED PODIUM
 
     
 
     // public static final Pose2d bC1LineupPose = new Pose2d(2.52, 7.3, Rotation2d.fromDegrees(0.0));
     // public static final Pose2d bC3LineupPose = new Pose2d(2.52, 4.03, Rotation2d.fromDegrees(0.0));
-    public static final Pose2d bC1LineupPose = new Pose2d(2.27, 7.3, Rotation2d.fromDegrees(0.0));
-    public static final Pose2d bC3LineupPose = new Pose2d(2.27, 4.03, Rotation2d.fromDegrees(0.0));
+    public static final Pose2d blueAmpNoteLineupPose = new Pose2d(2.27, 7.25, Rotation2d.fromDegrees(0.0)); // BLUE AMP
+    public static final Pose2d bluePodiumNoteLineupPose = new Pose2d(2.00, 4.03, Rotation2d.fromDegrees(0.0)); // BLUE PODIUM
 
     public static final Pose2d topFarShootPose = new Pose2d(3.35, 6.5, Rotation2d.fromDegrees(25)); //set later
     public static final Pose2d middleFarShootPose = new Pose2d(3.63, 5.6, Rotation2d.fromDegrees(0.0)); //set later
@@ -214,7 +214,7 @@ public final class Constants {
     public static final Pose2d blueM1_5Pose = new Pose2d(8.45, 6.58, Rotation2d.fromDegrees(-60.0));
     public static final Pose2d blueM5Pose = new Pose2d(8.5, 0.97, Rotation2d.fromDegrees(-60.0));
 
-    public static final Pose2d blueM4GetOutOfWayPose = new Pose2d(5.21, 1.11, Rotation2d.fromDegrees(-60.0));
+    public static final Pose2d blueM4GetOutOfWayPose = new Pose2d(4.71, 1.11, Rotation2d.fromDegrees(-60.0));
     public static final Pose2d blueM4LineupPose = new Pose2d(7.57, 3.38, Rotation2d.fromDegrees(-60.0));
 
     public static final Pose2d redMidGetOutOfWay = new Pose2d(12.92, 2.15, Rotation2d.fromDegrees(-130.00));

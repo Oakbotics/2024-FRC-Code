@@ -19,7 +19,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.SetGyroAllianceRelative;
 import frc.robot.commands.ShootCommand;
@@ -54,16 +54,18 @@ public class S_1PRed extends SequentialCommandGroup {
       new SequentialCommandGroup(      
         new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new RunCommand(()-> {}).withTimeout(8),
+    
         
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(2),
+          // new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(2),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomGetOutOfWay)
         ),  
     
         new InstantCommand(() -> m_driveSubsystem.setX()),
-        new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        // new PnuematicsReverseCommand(m_pnuematicSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
         new SetGyroAllianceRelative(driveSubsystem, 60)
         // new InstantCommand(() -> m_driveSubsystem.setGyroYaw(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 60 : -60))

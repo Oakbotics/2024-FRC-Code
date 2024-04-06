@@ -7,14 +7,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 /**
  * A complex auto command that drives forward, releases a hatch, and then drives backward.
  */
-public class RevThenShootCommandGroup extends SequentialCommandGroup {
+public class AutoRevThenShootCommandGroup extends SequentialCommandGroup {
 
     
-  public RevThenShootCommandGroup(ConveyorSubsystem m_conveyorSubsystem, ShooterSubsystem m_shooterSubsystem){
+  public AutoRevThenShootCommandGroup(ConveyorSubsystem m_conveyorSubsystem, ShooterSubsystem m_shooterSubsystem){
 
     addCommands(
-     new ShootCommand(m_shooterSubsystem).withTimeout(1.5),
-     new ShootCommand(m_shooterSubsystem).alongWith(new ConveyorCommand(m_conveyorSubsystem)).withTimeout(0.5)
+     new AutoShootCommand(m_shooterSubsystem).withTimeout(1.5),
+     new AutoShootCommand(m_shooterSubsystem).alongWith(new ConveyorCommand(m_conveyorSubsystem)).withTimeout(0.5)
 
     );
 

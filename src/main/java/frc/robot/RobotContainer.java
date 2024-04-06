@@ -11,7 +11,7 @@ import frc.robot.commands.AmpShootCommand;
 import frc.robot.commands.AmpShootCommandGroup;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.RetractClimberCommand;
+import frc.robot.commands.ExtendClimberCommand;
 import frc.robot.commands.GoToAmpCommand;
 import frc.robot.commands.GoToAngleCommand;
 import frc.robot.commands.GoToNoteCommand;
@@ -26,8 +26,8 @@ import frc.robot.commands.OuttakeShooterConveyorCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
-import frc.robot.commands.ExtendClimberCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.RetractClimberCommand;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
@@ -43,8 +43,9 @@ import frc.robot.commands.autoCommands.autoCommandGroups.B_2PMiddleLineRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_3P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlue;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignRed;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignRedAmp;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignRedPodium;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevBlue;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevRed;
 import frc.robot.commands.autoCommands.autoCommandGroups.S_1PMessUpMiddle;
@@ -58,6 +59,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import java.io.IOException;
@@ -93,6 +95,7 @@ public class RobotContainer {
   private final NoteLimelightSubsystem m_noteLimelightSubsystem = new NoteLimelightSubsystem();
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(m_aprilTagLimelightSubsystem);
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  private final CandleSubsystem m_candleSubsystem = new CandleSubsystem();
 
   // private final SendableChooser<String> autoChooser;
   private final PnuematicSubsystem m_pnuematicSubsystem = new PnuematicSubsystem();
@@ -147,18 +150,18 @@ public class RobotContainer {
     // cancelling on release.
     // m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
     //m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.y().whileTrue(new RetractClimberCommand(m_climberSubsystem));
-    m_operatorController.a().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
+    // m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
+    // m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
     m_operatorController.povUp().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    m_operatorController.leftTrigger().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.leftTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    
-    
+    m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));    
     // operator controls for shoot while rev - shoot command and rev command
     // switched rev up to left bumper, and shoot piece to right trigger
     m_operatorController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.leftBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
+
+
 
     m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
     // m_driverController.leftBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
@@ -187,16 +190,22 @@ public class RobotContainer {
         () -> m_conveyorSubsystem.getNoteAligned() == true
 
       ).onTrue(
-        new RunCommand(() -> {
-            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
-        }
+        new InstantCommand(()-> m_candleSubsystem.setGreen())
+        .andThen(
+          new RunCommand(() -> {
+              m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
+          })
         )
-        .withTimeout(2).andThen(new InstantCommand(() -> {
+        .withTimeout(2)
+        .andThen(
+          new InstantCommand(() -> {
           m_operatorController.getHID().setRumble(RumbleType.kBothRumble, 0);
-
-        })
+          m_candleSubsystem.setRainbowAnimation();
+          })
         )
     );
+
+
 
     new Trigger(
         () -> m_conveyorSubsystem.getSensorTriggered() == true
@@ -205,7 +214,6 @@ public class RobotContainer {
         new RunCommand(() -> {
             m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
             m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
-
         }
         )
         .withTimeout(2).andThen(new InstantCommand(() -> {
@@ -227,6 +235,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");''
 
-    return new S_2PBlue(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
+    return new M_4PNoteAlignBlueAmp(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
   }
 }

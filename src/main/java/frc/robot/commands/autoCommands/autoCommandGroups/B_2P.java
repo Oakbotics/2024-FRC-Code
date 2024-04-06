@@ -17,7 +17,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
@@ -53,7 +53,7 @@ public class B_2P extends SequentialCommandGroup {
         
         new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(5),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3Pose).withTimeout(5)
@@ -62,7 +62,7 @@ public class B_2P extends SequentialCommandGroup {
         // new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.2),
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomStartingPose).withTimeout((2)),
         new InstantCommand(() -> m_driveSubsystem.setX()),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       )
     );
   }

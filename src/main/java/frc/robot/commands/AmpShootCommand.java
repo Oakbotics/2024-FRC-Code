@@ -33,7 +33,7 @@ public class AmpShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooterSubsystem.runShooterSpeed(2.5);
+    m_shooterSubsystem.runShooterSpeed(2.0);
   }
 
   // Called once the command ends or is interrupted.

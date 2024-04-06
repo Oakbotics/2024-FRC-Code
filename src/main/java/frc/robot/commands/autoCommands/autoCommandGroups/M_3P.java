@@ -17,7 +17,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
@@ -51,7 +51,7 @@ public class M_3P extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleFarShootPose).withTimeout(1.5)
@@ -59,7 +59,7 @@ public class M_3P extends SequentialCommandGroup {
         // new GoToAutoPositioCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
           // use this line ^^ if GoToSpeakerCommand doesnt workn
         new PnuematicsReverseCommand(m_pnuematicSubsystem).withTimeout(0.5),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
         new ParallelCommandGroup(
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(8.3, 4.1, Rotation2d.fromDegrees(0))),
@@ -68,7 +68,7 @@ public class M_3P extends SequentialCommandGroup {
         new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(3.35, 4.4, Rotation2d.fromDegrees(0))).withTimeout(2),
         new InstantCommand(() -> m_driveSubsystem.setX()),
         new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       ) 
     );
   }

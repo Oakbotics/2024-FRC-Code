@@ -28,7 +28,7 @@ public class RetractClimberCommand extends Command {
   @Override
   public void initialize() {
 
-    m_climberSubsystem.setClimberSpeed(0.5);
+    m_climberSubsystem.setClimberSpeed(-0.5);
 
   }
 
@@ -45,7 +45,7 @@ public class RetractClimberCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climberSubsystem.getEncoderValue() > 400){
+    if(m_climberSubsystem.getEncoderValue() < 5){
       return true;
     }
      return false;

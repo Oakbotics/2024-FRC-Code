@@ -18,7 +18,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
@@ -30,7 +30,7 @@ import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class M_4PNoteAlignRed extends SequentialCommandGroup {
+public class M_4PNoteAlignRedPodium extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
@@ -43,7 +43,7 @@ public class M_4PNoteAlignRed extends SequentialCommandGroup {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public M_4PNoteAlignRed(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem, NoteLimelightSubsystem noteLimelightSubsystem) {
+  public M_4PNoteAlignRedPodium(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem, NoteLimelightSubsystem noteLimelightSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
@@ -56,7 +56,7 @@ public class M_4PNoteAlignRed extends SequentialCommandGroup {
       new SequentialCommandGroup(
         new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
@@ -69,7 +69,7 @@ public class M_4PNoteAlignRed extends SequentialCommandGroup {
         ),
         new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC3LineupPose),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.redPodiumNoteLineupPose).withTimeout(2),
 
         new GoToNoteCommandGroup(conveyorSubsystem, driveSubsystem, shooterSubsystem, m_noteLimelightSubsystem, pnuematicSubsystem).withTimeout(2),
 
@@ -80,7 +80,8 @@ public class M_4PNoteAlignRed extends SequentialCommandGroup {
         new InstantCommand(() -> m_driveSubsystem.setX()),
         new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1LineupPose).alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.redAmpNoteLineupPose).withTimeout(2)
+          .alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
         new GoToNoteCommandGroup(conveyorSubsystem, driveSubsystem, shooterSubsystem, m_noteLimelightSubsystem, pnuematicSubsystem).withTimeout(2),
 
         new ParallelCommandGroup(

@@ -18,7 +18,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
@@ -52,7 +52,7 @@ public class S_1PMessUpMiddle extends SequentialCommandGroup {
       new SequentialCommandGroup(      
         new RunCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)).withTimeout(0.2),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueMidGetOutOfWay).withTimeout(4),
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueM5Pose).withTimeout(4),

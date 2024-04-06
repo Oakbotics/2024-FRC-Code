@@ -17,7 +17,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
@@ -52,19 +52,20 @@ public class T_2P extends SequentialCommandGroup {
 
         new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.topStartingPose)),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new RunCommand(()-> {}).withTimeout(8),
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(60))).withTimeout(5)
         ),
         // new ParallelCommandGroup(
         //   new PnuematicsReverseCommand(m_pnuematicSubsystem),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.topStartingPose).withTimeout(3),
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.topStartingPose).withTimeout(3),
         
         // use this ^^ line if GoToSpeakerCommand doesnt work
         // new GoToSpeakerCommand(m_driveSubsystem),
-        new InstantCommand(() -> m_driveSubsystem.setX()),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new InstantCommand(() -> m_driveSubsystem.setX())
+        // new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       )
     );
   }

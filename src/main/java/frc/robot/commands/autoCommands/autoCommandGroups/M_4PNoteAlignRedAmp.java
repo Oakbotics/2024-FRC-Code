@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.GoToNoteCommandGroup;
 import frc.robot.commands.GoToPositionCommand;
 import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -20,65 +21,78 @@ import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.ShootCommandGroup;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class M_4P extends SequentialCommandGroup {
+public class M_4PNoteAlignRedAmp extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_driveSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
   private final ConveyorSubsystem m_conveyorSubsystem;
   private final PnuematicSubsystem m_pnuematicSubsystem;
+  private final NoteLimelightSubsystem m_noteLimelightSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public M_4P(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem) {
+  public M_4PNoteAlignRedAmp(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem, ConveyorSubsystem conveyorSubsystem, PnuematicSubsystem pnuematicSubsystem, NoteLimelightSubsystem noteLimelightSubsystem) {
     m_driveSubsystem = driveSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
     m_pnuematicSubsystem = pnuematicSubsystem;
+    m_noteLimelightSubsystem = noteLimelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_driveSubsystem);
 
     addCommands(
       new SequentialCommandGroup(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.middleStartingPose)),
+        new InstantCommand(()-> m_driveSubsystem.resetOdometry(new Pose2d(AutoConstants.middleStartingPose.getX() + 0.02, AutoConstants.middleStartingPose.getY(), Rotation2d.fromDegrees(0)))),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
+        
+        new RunCommand(()->{}).withTimeout(2),
         new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+
         new ParallelCommandGroup(
           new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
           new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC2Pose)
         ),
         // new GoToAutoPositioCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
           // use this line ^^ if GoToSpeakerCommand doesnt workn
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleStartingPose).withTimeout(3),
-        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new ParallelCommandGroup(
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.middleStartingPose).withTimeout(1.5),
+          new ShootCommand(shooterSubsystem).withTimeout(1.5)
+        ),
+        new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bluePodiumNoteLineupPose),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.redAmpNoteLineupPose).withTimeout(2),
+
+        new GoToNoteCommandGroup(conveyorSubsystem, driveSubsystem, shooterSubsystem, m_noteLimelightSubsystem, pnuematicSubsystem).withTimeout(2),
 
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC3Pose.getTranslation(), Rotation2d.fromDegrees(0)))
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.subwooferShootSafe).withTimeout(1.5),
+          new ShootCommand(shooterSubsystem).withTimeout(1.5)
         ),
-        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.subwooferShootSafe).withTimeout(2),
         new InstantCommand(() -> m_driveSubsystem.setX()),
-        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
 
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueAmpNoteLineupPose).alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
-        new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
-          new GoToAutoPositionCommand(m_driveSubsystem,()->  new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(0))).withTimeout(3)
-        ),
-        new GoToAutoPositionCommand(m_driveSubsystem,()->  AutoConstants.subwooferShootSafe).withTimeout(2),
-        new InstantCommand(() -> m_driveSubsystem.setX()),
-        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.redPodiumNoteLineupPose).withTimeout(2)
+        //   .alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
+        // new GoToNoteCommandGroup(conveyorSubsystem, driveSubsystem, shooterSubsystem, m_noteLimelightSubsystem, pnuematicSubsystem).withTimeout(2),
+
+        // new ParallelCommandGroup(
+        //   new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.subwooferShootSafe).withTimeout(1.5),
+        //   new ShootCommand(shooterSubsystem).withTimeout(1.5)
+        // // ),
+        // new InstantCommand(() -> m_driveSubsystem.setX()),
+        // new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)              
       ) 
     );
   }

@@ -19,7 +19,7 @@ import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
@@ -57,18 +57,19 @@ public class S_2PBlue extends SequentialCommandGroup {
       new SequentialCommandGroup(      
         new RunCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.bottomStartingPose)).withTimeout(0.2),
         new PnuematicsForwardCommand(m_pnuematicSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
         
         new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueM4GetOutOfWayPose).withTimeout(3),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueM4LineupPose).withTimeout(2),
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.blueM4LineupPose).withTimeout(2),
 
-        new GoToNoteCommandGroup(conveyorSubsystem, driveSubsystem, shooterSubsystem, m_noteLimelightSubsystem, pnuematicSubsystem).withTimeout(2),
-        new GoToAutoPositionCommand(driveSubsystem, ()-> AutoConstants.blueM4GetOutOfWayPose).withTimeout(2),
-        new ParallelCommandGroup(
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomStartingPose).withTimeout(3),
-          new ShootCommand(shooterSubsystem).withTimeout(2.5)
-        ),
-        new InstantCommand(() -> m_driveSubsystem.setX()),
+        // new GoToNoteCommandGroup(conveyorSubsystem, driveSubsystem, shooterSubsystem, m_noteLimelightSubsystem, pnuematicSubsystem).withTimeout(2),
+
+        // new GoToAutoPositionCommand(driveSubsystem, ()-> AutoConstants.blueM4GetOutOfWayPose).withTimeout(2),
+        // new ParallelCommandGroup(
+        //   new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bottomStartingPose).withTimeout(3),
+        //   new ShootCommand(shooterSubsystem).withTimeout(2.5)
+        // ),
+        // new InstantCommand(() -> m_driveSubsystem.setX()),
         new ShootCommandGroup(conveyorSubsystem, shooterSubsystem)
 
 
