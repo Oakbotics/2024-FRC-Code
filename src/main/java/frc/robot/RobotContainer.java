@@ -148,32 +148,14 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    // m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
-    //m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    // m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
-    // m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
-    m_operatorController.povUp().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    m_operatorController.leftTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));    
-    // operator controls for shoot while rev - shoot command and rev command
-    // switched rev up to left bumper, and shoot piece to right trigger
-    m_operatorController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_operatorController.leftBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
-
-
-
-    m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
-    // m_driverController.leftBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
+  
+    m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+    m_driverController.leftTrigger().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));  
+    m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
-    // m_driverController.leftBumper().whileTrue(new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
-    m_driverController.rightBumper().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
-    // m_driverController.povLeft().whileTrue(new GoToAngle(m_pnuematicSubsystem, m_driveSubsystem));
-    // m_driverController.x().whileTrue(new GoToAutoPositionCommand(m_driveSubsystem,()-> AutoConstants.bC2Pose).withTimeout(2));
-
-    // m_driverController.povRight().whileTrue(new TestingGoToPositionCommand(m_driveSubsystem));
 
     m_driveSubsystem.setDefaultCommand(
         // The left stick controls translation of the robot.
