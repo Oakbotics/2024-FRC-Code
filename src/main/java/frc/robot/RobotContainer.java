@@ -150,7 +150,8 @@ public class RobotContainer {
     // cancelling on release.
   
     m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    m_driverController.leftTrigger().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));  
+    m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    m_driverController.a().toggleOnTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
@@ -162,31 +163,11 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right st
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * 0.75 * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * 0.75 * (1.5 - m_driverController.getLeftTriggerAxis()) , OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
-
-    new Trigger(
-        () -> m_conveyorSubsystem.getNoteAligned() == true
-
-      ).onTrue(
-        new InstantCommand(()-> m_candleSubsystem.setGreen())
-        .andThen(
-          new RunCommand(() -> {
-              m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
-          })
-        )
-        .withTimeout(2)
-        .andThen(
-          new InstantCommand(() -> {
-          m_operatorController.getHID().setRumble(RumbleType.kBothRumble, 0);
-          m_candleSubsystem.setRainbowAnimation();
-          })
-        )
-    );
-
 
 
     new Trigger(
