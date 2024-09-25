@@ -155,7 +155,7 @@ public class RobotContainer {
     m_operatorController.povUp().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
     m_operatorController.leftTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));    
+    // m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));    
     // operator controls for shoot while rev - shoot command and rev command
     // switched rev up to left bumper, and shoot piece to right trigger
     m_operatorController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
