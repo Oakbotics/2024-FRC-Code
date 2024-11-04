@@ -66,11 +66,11 @@ public class GoToNoteCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
 
-    SmartDashboard.putNumber("unwrapped rotation", botPoseRot);      
-    SmartDashboard.putNumber("Set Point X", xSetPoint);
-    SmartDashboard.putNumber("Set Point Y", ySetPoint);
-    SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
-    SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
+    // SmartDashboard.putNumber("unwrapped rotation", botPoseRot);      
+    // SmartDashboard.putNumber("Set Point X", xSetPoint);
+    // SmartDashboard.putNumber("Set Point Y", ySetPoint);
+    // SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
+    // SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
 
 
     // if(Math.abs(botPoseRot - rotSetPoint) > 2){

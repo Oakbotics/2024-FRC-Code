@@ -5,21 +5,10 @@ package frc.robot.commands.autoCommands;
 // the WPILib BSD license file in the root directory of this project.
 
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.AprilTagLimelightSubsystem;
-
 import java.util.function.Supplier;
-
-import com.pathplanner.lib.util.GeometryUtil;
-import com.pathplanner.lib.util.PIDConstants;
-import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.proto.Controller;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -70,9 +59,9 @@ public class GoToAutoPositionCommand extends Command {
   @Override
   public void execute() {
     
-    SmartDashboard.putNumber("Set Point X", m_goToPose.getX());
-    SmartDashboard.putNumber("Set Point Y", m_goToPose.getY());
-    SmartDashboard.putNumber("Set Point Rot", m_goToPose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("Set Point X", m_goToPose.getX());
+    // SmartDashboard.putNumber("Set Point Y", m_goToPose.getY());
+    // SmartDashboard.putNumber("Set Point Rot", m_goToPose.getRotation().getDegrees());
     
 
     double botPoseX = m_driveSubsystem.getPose().getX();

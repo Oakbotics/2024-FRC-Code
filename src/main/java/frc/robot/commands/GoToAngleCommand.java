@@ -58,7 +58,7 @@ public class GoToAngleCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Set Point Rot", m_angle.getDegrees());
+    // SmartDashboard.putNumber("Set Point Rot", m_angle.getDegrees());
     
 
     double botPoseX = m_driveSubsystem.getPose().getX();

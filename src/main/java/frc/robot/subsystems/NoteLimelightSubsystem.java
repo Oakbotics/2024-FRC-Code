@@ -70,8 +70,8 @@ public class NoteLimelightSubsystem extends SubsystemBase {
  
   @Override
   public void periodic() {
-    double tx = m_limelightTable.getEntry("tx").getDouble(-1); 
-    double ty = m_limelightTable.getEntry("ty").getDouble(-1);  
+    // double tx = m_limelightTable.getEntry("tx").getDouble(-1); 
+    // double ty = m_limelightTable.getEntry("ty").getDouble(-1);  
 
     // SmartDashboard.putNumber("ty", ty);
     // SmartDashboard.putNumber("tx", tx);

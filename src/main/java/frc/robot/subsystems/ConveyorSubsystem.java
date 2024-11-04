@@ -123,8 +123,8 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Bottom Lidar value", getBottomSensorValue());
-    SmartDashboard.putNumber("Top Lidar value", getSensorValue());
+    // SmartDashboard.putNumber("Bottom Lidar value", getBottomSensorValue());
+    // SmartDashboard.putNumber("Top Lidar value", getSensorValue());
 
     // SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
 
