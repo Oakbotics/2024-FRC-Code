@@ -4,27 +4,8 @@
 
 package frc.robot.commands;
 
-import javax.naming.PartialResultException;
-import javax.print.attribute.standard.OutputDeviceAssigned;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.GoToPositionCommand;
-import frc.robot.commands.GoToSpeakerCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.AutoRevThenShootCommandGroup;
-import frc.robot.commands.ShootCommand;
-import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.PnuematicSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */

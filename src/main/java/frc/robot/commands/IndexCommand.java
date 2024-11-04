@@ -13,7 +13,7 @@ public class IndexCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ConveyorSubsystem m_conveyorSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
-  private boolean useSensor = true;
+  // private boolean useSensor = true;
 
   /**
    * Creates a new IndexCommand.
@@ -23,7 +23,7 @@ public class IndexCommand extends Command {
   public IndexCommand(ConveyorSubsystem subsystem, boolean useSensor, ShooterSubsystem shooterSubsystem) {
     m_conveyorSubsystem = subsystem;
     m_shooterSubsystem = shooterSubsystem;
-    this.useSensor = useSensor;
+    // this.useSensor = useSensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }

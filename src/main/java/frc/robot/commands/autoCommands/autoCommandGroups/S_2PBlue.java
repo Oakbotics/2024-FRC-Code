@@ -24,7 +24,7 @@ public class S_2PBlue extends SequentialCommandGroup {
   private final ShooterSubsystem m_shooterSubsystem;
   private final ConveyorSubsystem m_conveyorSubsystem;
   private final PnuematicSubsystem m_pnuematicSubsystem;
-  private final NoteLimelightSubsystem m_noteLimelightSubsystem;
+  // private final NoteLimelightSubsystem m_noteLimelightSubsystem;
 
   /**
    * Creates a new ExampleCommand.
@@ -36,7 +36,7 @@ public class S_2PBlue extends SequentialCommandGroup {
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
     m_pnuematicSubsystem = pnuematicSubsystem;
-    m_noteLimelightSubsystem = noteLimelightSubsystem;
+    // m_noteLimelightSubsystem = noteLimelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_driveSubsystem);
 

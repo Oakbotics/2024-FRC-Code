@@ -6,18 +6,14 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.AprilTagLimelightSubsystem;
-
 import java.io.IOException;
 
 import com.pathplanner.lib.util.GeometryUtil;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -28,7 +24,7 @@ public class GoToSpeakerCommand extends Command {
   private final PIDController xController = DriveConstants.xController;
   private final PIDController yController = DriveConstants.yController;
   private final PIDController rotateController = DriveConstants.rotController;
-  private AprilTagFieldLayout fieldLayout;
+  // private AprilTagFieldLayout fieldLayout;
   double speakerPoseX = 0.0; // X postion of Speaker Apriltag on blue side
   double speakerPoseY = 5.6; // Y postion of Speaker Apriltag on blue side
   Pose2d speakerPose = new Pose2d(speakerPoseX, speakerPoseY, Rotation2d.fromDegrees(0));
