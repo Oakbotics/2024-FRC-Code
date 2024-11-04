@@ -28,12 +28,13 @@ public class AmpShootCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_shooterSubsystem.runShooterSpeed(2.0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooterSubsystem.runShooterSpeed(2.0);
   }
 
   // Called once the command ends or is interrupted.

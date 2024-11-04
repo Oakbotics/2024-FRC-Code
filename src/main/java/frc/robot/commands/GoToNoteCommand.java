@@ -7,17 +7,11 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.AprilTagLimelightSubsystem;
-
 import java.io.IOException;
 
-import com.pathplanner.lib.util.GeometryUtil;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -29,7 +23,6 @@ public class GoToNoteCommand extends Command {
   private final PIDController xController = DriveConstants.xController;
   private final PIDController yController = DriveConstants.yController;
   private final PIDController rotateController = DriveConstants.rotController;
-  private AprilTagFieldLayout fieldLayout;
   double xSetPoint;
   double ySetPoint;
   double rotSetPoint;
@@ -100,7 +93,7 @@ public class GoToNoteCommand extends Command {
   public boolean isFinished() {
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
+    // double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     // if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 1){
       
     if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin){  

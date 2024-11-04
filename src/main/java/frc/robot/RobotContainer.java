@@ -4,55 +4,19 @@
 
 package frc.robot;
 
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AmpShootCommand;
-import frc.robot.commands.AmpShootCommandGroup;
-import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ExtendClimberCommand;
-import frc.robot.commands.GoToAmpCommand;
-import frc.robot.commands.GoToAngleCommand;
-import frc.robot.commands.GoToNoteCommand;
-import frc.robot.commands.GoToNoteCommandGroup;
-// import frc.robot.commands.TestingGoToPositionCommand;
-import frc.robot.commands.GoToSpeakerCommand;
 import frc.robot.commands.IndexCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeShootCommand;
-import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.OuttakeShooterConveyorCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.ResetGyroUsingAprilTag;
-import frc.robot.commands.RetractClimberCommand;
-import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorBottomIntakeCommand;
-import frc.robot.commands.SensorIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.commands.TogglePnuematicsCommand;
-import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
-// import frc.robot.commands.autoCommands.autoCommandGroups.A_1P;
-// import frc.robot.commands.autoCommands.autoCommandGroups.A_MessUpMiddle;
-import frc.robot.commands.autoCommands.autoCommandGroups.B_2P;
-import frc.robot.commands.autoCommands.autoCommandGroups.B_2PMiddleLineRed;
-// import frc.robot.commands.autoCommands.autoCommandGroups.B_2PTesting;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_2P;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_3P;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignRedAmp;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignRedPodium;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevBlue;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PRevRed;
-import frc.robot.commands.autoCommands.autoCommandGroups.S_1PMessUpMiddle;
-import frc.robot.commands.autoCommands.autoCommandGroups.S_1PMessUpMiddleRed;
-import frc.robot.commands.autoCommands.autoCommandGroups.S_1PRed;
-import frc.robot.commands.autoCommands.autoCommandGroups.S_2PBlue;
-import frc.robot.commands.autoCommands.autoCommandGroups.T_2P;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
@@ -62,18 +26,9 @@ import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-import java.io.IOException;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -150,7 +105,8 @@ public class RobotContainer {
     // cancelling on release.
   
     m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    m_driverController.leftTrigger().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));  
+    m_driverController.y().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    m_driverController.a().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));  
     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
@@ -162,9 +118,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right st
         new RunCommand(
             () -> m_driveSubsystem.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * 0.75 * (1.5 - m_driverController.getLeftTriggerAxis()) * (1.25 - m_driverController.getRightTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * 0.75 * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
 
