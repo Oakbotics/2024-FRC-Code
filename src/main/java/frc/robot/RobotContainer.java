@@ -15,7 +15,6 @@ import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
