@@ -49,7 +49,7 @@ public class CandleSubsystem extends SubsystemBase {
     m_candle.setLEDs(255, 0, 0, 0, 0, ledCount);
   }
   public void setGreen(){
-    m_candle.animate(new ColorFlowAnimation(0, 255, 0, 0, 0.7, ledCount, Direction.Forward));
+    m_candle.animate(new ColorFlowAnimation(185, 59, 93, 0, 0.7, ledCount, Direction.Forward));
   }
 
   /**
