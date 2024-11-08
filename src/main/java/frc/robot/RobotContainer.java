@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GoToNoteCommandGroup;
 import frc.robot.commands.IndexCommand;
 import frc.robot.commands.OuttakeShooterConveyorCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
@@ -104,8 +105,9 @@ public class RobotContainer {
     // cancelling on release.
   
     m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    m_driverController.y().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
-    m_driverController.a().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));  
+    m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));  
     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
@@ -119,7 +121,7 @@ public class RobotContainer {
             () -> m_driveSubsystem.drive(
                 -MathUtil.applyDeadband(m_driverController.getLeftY() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX() * 0.75 * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX() * (1.5 - m_driverController.getLeftTriggerAxis()), OIConstants.kDriveDeadband),
                 true, true),
             m_driveSubsystem));
 
@@ -130,36 +132,16 @@ public class RobotContainer {
         new InstantCommand(()-> m_candleSubsystem.setGreen())
         .andThen(
           new RunCommand(() -> {
-              m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
+              m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
           })
         )
         .withTimeout(2)
         .andThen(
           new InstantCommand(() -> {
-          m_operatorController.getHID().setRumble(RumbleType.kBothRumble, 0);
-          m_candleSubsystem.setRainbowAnimation();
+            m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0);
+            m_candleSubsystem.setRainbowAnimation();
           })
         )
-    );
-
-
-
-    new Trigger(
-        () -> m_conveyorSubsystem.getSensorTriggered() == true
-
-      ).onTrue(
-        new RunCommand(() -> {
-            m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
-            m_operatorController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 1.0);
-        }
-        )
-        .withTimeout(2).andThen(new InstantCommand(() -> {
-          m_driverController.getHID().setRumble(RumbleType.kBothRumble, 0);
-          m_operatorController.getHID().setRumble(RumbleType.kBothRumble, 0);
-
-
-        })
-      )
     );
   }
   /**

@@ -31,7 +31,7 @@ public class GoToAmpCommand extends Command {
   Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
   Pose2d ampPoseRed = GeometryUtil.flipFieldPose(ampPoseBlue);
   /**
-   * Creates a new ExampleCommand.
+  //  * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
