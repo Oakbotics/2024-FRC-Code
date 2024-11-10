@@ -4,33 +4,30 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ConveyorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class AmpShootCommand extends Command {
+public class ShootingCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ShooterSubsystem m_shooterSubsystem;
-  private final ConveyorSubsystem m_conveyorSubsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AmpShootCommand(ShooterSubsystem subsystem, ConveyorSubsystem subsystem1) {
+  public ShootingCommand(ShooterSubsystem subsystem) {
     m_shooterSubsystem = subsystem;
-    m_conveyorSubsystem = subsystem1;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem, subsystem1);
-    
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.runShooterSpeed(3);
+    m_shooterSubsystem.runShooterSpeed(-10);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

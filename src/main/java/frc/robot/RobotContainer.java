@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AmpShootCommandGroup;
+import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IndexCommand;
 import frc.robot.commands.OuttakeShooterConveyorCommand;
@@ -15,7 +17,7 @@ import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
-import frc.robot.subsystems.ClimberSubsystem;
+// import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -104,11 +106,14 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
   
-    m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+  //  m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+  m_driverController.b().whileTrue(new ConveyorCommand(m_conveyorSubsystem));
     m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
     m_driverController.a().toggleOnTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
-    m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
+   // m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+   m_driverController.rightTrigger().whileTrue(new ShootCommand(m_shooterSubsystem));
+    //m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
+    m_driverController.rightBumper().whileTrue(new AmpShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_aprilTagLimelightSubsystem, m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
