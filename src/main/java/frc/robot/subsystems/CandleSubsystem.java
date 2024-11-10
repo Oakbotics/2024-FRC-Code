@@ -35,15 +35,15 @@ public class CandleSubsystem extends SubsystemBase {
     configAll.vBatOutputMode = VBatOutputMode.On;   
     
     
-    m_candle.configAllSettings(configAll, 100);
-    setRainbowAnimation();
+  //   m_candle.configAllSettings(configAll, 100);
+  //   setRainbowAnimation();
 
   }
 
 
-  public void setRainbowAnimation(){
-    m_candle.animate(new RainbowAnimation(1, 0.3, ledCount, true, 0));
-  }
+  // public void setRainbowAnimation(){
+  //   m_candle.animate(new RainbowAnimation(1, 0.3, ledCount, true, 0));
+  // }
 
   public void setRed(){
     m_candle.setLEDs(255, 0, 0, 0, 0, ledCount);

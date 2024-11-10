@@ -70,9 +70,9 @@ public class GoToAutoPositionCommand extends Command {
   @Override
   public void execute() {
     
-    SmartDashboard.putNumber("Set Point X", m_goToPose.getX());
-    SmartDashboard.putNumber("Set Point Y", m_goToPose.getY());
-    SmartDashboard.putNumber("Set Point Rot", m_goToPose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("Set Point X", m_goToPose.getX());
+    // SmartDashboard.putNumber("Set Point Y", m_goToPose.getY());
+    // SmartDashboard.putNumber("Set Point Rot", m_goToPose.getRotation().getDegrees());
     
 
     double botPoseX = m_driveSubsystem.getPose().getX();

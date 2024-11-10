@@ -73,9 +73,9 @@ public class GoToPositionCommand extends Command {
   @Override
   public void execute() {
     
-    SmartDashboard.putNumber("Set Point X", ampPoseXBlue);
-    SmartDashboard.putNumber("Set Point Y", ampPoseY);
-    SmartDashboard.putNumber("Set Point Rot", ampPoseRot);
+    // SmartDashboard.putNumber("Set Point X", ampPoseXBlue);
+    // SmartDashboard.putNumber("Set Point Y", ampPoseY);
+    // SmartDashboard.putNumber("Set Point Rot", ampPoseRot);
     
 
     double botPoseX = m_driveSubsystem.getPose().getX();
