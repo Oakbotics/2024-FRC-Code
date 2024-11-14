@@ -6,6 +6,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -25,6 +28,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -104,17 +108,72 @@ public class DriveSubsystem extends SubsystemBase {
         this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(5.0, 0.0, 0.0),// Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0),// Rotation
-            5.5, // Max module speed, in m/s
+            new PIDConstants(7, 0.0, 0.0),// Translation PID constants
+            new PIDConstants(5, 0.0, 0.0),// Rotation
+            DriveConstants.kAutoMaxSpeedMetersPerSecond, // Max module speed, in m/s
             
-            0.368, // Drive base radius in meters. Distance from robot center to furthest module.
+            DriveConstants.kTrackWidth, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),  
-        () -> DriverStation.getAlliance().equals(DriverStation.Alliance.Red),
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+          var alliance = DriverStation.getAlliance();
+          return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+        },
         this // Reference to this subsystem to set requirements
     );
 }
+
+// On the fly Path planner Methods
+  public Command findPath(PathPlannerPath path, PathConstraints constraints, double rotationDelay) {
+    return AutoBuilder.pathfindThenFollowPath(
+                path,
+                constraints,
+                rotationDelay // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+    );
+  }
+
+  public Command findPathToPose(double x, double y, double rotation, boolean isRedAlliance) {
+    if (isRedAlliance) {
+      return AutoBuilder.pathfindToPoseFlipped(new Pose2d(new Translation2d(x, y), new Rotation2d(Math.toRadians(rotation))), new PathConstraints( DriveConstants.kAutoMaxSpeedMetersPerSecond, 0.5 , DriveConstants.kAutoMaxAngularSpeed, 0.5));    
+    }
+    else {
+      return AutoBuilder.pathfindToPose(new Pose2d(new Translation2d(x, y), new Rotation2d(Math.toRadians(rotation))), new PathConstraints( DriveConstants.kAutoMaxSpeedMetersPerSecond, 0.5 , DriveConstants.kAutoMaxAngularSpeed, 0.5));    
+    }
+  }
+
+   public Command followPathCommand(String pathName) {        
+        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+        return new FollowPathHolonomic(
+                path,
+                this::getPose, // Robot pose supplier
+                this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(0.1, 0.0, 0.0), // Rotation PID constants
+                        4.5, // Max module speed, in m/s
+                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ),
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
+    }
+
+
+
 
 public ChassisSpeeds getChassisSpeeds(){
   // SwerveModuleState[] swerveModuleStates = {m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState()};
@@ -429,12 +488,12 @@ public void setGyroYawUsingAprilTag(){
   // 
 
   /** Resets the drive encoders to currently read a position of 0. */
-  // public void resetEncoders() {
-  //   m_frontLeft.resetEncoders();
-  //   m_rearLeft.resetEncoders();
-  //   m_frontRight.resetEncoders();
-  //   m_rearRight.resetEncoders();
-  // }
+  public void resetEncoders() {
+    m_frontLeft.resetEncoders();
+    m_rearLeft.resetEncoders();
+    m_frontRight.resetEncoders();
+    m_rearRight.resetEncoders();
+  }
 
   /** Zeroes the heading of the robot. */
   // public void zeroHeading() {

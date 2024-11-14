@@ -16,7 +16,7 @@ import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
-import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
+import frc.robot.commands.autoCommands.autoCommandGroups.TestAuto;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PnuematicSubsystem;
@@ -25,6 +25,8 @@ import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -152,8 +154,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return new PathPlannerAuto("Diagonal");''
+    // return new PathPlannerAuto("Diagonal");
 
-    return new M_4PNoteAlignBlueAmp(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
+    return new TestAuto(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
   }
 }
