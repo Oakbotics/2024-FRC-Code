@@ -46,6 +46,7 @@ public class MAXSwerveModule {
     // them. This is useful in case a SPARK MAX is swapped out.
     m_drivingSparkMax.restoreFactoryDefaults();
     m_turningSparkMax.restoreFactoryDefaults();
+    
 
     // Setup encoders and PID controllers for the driving and turning SPARKS MAX.
     m_drivingEncoder = m_drivingSparkMax.getEncoder();
@@ -122,6 +123,14 @@ public class MAXSwerveModule {
     // relative to the chassis.
     return new SwerveModuleState(m_drivingEncoder.getVelocity(),
         new Rotation2d(m_turningEncoder.getPosition() - m_chassisAngularOffset));
+  }
+
+  public double getVoltage(){
+    return m_drivingSparkMax.getBusVoltage();
+  }
+
+  public void setVoltage(){
+    m_drivingSparkMax.setVoltage(m_chassisAngularOffset);
   }
 
   /**

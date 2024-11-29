@@ -39,8 +39,15 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void runShooterSpeed(double speed){
-    m_rightShooterMotor.setVoltage(-speed);
-    m_leftShooterMotor.setVoltage(-speed);
+    if(speed != 0){
+      m_rightShooterMotor.setVoltage(-speed-2);
+      m_leftShooterMotor.setVoltage(-speed);
+    }
+    else{
+      m_rightShooterMotor.setVoltage(-speed);
+      m_leftShooterMotor.setVoltage(-speed);
+    }
+    
   }
 
   public double getShooterVelocity(){

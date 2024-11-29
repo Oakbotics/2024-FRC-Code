@@ -26,7 +26,7 @@ public class ShootCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooterSubsystem.runShooterSpeed(7);
+    m_shooterSubsystem.runShooterSpeed(12);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

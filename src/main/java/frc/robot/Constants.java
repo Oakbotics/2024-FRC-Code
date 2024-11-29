@@ -59,7 +59,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kTeleopMaxSpeedMetersPerSecond = 5.5;
+    public static final double kTeleopMaxSpeedMetersPerSecond = 0.25;//5.5;
     public static final double kTeleopMaxAngularSpeed = 3.0 * Math.PI; // radians per second
 
     public static final double kAutoMaxSpeedMetersPerSecond = 5.5;
@@ -107,6 +107,9 @@ public final class Constants {
     public static final PIDController xController = new PIDController(0.75, 0,0.05);
     public static final PIDController yController = new PIDController(0.75, 0,0.05);
     public static final PIDController rotController = new PIDController(0.01, 0.0, 0.0);
+    public static double kS;
+    public static double kV;
+    public static double kA;
   }
 
 

@@ -77,20 +77,20 @@ public class M_4PNoteAlignBlueAmp extends SequentialCommandGroup {
           new ShootCommand(m_shooterSubsystem).withTimeout(1.5)
         ),
         new InstantCommand(() -> m_driveSubsystem.setX()),
-        new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
-        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bluePodiumNoteLineupPose).withTimeout(2)
-        //   .alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bluePodiumNoteLineupPose).withTimeout(2)
+          .alongWith(new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, false).withTimeout(1)),
         
-        // new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem).withTimeout(2),
+        new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem).withTimeout(2),
 
-        // new ParallelCommandGroup(
-        //   new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.subwooferShootSafe).withTimeout(1.5),
-        //   new ShootCommand(m_shooterSubsystem).withTimeout(1.5)
-        // ),
+        new ParallelCommandGroup(
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.subwooferShootSafe).withTimeout(1.5),
+          new ShootCommand(m_shooterSubsystem).withTimeout(1.5)
+        ),
 
-        // new InstantCommand(() -> m_driveSubsystem.setX()),
-        // new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)              
+        new InstantCommand(() -> m_driveSubsystem.setX()),
+        new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)              
       ) 
     );
   }

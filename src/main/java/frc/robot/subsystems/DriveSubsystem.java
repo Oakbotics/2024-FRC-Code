@@ -11,6 +11,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,7 +23,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -88,6 +91,10 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
+  SimpleMotorFeedforward driveFeedforward =
+      new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+      //Ks Voltage to overcome static friction; Kv is voltage needed for constant velocity; Ka Voltage needed for constant acceleration;
+
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(AprilTagLimelightSubsystem limelightSubsystem) {
 
@@ -149,8 +156,9 @@ private SwerveModuleState[] getModuleStates() {
 
     // SmartDashboard.putNumber("botpose x", m_odometry.getPoseMeters().getX());
     // SmartDashboard.putNumber("botpose y", m_odometry.getPoseMeters().getY());
-
-  
+    // Shuffleboard.putNumber("Front left Drive Motor Voltage", m_frontLeft.getVoltage());
+    SmartDashboard.putNumber("Front left Drive Motor Voltage", m_frontLeft.getVoltage());
+    
 
     // SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
     // SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
