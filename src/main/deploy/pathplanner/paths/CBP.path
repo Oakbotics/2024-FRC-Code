@@ -1,0 +1,68 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.29235458470917,
+        "y": 5.599912914111543
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.6326789796436741,
+        "y": 3.3570158568888573
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.890235494756704,
+        "y": 4.119307667186764
+      },
+      "prevControl": {
+        "x": 2.7133241409339983,
+        "y": 4.019285895714649
+      },
+      "nextControl": {
+        "x": 3.0671468485794113,
+        "y": 4.219329438658879
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.29235458470917,
+        "y": 5.599912914111543
+      },
+      "prevControl": {
+        "x": 0.6326789796436741,
+        "y": 5.292064298414312
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 360.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Bootcamp2024",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

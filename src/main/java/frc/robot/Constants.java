@@ -62,7 +62,7 @@ public final class Constants {
     public static final double kTeleopMaxSpeedMetersPerSecond = 5.5;
     public static final double kTeleopMaxAngularSpeed = 3.0 * Math.PI; // radians per second
 
-    public static final double kAutoMaxSpeedMetersPerSecond = 5.5;
+    public static final double kAutoMaxSpeedMetersPerSecond = 1.0;
     public static final double kAutoMaxAngularSpeed = 3.0 * Math.PI; // radians per second
 
     public static final double kSpeedLimiter = 0.5;
@@ -104,9 +104,17 @@ public final class Constants {
     
     public static final boolean kGyroReversed = false;
 
-    public static final PIDController xController = new PIDController(0.75, 0,0.05);
+    // public static final PIDController xController = new PIDController(0.75, 0,0.05);
+    // public static final PIDController yController = new PIDController(0.75, 0,0.05);
+    // public static final PIDController rotController = new PIDController(0.01, 0.0, 0.0);
+  
+    public static final PIDController xController = new PIDController(10, 0,0.0);
     public static final PIDController yController = new PIDController(0.75, 0,0.05);
     public static final PIDController rotController = new PIDController(0.01, 0.0, 0.0);
+
+    public static final double kS = 0.16;
+    public static final double kV = 2.41;
+    public static final double kA = 0.2;
   }
 
 

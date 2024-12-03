@@ -47,13 +47,13 @@ public class GoToNoteCommand extends Command {
   @Override
   public void initialize() {
 
-    double botPoseX = m_driveSubsystem.getPose().getX();
+   /*  double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     Pose2d botPose = new Pose2d(botPoseX,botPoseY, Rotation2d.fromDegrees(botPoseRot));
     xSetPoint = m_LimelightSubsystem.getNotePose(botPose).getX();
     ySetPoint = m_LimelightSubsystem.getNotePose(botPose).getY();
-    rotSetPoint = m_LimelightSubsystem.getNotePose(botPose).getRotation().getDegrees();
+    rotSetPoint = m_LimelightSubsystem.getNotePose(botPose).getRotation().getDegrees();*/
 
    }
 

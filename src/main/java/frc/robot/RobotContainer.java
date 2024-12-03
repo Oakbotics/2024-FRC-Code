@@ -9,6 +9,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GoToNoteCommandGroup;
 import frc.robot.commands.IndexCommand;
+import frc.robot.commands.KACalculatorCommand;
 import frc.robot.commands.OuttakeShooterConveyorCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
 import frc.robot.commands.PnuematicsReverseCommand;
@@ -16,6 +17,8 @@ import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
+import frc.robot.commands.autoCommands.autoCommandGroups.M_4PFF;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -106,7 +109,8 @@ public class RobotContainer {
   
     m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
     m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    // m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+    m_driverController.a().whileTrue(new KACalculatorCommand(m_driveSubsystem));
     m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));  
     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
@@ -153,7 +157,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");''
-
-    return new M_4PNoteAlignBlueAmp(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
+    return new M_4PFF(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    // return new M_4PNoteAlignBlueAmp(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
   }
 }
