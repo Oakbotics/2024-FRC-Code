@@ -184,13 +184,16 @@ public class MAXSwerveModule {
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
         new Rotation2d(m_turningEncoder.getPosition()));
 
+    driveSetPoint = optimizedDesiredState.speedMetersPerSecond;
+    
     SmartDashboard.putNumber("DriveSetPoint", driveSetPoint);
+    SmartDashboard.putNumber("DesiredState", desiredState.speedMetersPerSecond);
     arbFF = driveFeedforward.calculate(driveSetPoint, (driveSetPoint - lastDriveSetPoint) * 50);
     lastDriveSetPoint = driveSetPoint;
 
     SmartDashboard.putNumber("ArbFF", arbFF);
 
-    driveSetPoint = optimizedDesiredState.speedMetersPerSecond;
+    // driveSetPoint = optimizedDesiredState.speedMetersPerSecond;
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity, 0, arbFF);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
@@ -202,4 +205,13 @@ public class MAXSwerveModule {
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
   }
+
+  public double getEncoderVelocity(){
+    return m_drivingEncoder.getVelocity();
+  }
+
+  public SwerveModuleState getDesiredState(){
+    return m_desiredState;
+  }
+
 }

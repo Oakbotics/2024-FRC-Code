@@ -17,6 +17,7 @@ import frc.robot.commands.ResetGyroUsingAprilTag;
 import frc.robot.commands.SensorBottomIntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
+import frc.robot.commands.VelocityTuningCommand;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4P;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PFF;
 import frc.robot.commands.autoCommands.autoCommandGroups.M_4PNoteAlignBlueAmp;
@@ -107,10 +108,11 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
   
-    m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+    // m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
     m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
     // m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
     m_driverController.a().whileTrue(new KACalculatorCommand(m_driveSubsystem));
+    m_driverController.b().whileTrue(new VelocityTuningCommand(m_driveSubsystem));
     m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));  
     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));

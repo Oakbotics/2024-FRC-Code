@@ -142,6 +142,8 @@ private SwerveModuleState[] getModuleStates() {
     SmartDashboard.putNumber("Back Left State", m_rearLeft.getState().angle.getDegrees());
     SmartDashboard.putNumber("Back Right State", m_rearRight.getState().angle.getDegrees());
 
+    SmartDashboard.putNumber("OptimizedDesiredState", m_frontLeft.getDesiredState().speedMetersPerSecond);
+
     SmartDashboard.putNumber("Angle", m_gyro.getAngle());
 
     // Update the odometry in the periodic block
@@ -543,6 +545,10 @@ public void setGyroYawUsingAprilTag(){
    // return m_gyro.getYaw().getValueAsDouble();
     return Rotation2d.fromDegrees(MathUtil.inputModulus(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0), -180.0, 180.0));
 
+  }
+
+  public double getEncoderVelocity(){
+    return m_frontLeft.getEncoderVelocity();
   }
 
   /**
