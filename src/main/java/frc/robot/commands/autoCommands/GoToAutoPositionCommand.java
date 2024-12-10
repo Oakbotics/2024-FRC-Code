@@ -52,9 +52,14 @@ public class GoToAutoPositionCommand extends Command {
     // yController = new PIDController(0.75, 0,0.05);
     // rotateController = new PIDController(0.01, 0.0, 0.0);
 
-    xController = new PIDController(3.5, 0,1.75); //Best values: 0.5, 0, 1.15
-    yController = new PIDController(0.75, 0,0.05);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
+    // xController = new PIDController(3.5, 0,1.75); //Best values: 0.5, 0, 1.15
+    // yController = new PIDController(0.75, 0,0.05);
+    // rotateController = new PIDController(0.01, 0.0, 0.0);
+    
+    xController = new PIDController(1.1, 0,0.14); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(1.1, 0,0.14);
+    rotateController = new PIDController(0.03, 0.0, 0.0);
+
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -90,13 +95,14 @@ public class GoToAutoPositionCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double botPoseX = m_driveSubsystem.getPose().getX();
-    double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
+    // double botPoseX = m_driveSubsystem.getPose().getX();
+    // double botPoseY = m_driveSubsystem.getPose().getY();
+    // double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     
-    if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 3){
-      return true;
-    }
+    // if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin){
+    // // if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 3){
+    //   return true;
+    // }
     return false;
   }
 }

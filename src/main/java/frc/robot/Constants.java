@@ -62,7 +62,7 @@ public final class Constants {
     public static final double kTeleopMaxSpeedMetersPerSecond = 5.5;
     public static final double kTeleopMaxAngularSpeed = 3.0 * Math.PI; // radians per second
 
-    public static final double kAutoMaxSpeedMetersPerSecond = 1.0;
+    public static final double kAutoMaxSpeedMetersPerSecond = 3.5;
     public static final double kAutoMaxAngularSpeed = 3.0 * Math.PI; // radians per second
 
     public static final double kSpeedLimiter = 0.5;

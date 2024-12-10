@@ -51,8 +51,9 @@ public class M_4PFF extends SequentialCommandGroup {
         // ),
         // new GoToAutoPositioCommand(m_driveSubsystem, AutoConstants.middleFarShootPose),
           // use this line ^^ if GoToSpeakerCommand doesnt workn
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(3.5, 0, Rotation2d.fromDegrees(0))),
-        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(0, 0, Rotation2d.fromDegrees(0)))
+        new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(0, 0, Rotation2d.fromDegrees(180)))//.withTimeout(7)//,
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(7, 3.5, Rotation2d.fromDegrees(0))).withTimeout(7),
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(0, 0, Rotation2d.fromDegrees(0)))
         // new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
 
         // new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bluePodiumNoteLineupPose),

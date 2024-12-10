@@ -100,22 +100,22 @@ public class DriveSubsystem extends SubsystemBase {
 
     m_gyro.reset();
 
-    AutoBuilder.configureHolonomic(
-        this::getPose, // Robot pose supplier
-        this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-        this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(5.0, 0.0, 0.0),// Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0),// Rotation
-            5.5, // Max module speed, in m/s
+    // AutoBuilder.configureHolonomic(
+    //     this::getPose, // Robot pose supplier
+    //     this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+    //     this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //     this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+    //     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //         new PIDConstants(0.0, 0.0, 0.0),// Translation PID constants
+    //         new PIDConstants(0.0, 0.0, 0.0),// Rotation
+    //         5.5, // Max module speed, in m/s
             
-            0.368, // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),  
-        () -> DriverStation.getAlliance().equals(DriverStation.Alliance.Red),
-        this // Reference to this subsystem to set requirements
-    );
+    //         0.368, // Drive base radius in meters. Distance from robot center to furthest module.
+    //         new ReplanningConfig() // Default path replanning config. See the API for the options here
+    //     ),  
+    //     () -> DriverStation.getAlliance().equals(DriverStation.Alliance.Red),
+    //     this // Reference to this subsystem to set requirements
+    // );
 }
 
 public void setChassisVoltage(){
@@ -143,7 +143,10 @@ private SwerveModuleState[] getModuleStates() {
     SmartDashboard.putNumber("Back Right State", m_rearRight.getState().angle.getDegrees());
 
     SmartDashboard.putNumber("OptimizedDesiredState", m_frontLeft.getDesiredState().speedMetersPerSecond);
-
+    if(DriverStation.isAutonomous()) SmartDashboard.putNumber("Sysid Vel", getChassisSpeeds().vxMetersPerSecond);
+    if(DriverStation.isAutonomous()) SmartDashboard.putNumber("Sysid Encoder Vel", getEncoderVelocity());
+    if(DriverStation.isAutonomous()) SmartDashboard.putNumber("botpose x auto", m_odometry.getPoseMeters().getX());
+    if(DriverStation.isAutonomous()) SmartDashboard.putNumber("botpose y auto", m_odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Angle", m_gyro.getAngle());
 
     // Update the odometry in the periodic block
@@ -471,10 +474,12 @@ public void setGyroYawUsingAprilTag(){
       m_currentRotation = rot;
     }
 
+
+    SmartDashboard.putNumber("xSpeedCommanded", xSpeedCommanded);
     // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeedCommanded * DriveConstants.kAutoMaxSpeedMetersPerSecond;
-    double ySpeedDelivered = ySpeedCommanded * DriveConstants.kAutoMaxSpeedMetersPerSecond;
-    double rotDelivered = m_currentRotation * DriveConstants.kAutoMaxAngularSpeed;
+    double xSpeedDelivered = xSpeedCommanded; //* DriveConstants.kAutoMaxSpeedMetersPerSecond;
+    double ySpeedDelivered = ySpeedCommanded; //* DriveConstants.kAutoMaxSpeedMetersPerSecond;
+    double rotDelivered = m_currentRotation; //* DriveConstants.kAutoMaxAngularSpeed;
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative

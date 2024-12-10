@@ -46,7 +46,7 @@ public class VelocityTuningCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    maxVel = 1 / Constants.DriveConstants.kTeleopMaxSpeedMetersPerSecond; // desired max / max speed
+    maxVel = 2 / Constants.DriveConstants.kTeleopMaxSpeedMetersPerSecond; // desired max / max speed
     target = maxVel;
     limiter = new SlewRateLimiter(5);
     // timer = new Timer();
