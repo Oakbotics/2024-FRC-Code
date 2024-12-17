@@ -30,9 +30,15 @@ import frc.robot.subsystems.AprilTagLimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -109,11 +115,21 @@ public class RobotContainer {
     // cancelling on release.
   
     // m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    //m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    m_driverController.y().onTrue(
+      new InstantCommand(() -> {
+        m_driveSubsystem.resetBotPose(new Pose2d(1.42, 1.6, new Rotation2d(0.0)));
+      })
+    );
     // m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
     m_driverController.a().whileTrue(new KACalculatorCommand(m_driveSubsystem));
     m_driverController.b().whileTrue(new VelocityTuningCommand(m_driveSubsystem));
-    m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem));  
+    // m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem)); 
+    m_driverController.x().onTrue(
+      new InstantCommand(() -> {
+        m_driveSubsystem.resetOdometry(new Pose2d(1.42, 1.6, new Rotation2d(0.0)));
+      })
+    );
     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
@@ -159,7 +175,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // return new PathPlannerAuto("Diagonal");''
-    return new M_4PFF(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
+    // return new M_4PFF(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem);
     // return new M_4PNoteAlignBlueAmp(m_driveSubsystem, m_shooterSubsystem, m_conveyorSubsystem, m_pnuematicSubsystem, m_noteLimelightSubsystem);
+    // SmartDashboard.putString("WPILIB DEPLOYE DIRECTORY", Filesystem.getDeployDirectory().getPath());
+    return new PathPlannerAuto("MoveStraight");
   }
 }
