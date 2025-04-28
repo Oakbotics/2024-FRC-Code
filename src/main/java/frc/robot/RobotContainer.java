@@ -113,25 +113,45 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+// <<<<<<< DCMP
+    // m_operatorController.leftBumper().whileTrue(new SensorIntakeCommand(m_conveyorSubsystem, true));
+    //m_operatorController.rightTrigger().whileTrue(new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    // m_operatorController.a().whileTrue(new RetractClimberCommand(m_climberSubsystem));
+    // m_operatorController.y().whileTrue(new ExtendClimberCommand(m_climberSubsystem));
+    m_operatorController.povUp().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+    m_operatorController.leftTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.x().whileTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem)).onFalse(new PnuematicsForwardCommand(m_pnuematicSubsystem));
+    // m_operatorController.b().whileTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));    
+    // operator controls for shoot while rev - shoot command and rev command
+    // switched rev up to left bumper, and shoot piece to right trigger
+    m_operatorController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+    m_operatorController.leftBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
+
+
+
+    m_driverController.a().whileTrue(new GoToAmpCommand(m_driveSubsystem));
+    // m_driverController.leftBumper().whileTrue(new GoToSpeakerCommand(m_driveSubsystem));
+// =======
   
-    // m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
-    //m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
-    m_driverController.y().onTrue(
-      new InstantCommand(() -> {
-        m_driveSubsystem.resetBotPose(new Pose2d(1.42, 1.6, new Rotation2d(0.0)));
-      })
-    );
-    // m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
-    m_driverController.a().whileTrue(new KACalculatorCommand(m_driveSubsystem));
-    m_driverController.b().whileTrue(new VelocityTuningCommand(m_driveSubsystem));
-    // m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem)); 
-    m_driverController.x().onTrue(
-      new InstantCommand(() -> {
-        m_driveSubsystem.resetOdometry(new Pose2d(1.42, 1.6, new Rotation2d(0.0)));
-      })
-    );
-    m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
-    m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
+//     // m_driverController.b().whileTrue(new OuttakeShooterConveyorCommand(m_conveyorSubsystem, m_shooterSubsystem, false));
+//     //m_driverController.y().onTrue(new PnuematicsForwardCommand(m_pnuematicSubsystem));
+//     m_driverController.y().onTrue(
+//       new InstantCommand(() -> {
+//         m_driveSubsystem.resetBotPose(new Pose2d(1.42, 1.6, new Rotation2d(0.0)));
+//       })
+//     );
+//     // m_driverController.a().onTrue(new PnuematicsReverseCommand(m_pnuematicSubsystem));
+//     m_driverController.a().whileTrue(new KACalculatorCommand(m_driveSubsystem));
+//     m_driverController.b().whileTrue(new VelocityTuningCommand(m_driveSubsystem));
+//     // m_driverController.x().whileTrue(new GoToNoteCommandGroup(m_conveyorSubsystem, m_driveSubsystem, m_shooterSubsystem, m_noteLimelightSubsystem, m_pnuematicSubsystem)); 
+//     m_driverController.x().onTrue(
+//       new InstantCommand(() -> {
+//         m_driveSubsystem.resetOdometry(new Pose2d(1.42, 1.6, new Rotation2d(0.0)));
+//       })
+//     );
+//     m_driverController.rightTrigger().whileTrue(new ShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem));
+//     m_driverController.rightBumper().whileTrue(new ShootCommand(m_shooterSubsystem));
+// >>>>>>> main
     m_driverController.leftBumper().whileTrue((new SensorBottomIntakeCommand(m_conveyorSubsystem, true, m_shooterSubsystem))).onFalse(new IndexCommand(m_conveyorSubsystem, true, m_shooterSubsystem));
     m_driverController.povUp().onTrue(new ResetGyroUsingAprilTag(m_driveSubsystem));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_driveSubsystem.setGyro(0)));
