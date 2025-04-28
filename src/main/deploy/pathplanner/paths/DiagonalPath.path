@@ -3,25 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 15.918233545872106,
+        "y": 4.502249460342948
       },
       "prevControl": null,
       "nextControl": {
-        "x": -0.009085069364679139,
-        "y": -2.3101211627455633e-15
+        "x": 15.909148476507426,
+        "y": 4.502249460342945
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 2.0
+        "x": 12.924530008604176,
+        "y": 2.15172441740895
       },
       "prevControl": {
-        "x": 1.9942074013840858,
-        "y": 2.0032924707487636
+        "x": 12.918737409988262,
+        "y": 2.1550168881577134
+      },
+      "nextControl": {
+        "x": 12.93032260722009,
+        "y": 2.148431946660186
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.328727312725281,
+        "y": 0.3274363243883181
+      },
+      "prevControl": {
+        "x": 8.09484422387619,
+        "y": -0.44437786880909375
+      },
+      "nextControl": {
+        "x": 8.562610401574371,
+        "y": 1.09925051758573
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.25856238607035,
+        "y": 6.38500832557583
+      },
+      "prevControl": {
+        "x": 7.4984423473117525,
+        "y": 4.104648209300043
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,19 +65,19 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.5,
-    "maxAcceleration": 2.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 360.0
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 200.0,
+    "maxAngularAcceleration": 100.0
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.0,
+    "rotation": -125.29334759066035,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -123.8636905688183,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -5,21 +5,10 @@ package frc.robot.commands.autoCommands;
 // the WPILib BSD license file in the root directory of this project.
 
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.AprilTagLimelightSubsystem;
-
 import java.util.function.Supplier;
-
-import com.pathplanner.lib.util.GeometryUtil;
-import com.pathplanner.lib.util.PIDConstants;
-import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.proto.Controller;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -33,11 +22,7 @@ public class GoToAutoPositionCommand extends Command {
   Pose2d m_goToPose;
   Supplier<Pose2d> m_goToPoseSupplier;
 
-  double errorMargin = 0.05; 
-  // Pose2d ampPose = new Pose2d(ampPoseX, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
-  // Pose2d ampPose;
-  // Pose2d ampPoseBlue = new Pose2d(ampPoseXBlue, ampPoseY, Rotation2d.fromDegrees(ampPoseRot));
-  // Pose2d ampPoseRed = GeometryUtil.flipFieldPose(ampPoseBlue);
+  double errorMargin = 0.02; 
   /**
    * Creates a new ExampleCommand.
    *
@@ -61,11 +46,20 @@ public class GoToAutoPositionCommand extends Command {
       //   m_goToPose = GeometryUtil.flipFieldPose(m_goToPose);
       // }
 
-    m_driveSubsystem.drive(0, 0, 0, true, true);
+    m_driveSubsystem.driveAutoSpeedFF(0, 0, 0, true, true);
 
-    xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
-    yController = new PIDController(0.75, 0,0.05);
-    rotateController = new PIDController(0.01, 0.0, 0.0);
+    // xController = new PIDController(0.75, 0,0.05); //Best values: 0.5, 0, 1.15
+    // yController = new PIDController(0.75, 0,0.05);
+    // rotateController = new PIDController(0.01, 0.0, 0.0);
+
+    // xController = new PIDController(3.5, 0,1.75); //Best values: 0.5, 0, 1.15
+    // yController = new PIDController(0.75, 0,0.05);
+    // rotateController = new PIDController(0.01, 0.0, 0.0);
+    
+    xController = new PIDController(1.1, 0,0.14); //Best values: 0.5, 0, 1.15
+    yController = new PIDController(1.1, 0,0.14);
+    rotateController = new PIDController(0.03, 0.0, 0.0);
+
 
     rotateController.enableContinuousInput(-180, 180);
   }
@@ -74,16 +68,16 @@ public class GoToAutoPositionCommand extends Command {
   @Override
   public void execute() {
     
-    SmartDashboard.putNumber("Set Point X", m_goToPose.getX());
-    SmartDashboard.putNumber("Set Point Y", m_goToPose.getY());
-    SmartDashboard.putNumber("Set Point Rot", m_goToPose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("Set Point X", m_goToPose.getX());
+    // SmartDashboard.putNumber("Set Point Y", m_goToPose.getY());
+    // SmartDashboard.putNumber("Set Point Rot", m_goToPose.getRotation().getDegrees());
     
 
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getPose().getRotation().getDegrees(); 
           
-    m_driveSubsystem.drive(
+    m_driveSubsystem.driveAutoSpeedFF(
       xController.calculate(botPoseX, m_goToPose.getX()),
       yController.calculate(botPoseY, m_goToPose.getY()),
       rotateController.calculate(botPoseRot, m_goToPose.getRotation().getDegrees()),
@@ -95,19 +89,20 @@ public class GoToAutoPositionCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveSubsystem.drive(0, 0, 0, true, true);
+    m_driveSubsystem.driveAutoSpeedFF(0, 0, 0, true, true);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double botPoseX = m_driveSubsystem.getPose().getX();
-    double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
+    // double botPoseX = m_driveSubsystem.getPose().getX();
+    // double botPoseY = m_driveSubsystem.getPose().getY();
+    // double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     
-    if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 3){
-      return true;
-    }
+    // if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin){
+    // // if(Math.abs(botPoseX -  m_goToPose.getX()) <= errorMargin && Math.abs(botPoseY - m_goToPose.getY()) <= errorMargin && Math.abs(botPoseRot - m_goToPose.getRotation().getDegrees()) <= 3){
+    //   return true;
+    // }
     return false;
   }
 }

@@ -6,19 +6,14 @@ package frc.robot.commands.autoCommands.autoCommandGroups;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.GoToPositionCommand;
-import frc.robot.commands.GoToSpeakerCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.PnuematicsReverseCommand;
-import frc.robot.commands.RevThenShootCommandGroup;
+import frc.robot.commands.PnuematicsForwardCommand;
+import frc.robot.commands.AutoRevThenShootCommandGroup;
 import frc.robot.commands.SensorIntakeCommand;
-import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -48,19 +43,23 @@ public class T_2P extends SequentialCommandGroup {
 
     addCommands(
       new SequentialCommandGroup(
-        new InstantCommand(()-> m_driveSubsystem.resetOdometry(AutoConstants.topStartingPose)),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+
+        new InstantCommand(()-> m_driveSubsystem.resetBotPose(AutoConstants.topStartingPose)),
+        new PnuematicsForwardCommand(m_pnuematicSubsystem),
+        new AutoRevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem),
+        new RunCommand(()-> {}).withTimeout(8),
         new ParallelCommandGroup(
-          new SensorIntakeCommand(m_conveyorSubsystem, true).withTimeout(5),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.bC1Pose)
+          new SensorIntakeCommand(m_conveyorSubsystem, m_shooterSubsystem, true).withTimeout(3),
+          new GoToAutoPositionCommand(m_driveSubsystem, ()-> new Pose2d(AutoConstants.bC1Pose.getTranslation(), Rotation2d.fromDegrees(60))).withTimeout(5)
         ),
-        new ParallelCommandGroup(
-          new PnuematicsReverseCommand(m_pnuematicSubsystem),
-          new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.topFarShootPose)
-        ),
+        // new ParallelCommandGroup(
+        //   new PnuematicsReverseCommand(m_pnuematicSubsystem),
+        // new GoToAutoPositionCommand(m_driveSubsystem, ()-> AutoConstants.topStartingPose).withTimeout(3),
+        
         // use this ^^ line if GoToSpeakerCommand doesnt work
         // new GoToSpeakerCommand(m_driveSubsystem),
-        new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
+        new InstantCommand(() -> m_driveSubsystem.setX())
+        // new RevThenShootCommandGroup(m_conveyorSubsystem, m_shooterSubsystem)
       )
     );
   }

@@ -4,16 +4,11 @@
 
 package frc.robot.subsystems;
 
-import java.lang.reflect.Field;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AprilTagLimelightSubsystem extends SubsystemBase {
@@ -24,8 +19,10 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public AprilTagLimelightSubsystem() {
-    SmartDashboard.putData("Field", m_field);
+    // SmartDashboard.putData("Field", m_field);
     m_limelightTable = NetworkTableInstance.getDefault().getTable("limelight-april");
+    m_limelightTable.getEntry("pipeline").setNumber(1);
+
   }
 
   public Pose2d getBotPose(){
@@ -45,9 +42,9 @@ public class AprilTagLimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     getBotPose();
-    SmartDashboard.putNumber("limelight x value", getBotPose().getX());
-    SmartDashboard.putNumber("limelight y value", getBotPose().getY());
-    SmartDashboard.putNumber("Limelight tv", m_limelightTable.getEntry("tv").getDouble(-1));
+    // SmartDashboard.putNumber("limelight x value", getBotPose().getX());
+    // SmartDashboard.putNumber("limelight y value", getBotPose().getY());
+    // SmartDashboard.putNumber("Limelight tv", m_limelightTable.getEntry("tv").getDouble(-1));
   }
 
   @Override
