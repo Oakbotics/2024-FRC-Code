@@ -11,6 +11,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,9 +22,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -93,11 +92,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(AprilTagLimelightSubsystem limelightSubsystem) {
-
+    SmartDashboard.putNumber("KsVoltage", 0);
     m_limelightSubsystem = limelightSubsystem;
 
 
-    SmartDashboard.putData(field);
+    // SmartDashboard.putData(field);
 
     m_gyro.reset();
 
@@ -107,16 +106,19 @@ public class DriveSubsystem extends SubsystemBase {
         this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(5.0, 0.0, 0.0),// Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0),// Rotation
-            5.5, // Max module speed, in m/s
-            
+            new PIDConstants(9.0, 0.0, 0.1),// Translation PID constants
+            new PIDConstants(8.0, 0.0, 0.0),// Rotation
+          3.5, // Max module speed, in m/s
             0.368, // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
         ),  
         () -> DriverStation.getAlliance().equals(DriverStation.Alliance.Red),
         this // Reference to this subsystem to set requirements
     );
+}
+
+public void setChassisVoltage(){
+
 }
 
 public ChassisSpeeds getChassisSpeeds(){
@@ -133,6 +135,19 @@ private SwerveModuleState[] getModuleStates() {
 }
   @Override
   public void periodic() {
+    // drive(1, 1, m_currentRotation, false, false);
+    SmartDashboard.putNumber("Front Left State", m_frontLeft.getState().angle.getDegrees());
+    SmartDashboard.putNumber("Front Right State", m_frontRight.getState().angle.getDegrees());
+    SmartDashboard.putNumber("Back Left State", m_rearLeft.getState().angle.getDegrees());
+    SmartDashboard.putNumber("Back Right State", m_rearRight.getState().angle.getDegrees());
+
+    SmartDashboard.putNumber("OptimizedDesiredState", m_frontLeft.getDesiredState().speedMetersPerSecond);
+    if(DriverStation.isAutonomous()) SmartDashboard.putNumber("Sysid Vel", getChassisSpeeds().vxMetersPerSecond);
+    if(DriverStation.isAutonomous()) SmartDashboard.putNumber("Sysid Encoder Vel", getEncoderVelocity());
+    SmartDashboard.putNumber("botpose x auto", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("botpose y auto", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Angle", m_odometry.getPoseMeters().getRotation().getDegrees());
+
     // Update the odometry in the periodic block
     if (DriverStation.isTeleop() == true && m_limelightSubsystem.getId() > 0){
       resetOdometry(getLimelightPose());
@@ -150,19 +165,19 @@ private SwerveModuleState[] getModuleStates() {
       );
    }
 
-    // SmartDashboard.putNumber("botpose x", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("botpose x", m_odometry.getPoseMeters().getX());
     // SmartDashboard.putNumber("botpose y", m_odometry.getPoseMeters().getY());
 
   
 
     // SmartDashboard.putNumber("pose 2d rotation", getPose().getRotation().getDegrees());
-    SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
-    SmartDashboard.putNumber("pose X", getPose().getX());
-    SmartDashboard.putNumber("pose Y", getPose().getY());
+    // SmartDashboard.putNumber("getWrappedHeading", getWrappedHeading().getDegrees());
+    // SmartDashboard.putNumber("pose X", getPose().getX());
+    // SmartDashboard.putNumber("pose Y", getPose().getY());
     // SmartDashboard.putNumber("GyroRotation2d", m_gyro.getRotation2d().getDegrees());
 
-    field.setRobotPose(getPose());
-    SmartDashboard.putData(field);
+    // field.setRobotPose(getPose());
+    // SmartDashboard.putData(field);
   }
 
 
@@ -318,6 +333,10 @@ public void setGyroYawUsingAprilTag(){
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+    // m_frontLeft.setDesiredStateVoltage(new SwerveModuleState(swerveModuleStates[0].speedMetersPerSecond, Rotation2d.fromDegrees(180.0)));
+    // m_frontRight.setDesiredStateVoltage(new SwerveModuleState(swerveModuleStates[1].speedMetersPerSecond, Rotation2d.fromDegrees(180.0)));
+    // m_rearLeft.setDesiredStateVoltage(new SwerveModuleState(swerveModuleStates[2].speedMetersPerSecond, Rotation2d.fromDegrees(180.0)));
+    // m_rearRight.setDesiredStateVoltage(new SwerveModuleState(swerveModuleStates[3].speedMetersPerSecond, Rotation2d.fromDegrees(180.0)));
   }
 
 
@@ -401,11 +420,81 @@ public void setGyroYawUsingAprilTag(){
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
-    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false, true);
+  public void driveAutoSpeedFF(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+
+    double xSpeedCommanded;
+    double ySpeedCommanded;
+
+    if (rateLimit) {
+      // Convert XY to polar for rate limiting
+      double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
+      double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
+
+      // Calculate the direction slew rate based on an estimate of the lateral acceleration
+      double directionSlewRate;
+      if (m_currentTranslationMag != 0.0) {
+        directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
+      } else {
+        directionSlewRate = 500.0; //some high number that means the slew rate is effectively instantaneous
+      }
+      
+
+      double currentTime = WPIUtilJNI.now() * 1e-6;
+      double elapsedTime = currentTime - m_prevTime;
+      double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
+      if (angleDif < 0.45*Math.PI) {
+        m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+        m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
+      }
+      else if (angleDif > 0.85*Math.PI) {
+        if (m_currentTranslationMag > 1e-4) { //some small number to avoid floating-point errors with equality checking
+          // keep currentTranslationDir unchanged
+          m_currentTranslationMag = m_magLimiter.calculate(0.0);
+        }
+        else {
+          m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
+          m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
+        }
+      }
+      else {
+        m_currentTranslationDir = SwerveUtils.StepTowardsCircular(m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+        m_currentTranslationMag = m_magLimiter.calculate(0.0);
+      }
+      m_prevTime = currentTime;
+      
+      xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
+      ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
+      m_currentRotation = m_rotLimiter.calculate(rot);
+
+
+    } else {
+      xSpeedCommanded = xSpeed;
+      ySpeedCommanded = ySpeed;
+      m_currentRotation = rot;
+    }
+
+
+    SmartDashboard.putNumber("xSpeedCommanded", xSpeedCommanded);
+    // Convert the commanded speeds into the correct units for the drivetrain
+    double xSpeedDelivered = xSpeedCommanded; //* DriveConstants.kAutoMaxSpeedMetersPerSecond;
+    double ySpeedDelivered = ySpeedCommanded; //* DriveConstants.kAutoMaxSpeedMetersPerSecond;
+    double rotDelivered = m_currentRotation; //* DriveConstants.kAutoMaxAngularSpeed;
+
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        fieldRelative
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, m_gyro.getRotation2d())
+            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kAutoMaxAngularSpeed);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
 
-
+  public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
+    driveAutoSpeedFF(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false, true);
+  }
 
   /**
    * Sets the wheels into an X formation to prevent movement.
@@ -458,6 +547,10 @@ public void setGyroYawUsingAprilTag(){
    // return m_gyro.getYaw().getValueAsDouble();
     return Rotation2d.fromDegrees(MathUtil.inputModulus(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0), -180.0, 180.0));
 
+  }
+
+  public double getEncoderVelocity(){
+    return m_frontLeft.getEncoderVelocity();
   }
 
   /**

@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.CANdleConstants;
 
 import com.ctre.phoenix.led.*;
@@ -37,7 +36,6 @@ public class CandleSubsystem extends SubsystemBase {
     
     m_candle.configAllSettings(configAll, 100);
     setRainbowAnimation();
-
   }
 
 
@@ -50,6 +48,9 @@ public class CandleSubsystem extends SubsystemBase {
   }
   public void setGreen(){
     m_candle.animate(new ColorFlowAnimation(0, 255, 0, 0, 0.7, ledCount, Direction.Forward));
+  }
+  public void setOff(){
+    m_candle.setLEDs(0, 0, 0);
   }
 
   /**

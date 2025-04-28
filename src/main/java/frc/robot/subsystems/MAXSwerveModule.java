@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -15,6 +17,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public class MAXSwerveModule {
@@ -26,6 +29,12 @@ public class MAXSwerveModule {
 
   private final SparkPIDController m_drivingPIDController;
   private final SparkPIDController m_turningPIDController;
+
+  private double arbFF;
+  double driveSetPoint = 0.0;
+  double lastDriveSetPoint = driveSetPoint;
+
+  private SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
@@ -84,7 +93,7 @@ public class MAXSwerveModule {
     m_drivingPIDController.setP(ModuleConstants.kDrivingP);
     m_drivingPIDController.setI(ModuleConstants.kDrivingI);
     m_drivingPIDController.setD(ModuleConstants.kDrivingD);
-    m_drivingPIDController.setFF(ModuleConstants.kDrivingFF);
+    // m_drivingPIDController.setFF(ModuleConstants.kDrivingFF);
     m_drivingPIDController.setOutputRange(ModuleConstants.kDrivingMinOutput,
         ModuleConstants.kDrivingMaxOutput);
 
@@ -142,6 +151,29 @@ public class MAXSwerveModule {
    *
    * @param desiredState Desired state with speed and angle.
    */
+  public void setDesiredStateVoltage(SwerveModuleState desiredState) {
+    // Apply chassis angular offset to the desired state.
+    Double voltageVal = SmartDashboard.getNumber("KsVoltage", 0.0);
+    SwerveModuleState correctedDesiredState = new SwerveModuleState();
+    correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
+    correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
+
+    // Optimize the reference state to avoid spinning further than 90 degrees.
+    SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
+        new Rotation2d(m_turningEncoder.getPosition()));
+
+    // Command driving and turning SPARKS MAX towards their respective setpoints.
+    m_drivingPIDController.setReference(voltageVal, CANSparkMax.ControlType.kVoltage);
+    m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+
+    m_desiredState = desiredState;
+  }
+
+  /**
+   * Sets the desired state for the module.
+   *
+   * @param desiredState Desired state with speed and angle.
+   */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Apply chassis angular offset to the desired state.
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
@@ -152,8 +184,18 @@ public class MAXSwerveModule {
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
         new Rotation2d(m_turningEncoder.getPosition()));
 
+    driveSetPoint = optimizedDesiredState.speedMetersPerSecond;
+    
+    SmartDashboard.putNumber("DriveSetPoint", driveSetPoint);
+    SmartDashboard.putNumber("DesiredState", desiredState.speedMetersPerSecond);
+    arbFF = driveFeedforward.calculate(driveSetPoint, (driveSetPoint - lastDriveSetPoint) * 50);
+    lastDriveSetPoint = driveSetPoint;
+
+    SmartDashboard.putNumber("ArbFF", arbFF);
+
+    // driveSetPoint = optimizedDesiredState.speedMetersPerSecond;
     // Command driving and turning SPARKS MAX towards their respective setpoints.
-    m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+    m_drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity, 0, arbFF);
     m_turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
     m_desiredState = desiredState;
@@ -163,4 +205,13 @@ public class MAXSwerveModule {
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
   }
+
+  public double getEncoderVelocity(){
+    return m_drivingEncoder.getVelocity();
+  }
+
+  public SwerveModuleState getDesiredState(){
+    return m_desiredState;
+  }
+
 }

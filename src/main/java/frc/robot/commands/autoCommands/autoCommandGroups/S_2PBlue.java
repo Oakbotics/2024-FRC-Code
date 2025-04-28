@@ -4,24 +4,11 @@
 
 package frc.robot.commands.autoCommands.autoCommandGroups;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.GoToNoteCommandGroup;
-import frc.robot.commands.GoToPositionCommand;
-import frc.robot.commands.GoToSpeakerCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PnuematicsForwardCommand;
-import frc.robot.commands.PnuematicsReverseCommand;
 import frc.robot.commands.AutoRevThenShootCommandGroup;
-import frc.robot.commands.SensorIntakeCommand;
-import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootCommandGroup;
 import frc.robot.commands.autoCommands.GoToAutoPositionCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -37,7 +24,7 @@ public class S_2PBlue extends SequentialCommandGroup {
   private final ShooterSubsystem m_shooterSubsystem;
   private final ConveyorSubsystem m_conveyorSubsystem;
   private final PnuematicSubsystem m_pnuematicSubsystem;
-  private final NoteLimelightSubsystem m_noteLimelightSubsystem;
+  // private final NoteLimelightSubsystem m_noteLimelightSubsystem;
 
   /**
    * Creates a new ExampleCommand.
@@ -49,7 +36,7 @@ public class S_2PBlue extends SequentialCommandGroup {
     m_shooterSubsystem = shooterSubsystem;
     m_conveyorSubsystem = conveyorSubsystem;
     m_pnuematicSubsystem = pnuematicSubsystem;
-    m_noteLimelightSubsystem = noteLimelightSubsystem;
+    // m_noteLimelightSubsystem = noteLimelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_driveSubsystem);
 

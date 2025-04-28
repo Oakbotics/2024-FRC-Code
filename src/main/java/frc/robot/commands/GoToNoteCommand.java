@@ -7,18 +7,11 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.NoteLimelightSubsystem;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.AprilTagLimelightSubsystem;
-
 import java.io.IOException;
 
-import com.pathplanner.lib.util.GeometryUtil;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -29,7 +22,6 @@ public class GoToNoteCommand extends Command {
   private final PIDController xController = DriveConstants.xController;
   private final PIDController yController = DriveConstants.yController;
   private final PIDController rotateController = DriveConstants.rotController;
-  private AprilTagFieldLayout fieldLayout;
   double xSetPoint;
   double ySetPoint;
   double rotSetPoint;
@@ -55,13 +47,13 @@ public class GoToNoteCommand extends Command {
   @Override
   public void initialize() {
 
-    double botPoseX = m_driveSubsystem.getPose().getX();
+   /*  double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     Pose2d botPose = new Pose2d(botPoseX,botPoseY, Rotation2d.fromDegrees(botPoseRot));
     xSetPoint = m_LimelightSubsystem.getNotePose(botPose).getX();
     ySetPoint = m_LimelightSubsystem.getNotePose(botPose).getY();
-    rotSetPoint = m_LimelightSubsystem.getNotePose(botPose).getRotation().getDegrees();
+    rotSetPoint = m_LimelightSubsystem.getNotePose(botPose).getRotation().getDegrees();*/
 
    }
 
@@ -73,11 +65,11 @@ public class GoToNoteCommand extends Command {
     double botPoseY = m_driveSubsystem.getPose().getY();
     double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
 
-    SmartDashboard.putNumber("unwrapped rotation", botPoseRot);      
-    SmartDashboard.putNumber("Set Point X", xSetPoint);
-    SmartDashboard.putNumber("Set Point Y", ySetPoint);
-    SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
-    SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
+    // SmartDashboard.putNumber("unwrapped rotation", botPoseRot);      
+    // SmartDashboard.putNumber("Set Point X", xSetPoint);
+    // SmartDashboard.putNumber("Set Point Y", ySetPoint);
+    // SmartDashboard.putNumber("Set Point Rot", rotSetPoint);
+    // SmartDashboard.putNumber("Setpoint from controller", rotateController.getSetpoint());
 
 
     // if(Math.abs(botPoseRot - rotSetPoint) > 2){
@@ -100,7 +92,7 @@ public class GoToNoteCommand extends Command {
   public boolean isFinished() {
     double botPoseX = m_driveSubsystem.getPose().getX();
     double botPoseY = m_driveSubsystem.getPose().getY();
-    double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
+    // double botPoseRot = m_driveSubsystem.getWrappedHeading().getDegrees();
     // if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin && Math.abs(botPoseRot - rotSetPoint) <= 1){
       
     if(Math.abs(botPoseX - xSetPoint) <= errorMargin && Math.abs(botPoseY - ySetPoint) <= errorMargin){  

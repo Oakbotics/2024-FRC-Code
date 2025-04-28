@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.42,
-        "y": 1.6
+        "x": 1.3363329583802028,
+        "y": 5.55593454044051
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4229741179449686,
-        "y": 1.6
+        "x": 0.8232519322181507,
+        "y": 7.447004608294931
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.42,
-        "y": 4.6
+        "x": 2.9195544105373927,
+        "y": 7.021880329474945
       },
       "prevControl": {
-        "x": 4.414493265354312,
-        "y": 4.6
+        "x": 2.7536376501324447,
+        "y": 6.910863964585072
+      },
+      "nextControl": {
+        "x": 3.085471170942341,
+        "y": 7.132896694364817
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.3363329583802028,
+        "y": 5.55593454044051
+      },
+      "prevControl": {
+        "x": 2.039986937116732,
+        "y": 6.156972313944628
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +55,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Bootcamp2024",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

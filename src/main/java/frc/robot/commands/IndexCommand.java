@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An intake command that uses an intake subsystem. */
@@ -14,7 +13,7 @@ public class IndexCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ConveyorSubsystem m_conveyorSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
-  private boolean useSensor = true;
+  // private boolean useSensor = true;
 
   /**
    * Creates a new IndexCommand.
@@ -24,20 +23,22 @@ public class IndexCommand extends Command {
   public IndexCommand(ConveyorSubsystem subsystem, boolean useSensor, ShooterSubsystem shooterSubsystem) {
     m_conveyorSubsystem = subsystem;
     m_shooterSubsystem = shooterSubsystem;
-    this.useSensor = useSensor;
+    // this.useSensor = useSensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_conveyorSubsystem.runConveyorSpeed(0.25);
+    m_shooterSubsystem.runShooterSpeed(-2);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_conveyorSubsystem.runConveyorSpeed(0.25);
-    m_shooterSubsystem.runShooterSpeed(-2);
+    
   }
 
   // Called once the command ends or is interrupted.

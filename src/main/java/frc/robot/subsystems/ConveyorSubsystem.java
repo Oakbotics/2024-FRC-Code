@@ -9,9 +9,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
@@ -123,8 +120,8 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Bottom Lidar value", getBottomSensorValue());
-    SmartDashboard.putNumber("Top Lidar value", getSensorValue());
+    // SmartDashboard.putNumber("Bottom Lidar value", getBottomSensorValue());
+    // SmartDashboard.putNumber("Top Lidar value", getSensorValue());
 
     // SmartDashboard.putBoolean("Lidar Trigger", getSensorTriggered());
 
